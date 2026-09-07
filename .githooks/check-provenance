@@ -1,0 +1,37 @@
+#!/bin/sh
+set -eu
+
+root=$(git rev-parse --show-toplevel)
+pattern=$(cat "$root/.githooks/provenance-pattern.txt")
+
+if [ "${1:-}" = "--all" ]; then
+  failed=0
+  if git grep -nI -E "$pattern" -- . \
+    ':(exclude).githooks/provenance-pattern.txt'; then
+    failed=1
+  fi
+  if git log --format='%an%n%ae%n%s%n%b' | grep -Ein "$pattern"; then
+    failed=1
+  fi
+  if [ "$failed" -ne 0 ]; then
+    echo "provenance check failed" >&2
+  fi
+  exit "$failed"
+fi
+
+if [ "$#" -gt 0 ]; then
+  if grep -Ein "$pattern" "$@"; then
+    echo "provenance check failed" >&2
+    exit 1
+  fi
+  exit 0
+fi
+
+git diff --cached --name-only --diff-filter=ACMR |
+while IFS= read -r file; do
+  [ "$file" = ".githooks/provenance-pattern.txt" ] && continue
+  if git show ":$file" 2>/dev/null | grep -Ein "$pattern"; then
+    echo "provenance check failed: $file" >&2
+    exit 1
+  fi
+done
