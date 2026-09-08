@@ -1,14 +1,14 @@
 # HANDOFF
 
-Begin T-039. Read `BUILD/agents/SHIP.md`, the CLI, discovery, graph, crypto,
-AI security, and evidence notes, and the CLI contract first.
+Begin T-040. Read `BUILD/agents/UX.md`, the CLI note, and the logo section of
+the design system first.
 
 ## Current state
 
 - Milestone: v0.1 foundation
 - Bootstrap: complete through step 8
-- Last completed: T-038, task commit
-- Next task: T-039, wire scan, attack, PQC, graph, and report commands
+- Last completed: T-039, task commit
+- Next task: T-040, create logo system and raster brand assets
 - Blockers: none
 - Manual steps: none
 
@@ -18,4 +18,4 @@ AI security, and evidence notes, and the CLI contract first.
 - Remote: `origin/dev`
 - Contracts: frozen at version 1.0
 - Design: frozen at version 1.0
-- v0.1 tasks: 7 todo, 0 doing, 38 done, 0 blocked
+- v0.1 tasks: 6 todo, 0 doing, 39 done, 0 blocked

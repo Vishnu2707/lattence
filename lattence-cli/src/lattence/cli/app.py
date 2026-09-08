@@ -1,3 +1,4 @@
+import sys
 from pathlib import Path
 from typing import Annotated
 
@@ -14,6 +15,18 @@ from .options import (
     QuietOption,
     SeverityGate,
 )
+from .presentation import render_scan_summary
+from .scaffold import common_options, named_command, path_command, pending
+from .targets import TargetDeclarationError, load_target_declaration
+from .workflow import (
+    attack_text,
+    create_report,
+    load_report,
+    machine_report,
+    readiness_json,
+    write_graph,
+    write_report_artifacts,
+)
 
 app = typer.Typer(
     name="lattence",
@@ -26,23 +39,7 @@ crypto_app = typer.Typer(name="crypto", no_args_is_help=True)
 provider_app = typer.Typer(name="provider", no_args_is_help=True)
 graph_app = typer.Typer(name="graph", no_args_is_help=True)
 policy_app = typer.Typer(name="policy", no_args_is_help=True)
-
-
-def _pending(command: str) -> None:
-    typer.echo(f"{command}: command scaffold only", err=True)
-    raise typer.Exit(code=3)
-
-
-def _options(
-    json_output: bool,
-    out: Path,
-    offline: bool,
-    no_color: bool,
-    quiet: bool,
-    planner: Planner,
-    fail_on: SeverityGate,
-) -> None:
-    del json_output, out, offline, no_color, quiet, planner, fail_on
+PathArgument = Annotated[Path, typer.Argument()]
 
 
 @app.callback()
@@ -59,7 +56,7 @@ def root(
 
 @app.command()
 def scan(
-    path: Path = Path("."),
+    path: PathArgument = Path("."),
     json_output: JsonOption = False,
     out: OutOption = Path("."),
     offline: OfflineOption = False,
@@ -68,13 +65,27 @@ def scan(
     planner: PlannerOption = Planner.RULES,
     fail_on: FailOnOption = SeverityGate.HIGH,
 ) -> None:
-    _options(json_output, out, offline, no_color, quiet, planner, fail_on)
-    _pending(f"scan {path}")
+    del offline, planner, fail_on
+    result = create_report(path)
+    artifacts = write_report_artifacts(result, out)
+    if json_output:
+        typer.echo(machine_report(result), nl=False)
+    elif not quiet:
+        typer.echo(
+            render_scan_summary(
+                result,
+                path,
+                artifacts.html,
+                0.0,
+                color=not no_color and sys.stdout.isatty(),
+            ),
+            nl=False,
+        )
 
 
 @app.command()
 def attack(
-    path: Path = Path("."),
+    path: PathArgument = Path("."),
     json_output: JsonOption = False,
     out: OutOption = Path("."),
     offline: OfflineOption = False,
@@ -83,13 +94,22 @@ def attack(
     planner: PlannerOption = Planner.RULES,
     fail_on: FailOnOption = SeverityGate.HIGH,
 ) -> None:
-    _options(json_output, out, offline, no_color, quiet, planner, fail_on)
-    _pending(f"attack {path}")
+    del offline, no_color, planner, fail_on
+    try:
+        load_target_declaration(path)
+    except TargetDeclarationError as error:
+        raise typer.BadParameter(str(error)) from error
+    result = create_report(path)
+    write_report_artifacts(result, out)
+    if json_output:
+        typer.echo(machine_report(result), nl=False)
+    elif not quiet:
+        typer.echo(attack_text(result, path), nl=False)
 
 
 @app.command()
 def harden(
-    path: Path = Path("."),
+    path: PathArgument = Path("."),
     json_output: JsonOption = False,
     out: OutOption = Path("."),
     offline: OfflineOption = False,
@@ -98,8 +118,8 @@ def harden(
     planner: PlannerOption = Planner.RULES,
     fail_on: FailOnOption = SeverityGate.HIGH,
 ) -> None:
-    _options(json_output, out, offline, no_color, quiet, planner, fail_on)
-    _pending(f"harden {path}")
+    common_options(json_output, out, offline, no_color, quiet, planner, fail_on)
+    pending(f"harden {path}")
 
 
 @app.command()
@@ -113,13 +133,13 @@ def verify(
     planner: PlannerOption = Planner.RULES,
     fail_on: FailOnOption = SeverityGate.HIGH,
 ) -> None:
-    _options(json_output, out, offline, no_color, quiet, planner, fail_on)
-    _pending(f"verify {finding_id}")
+    common_options(json_output, out, offline, no_color, quiet, planner, fail_on)
+    pending(f"verify {finding_id}")
 
 
 @app.command()
 def report(
-    input_path: Path = Path("."),
+    input_path: PathArgument = Path("."),
     json_output: JsonOption = False,
     out: OutOption = Path("."),
     offline: OfflineOption = False,
@@ -128,13 +148,18 @@ def report(
     planner: PlannerOption = Planner.RULES,
     fail_on: FailOnOption = SeverityGate.HIGH,
 ) -> None:
-    _options(json_output, out, offline, no_color, quiet, planner, fail_on)
-    _pending(f"report {input_path}")
+    del offline, no_color, planner, fail_on
+    result = load_report(input_path)
+    artifacts = write_report_artifacts(result, out)
+    if json_output:
+        typer.echo(machine_report(result), nl=False)
+    elif not quiet:
+        typer.echo(f"Report  {artifacts.html}")
 
 
 @app.command()
 def tui(
-    input_path: Path = Path("."),
+    input_path: PathArgument = Path("."),
     json_output: JsonOption = False,
     out: OutOption = Path("."),
     offline: OfflineOption = False,
@@ -143,18 +168,13 @@ def tui(
     planner: PlannerOption = Planner.RULES,
     fail_on: FailOnOption = SeverityGate.HIGH,
 ) -> None:
-    _options(json_output, out, offline, no_color, quiet, planner, fail_on)
-    _pending(f"tui {input_path}")
-
-
-def _path_command(command: str, path: Path, options: tuple[object, ...]) -> None:
-    _options(*options)  # type: ignore[arg-type]
-    _pending(f"{command} {path}")
+    common_options(json_output, out, offline, no_color, quiet, planner, fail_on)
+    pending(f"tui {input_path}")
 
 
 @pqc_app.command("assess")
 def pqc_assess(
-    path: Path = Path("."),
+    path: PathArgument = Path("."),
     json_output: JsonOption = False,
     out: OutOption = Path("."),
     offline: OfflineOption = False,
@@ -163,16 +183,17 @@ def pqc_assess(
     planner: PlannerOption = Planner.RULES,
     fail_on: FailOnOption = SeverityGate.HIGH,
 ) -> None:
-    _path_command(
-        "pqc assess",
-        path,
-        (json_output, out, offline, no_color, quiet, planner, fail_on),
-    )
+    del out, offline, no_color, planner, fail_on
+    result = create_report(path)
+    if json_output:
+        typer.echo(readiness_json(result), nl=False)
+    elif not quiet:
+        typer.echo(f"PQC readiness  {result.summary.pqc_readiness:g}%")
 
 
 @crypto_app.command("chaos")
 def crypto_chaos(
-    path: Path = Path("."),
+    path: PathArgument = Path("."),
     json_output: JsonOption = False,
     out: OutOption = Path("."),
     offline: OfflineOption = False,
@@ -181,26 +202,11 @@ def crypto_chaos(
     planner: PlannerOption = Planner.RULES,
     fail_on: FailOnOption = SeverityGate.HIGH,
 ) -> None:
-    _path_command(
+    path_command(
         "crypto chaos",
         path,
         (json_output, out, offline, no_color, quiet, planner, fail_on),
     )
-
-
-def _named_command(
-    command: str,
-    name: str,
-    json_output: bool,
-    out: Path,
-    offline: bool,
-    no_color: bool,
-    quiet: bool,
-    planner: Planner,
-    fail_on: SeverityGate,
-) -> None:
-    _options(json_output, out, offline, no_color, quiet, planner, fail_on)
-    _pending(f"{command} {name}")
 
 
 @provider_app.command("enable")
@@ -214,7 +220,7 @@ def provider_enable(
     planner: PlannerOption = Planner.RULES,
     fail_on: FailOnOption = SeverityGate.HIGH,
 ) -> None:
-    _named_command(
+    named_command(
         "provider enable",
         name,
         json_output,
@@ -237,13 +243,13 @@ def provider_list(
     planner: PlannerOption = Planner.RULES,
     fail_on: FailOnOption = SeverityGate.HIGH,
 ) -> None:
-    _options(json_output, out, offline, no_color, quiet, planner, fail_on)
-    _pending("provider list")
+    common_options(json_output, out, offline, no_color, quiet, planner, fail_on)
+    pending("provider list")
 
 
 @graph_app.command("export")
 def graph_export(
-    input_path: Path = Path("."),
+    input_path: PathArgument = Path("."),
     json_output: JsonOption = False,
     out: OutOption = Path("."),
     offline: OfflineOption = False,
@@ -252,16 +258,21 @@ def graph_export(
     planner: PlannerOption = Planner.RULES,
     fail_on: FailOnOption = SeverityGate.HIGH,
 ) -> None:
-    _path_command(
-        "graph export",
-        input_path,
-        (json_output, out, offline, no_color, quiet, planner, fail_on),
-    )
+    del offline, no_color, planner, fail_on
+    result = create_report(input_path)
+    if json_output:
+        from lattence.graph import security_graph_json
+
+        typer.echo(security_graph_json(result.graph), nl=False)
+    else:
+        destination = write_graph(result, out)
+        if not quiet:
+            typer.echo(f"Graph  {destination}")
 
 
 @policy_app.command("check")
 def policy_check(
-    input_path: Path = Path("."),
+    input_path: PathArgument = Path("."),
     json_output: JsonOption = False,
     out: OutOption = Path("."),
     offline: OfflineOption = False,
@@ -270,7 +281,7 @@ def policy_check(
     planner: PlannerOption = Planner.RULES,
     fail_on: FailOnOption = SeverityGate.HIGH,
 ) -> None:
-    _path_command(
+    path_command(
         "policy check",
         input_path,
         (json_output, out, offline, no_color, quiet, planner, fail_on),

@@ -52,6 +52,11 @@ lattence-mcp = { workspace = true }
 [tool.hatch.build.targets.wheel]
 packages = ["lattence-cli/src/lattence"]
 
+[tool.hatch.build.targets.wheel.force-include]
+"lattence-packs/attacks" = "lattence/packs/attacks"
+"lattence-packs/discovery" = "lattence/packs/discovery"
+"docs/schemas/report.v1.json" = "lattence/schemas/report.v1.json"
+
 [tool.pytest.ini_options]
 addopts = "-ra"
 testpaths = ["tests"]

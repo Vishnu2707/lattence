@@ -14,6 +14,11 @@ explicit project-root target. Invalid declarations fail without echoing file
 content. Project paths cannot escape the root and URL targets cannot embed
 credentials.
 
+T-039 wired scan, attack, PQC assessment, graph export, and report commands to
+one offline workflow. The root wheel includes discovery rules, attack rules,
+and the report schema. Scan writes JSON and HTML, attack enforces the owned
+target declaration, and machine modes write only structured data to stdout.
+
 T-038 added plain and color terminal scan summaries under the installed
 `lattence.cli.presentation` namespace. Plain output contains no terminal escape
 sequences and reports discovery counts, attack findings, crypto inventory, PQC

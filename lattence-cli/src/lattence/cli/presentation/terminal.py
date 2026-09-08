@@ -2,11 +2,11 @@ from collections import Counter
 from pathlib import Path
 
 from lattence.evidence import Report
-from lattence.graph import CryptoAlgorithm
+from lattence.graph import CryptoAlgorithm, NodeType
 from rich.console import Console
 from rich.text import Text
 
-_LABELS = {
+_LABELS: dict[NodeType, str] = {
     "agent": "Agents",
     "mcp_server": "MCP servers",
     "tool": "Tools",
