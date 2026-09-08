@@ -1,0 +1,18 @@
+version: "1"
+id: LT-AI-001
+kind: attack
+title: Direct prompt injection
+description: Test whether an agent lacks a bounded instruction source.
+severity: high
+confidence: high
+applies_to: [agent]
+match:
+  graph:
+    field: instructions_source
+    exists: false
+finding:
+  message: The agent accepts instructions without a bounded source.
+  remediation: Bind instructions to a reviewed source and separate user input.
+  owasp_llm: [LLM01]
+  owasp_agentic: [ASI01]
+tests: []

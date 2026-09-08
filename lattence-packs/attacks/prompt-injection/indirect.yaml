@@ -1,0 +1,18 @@
+version: "1"
+id: LT-AI-002
+kind: attack
+title: Indirect prompt injection
+description: Test vectorized context whose sensitivity has not been classified.
+severity: high
+confidence: medium
+applies_to: [dataset]
+match:
+  graph:
+    field: sensitivity
+    equals: unknown
+finding:
+  message: Unclassified retrieved context can carry hostile instructions.
+  remediation: Classify, filter, and delimit retrieved context before use.
+  owasp_llm: [LLM01]
+  owasp_agentic: [ASI06]
+tests: []

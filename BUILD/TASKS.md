@@ -27,7 +27,7 @@ Each line is one commit unit. Status values are `todo`, `doing`, `done`, and
 [T-022] [v0.1] [GRAPH] export deterministic security graph JSON | deps: T-020 | status: done | commit: self
 [T-023] [v0.1] [SHIP] validate owned target declarations before attack execution | deps: T-004 | status: done | commit: self
 [T-024] [v0.1] [AISEC] implement attack rule runner and observation result | deps: T-002,T-003,T-020,T-023 | status: done | commit: self
-[T-025] [v0.1] [AISEC] add direct and indirect prompt injection tests | deps: T-024 | status: todo | commit:
+[T-025] [v0.1] [AISEC] add direct and indirect prompt injection tests | deps: T-024 | status: done | commit: self
 [T-026] [v0.1] [AISEC] add system instruction extraction and override tests | deps: T-024 | status: todo | commit:
 [T-027] [v0.1] [AISEC] add unsafe output handling and data disclosure tests | deps: T-024 | status: todo | commit:
 [T-028] [v0.1] [AISEC] add excessive agency and unsafe tool use tests | deps: T-024 | status: todo | commit:
