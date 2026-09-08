@@ -19,6 +19,7 @@ from .nodes import (
     Tool,
 )
 from .schema import Edge, EdgeType, Project, SecurityGraph, TrustLevel
+from .traversal import GraphPath, find_attack_paths, reachable_nodes
 
 __all__ = [
     "API",
@@ -31,6 +32,7 @@ __all__ = [
     "Edge",
     "EdgeType",
     "ExternalService",
+    "GraphPath",
     "Identity",
     "JsonValue",
     "MCPServer",
@@ -47,4 +49,6 @@ __all__ = [
     "TrustLevel",
     "UtcDateTime",
     "build_security_graph",
+    "find_attack_paths",
+    "reachable_nodes",
 ]

@@ -14,3 +14,6 @@ T-020 added deterministic graph construction. It links application ownership,
 agent calls, server tools, data access, credentials, and cryptographic
 protection from explicit identifiers and shared source evidence. Duplicate edge
 candidates collapse by stable edge id.
+T-021 added cycle-safe reachability and bounded simple-path queries. Both APIs
+validate node identifiers, support edge-type filters, and return stable sorted
+results. Parallel edges remain distinct in returned paths.

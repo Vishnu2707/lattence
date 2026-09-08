@@ -23,7 +23,7 @@ Each line is one commit unit. Status values are `todo`, `doing`, `done`, and
 [T-018] [v0.1] [DISCO] discover container, cluster, infrastructure, and CI configuration | deps: T-003,T-005 | status: done | commit: self
 [T-019] [v0.1] [DISCO] aggregate discovery with stable identifiers and deduplication | deps: T-011,T-012,T-013,T-014,T-015,T-016,T-017,T-018 | status: done | commit: self
 [T-020] [v0.1] [GRAPH] construct security graph edges from discovery evidence | deps: T-001,T-019 | status: done | commit: self
-[T-021] [v0.1] [GRAPH] implement graph traversal and attack path queries | deps: T-020 | status: todo | commit:
+[T-021] [v0.1] [GRAPH] implement graph traversal and attack path queries | deps: T-020 | status: done | commit: self
 [T-022] [v0.1] [GRAPH] export deterministic security graph JSON | deps: T-020 | status: todo | commit:
 [T-023] [v0.1] [SHIP] validate owned target declarations before attack execution | deps: T-004 | status: todo | commit:
 [T-024] [v0.1] [AISEC] implement attack rule runner and observation result | deps: T-002,T-003,T-020,T-023 | status: todo | commit:
