@@ -14,6 +14,15 @@ from .models import (
     TelemetrySpan,
     TranscriptEntry,
 )
+from .normalization import normalize_rule_finding
+from .reporting import (
+    Report,
+    ReportSummary,
+    ToolInfo,
+    build_report,
+    report_json,
+    write_json_report,
+)
 
 __all__ = [
     "Confidence",
@@ -26,8 +35,15 @@ __all__ = [
     "FindingStatus",
     "PolicyDecision",
     "PolicyOutcome",
+    "Report",
+    "ReportSummary",
     "ReproductionRecipe",
     "Severity",
     "TelemetrySpan",
+    "ToolInfo",
     "TranscriptEntry",
+    "build_report",
+    "normalize_rule_finding",
+    "report_json",
+    "write_json_report",
 ]

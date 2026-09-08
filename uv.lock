@@ -558,12 +558,14 @@ name = "lattence-evidence"
 version = "0.0.0"
 source = { editable = "lattence-evidence" }
 dependencies = [
+    { name = "jsonschema" },
     { name = "lattence-core" },
     { name = "pydantic" },
 ]
 
 [package.metadata]
 requires-dist = [
+    { name = "jsonschema", specifier = ">=4.23,<5" },
     { name = "lattence-core", editable = "lattence-core" },
     { name = "pydantic", specifier = ">=2.11,<3" },
 ]
