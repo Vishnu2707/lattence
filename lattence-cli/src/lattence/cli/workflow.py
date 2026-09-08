@@ -146,7 +146,14 @@ def attack_text(report: Report, target: Path) -> str:
             f"VULNERABLE  {finding.id}  {finding.title}  {finding.target_node_id}"
         )
     indirect = next((item for item in report.findings if item.id == "LT-AI-002"), None)
-    tool = next((node for node in report.graph.nodes if node.type == "tool"), None)
+    tool = next(
+        (
+            node
+            for node in report.graph.nodes
+            if node.type == "tool" and node.server_id is not None
+        ),
+        None,
+    )
     if indirect is not None and tool is not None:
         lines.extend(("", f"Indirect chain  {indirect.target_node_id} -> {tool.id}"))
     lines.extend(("", f"Findings  {report.summary.total}"))

@@ -61,3 +61,6 @@ Aggregate discovery inventories and parses a project once, applies all core
 detectors, accepts nodes from separate feature packages, and rejects conflicting
 node identifiers. It returns a source-located project with nodes sorted by id.
 The public entry point is `discover_project`.
+Aggregate discovery retains enriched agent nodes and omits their unenriched
+framework duplicates. This prevents identifier conflicts when a framework rule
+and generic agent detection describe the same source declaration.

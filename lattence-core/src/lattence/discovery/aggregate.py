@@ -104,7 +104,7 @@ def discover_project(
     infrastructure = discover_infrastructure(inventory.root, inventory.files)
     nodes = _deduplicate(
         (
-            framework_nodes,
+            (node for node in framework_nodes if node.type != "agent"),
             model_nodes,
             agent_tools.agents,
             agent_tools.tools,

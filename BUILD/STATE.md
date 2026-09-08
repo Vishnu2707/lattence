@@ -1,14 +1,14 @@
 # HANDOFF
 
-Begin T-041. Read `BUILD/agents/SHIP.md`, the CLI, MCP, and AI security notes,
-and the v0.1 acceptance criteria first.
+Begin T-042. Read `BUILD/agents/UX.md`, the UX and CLI notes, and the
+demonstration section of the design system first.
 
 ## Current state
 
 - Milestone: v0.1 foundation
 - Bootstrap: complete through step 8
-- Last completed: T-040, task commit
-- Next task: T-041, build deliberately vulnerable reference application
+- Last completed: T-041, task commit
+- Next task: T-042, author deterministic scan demonstration tape and GIF
 - Blockers: none
 - Manual steps: none
 
@@ -18,4 +18,4 @@ and the v0.1 acceptance criteria first.
 - Remote: `origin/dev`
 - Contracts: frozen at version 1.0
 - Design: frozen at version 1.0
-- v0.1 tasks: 5 todo, 0 doing, 40 done, 0 blocked
+- v0.1 tasks: 4 todo, 0 doing, 41 done, 0 blocked
