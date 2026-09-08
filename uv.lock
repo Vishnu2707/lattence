@@ -463,6 +463,7 @@ dependencies = [
     { name = "lattence-core" },
     { name = "lattence-crypto" },
     { name = "lattence-evidence" },
+    { name = "lattence-mcp" },
     { name = "rich" },
     { name = "typer" },
 ]
@@ -483,6 +484,7 @@ requires-dist = [
     { name = "lattence-core", editable = "lattence-core" },
     { name = "lattence-crypto", editable = "lattence-crypto" },
     { name = "lattence-evidence", editable = "lattence-evidence" },
+    { name = "lattence-mcp", editable = "lattence-mcp" },
     { name = "rich", specifier = ">=14,<15" },
     { name = "typer", specifier = ">=0.16,<1" },
 ]

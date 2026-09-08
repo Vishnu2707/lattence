@@ -9,6 +9,7 @@ dependencies = [
   "lattence-core",
   "lattence-crypto",
   "lattence-evidence",
+  "lattence-mcp",
   "rich>=14,<15",
   "typer>=0.16,<1",
 ]
@@ -46,6 +47,7 @@ lattence-ai = { workspace = true }
 lattence-core = { workspace = true }
 lattence-crypto = { workspace = true }
 lattence-evidence = { workspace = true }
+lattence-mcp = { workspace = true }
 
 [tool.hatch.build.targets.wheel]
 packages = ["lattence-cli/src/lattence"]
