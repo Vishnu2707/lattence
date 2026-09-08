@@ -17,7 +17,7 @@ Each line is one commit unit. Status values are `todo`, `doing`, `done`, and
 [T-012] [v0.1] [MCPX] discover MCP server configuration and exposed tools | deps: T-001,T-005 | status: done | commit: self
 [T-013] [v0.1] [DISCO] detect RAG pipelines, datasets, and vector stores | deps: T-003,T-006,T-007,T-008 | status: done | commit: self
 [T-014] [v0.1] [DISCO] detect APIs, databases, caches, and external services | deps: T-003,T-006,T-007,T-008 | status: done | commit: self
-[T-015] [v0.1] [DISCO] detect credential references, OAuth, JWT, and identities | deps: T-003,T-006,T-007 | status: todo | commit:
+[T-015] [v0.1] [DISCO] detect credential references, OAuth, JWT, and identities | deps: T-003,T-006,T-007 | status: done | commit: self
 [T-016] [v0.1] [CRYPTO] discover TLS settings, certificates, and key exchange | deps: T-001,T-005 | status: todo | commit:
 [T-017] [v0.1] [CRYPTO] discover cryptographic libraries and algorithms | deps: T-001,T-005,T-008 | status: todo | commit:
 [T-018] [v0.1] [DISCO] discover container, cluster, infrastructure, and CI configuration | deps: T-003,T-005 | status: todo | commit:

@@ -1,14 +1,14 @@
 # HANDOFF
 
-Begin T-015. Read `BUILD/agents/DISCO.md`, `BUILD/notes/discovery.md`, and the
-secret and identity contracts first. Never retain credential values.
+Begin T-016. Read `BUILD/agents/CRYPTO.md`, the discovery note, and the
+certificate and cryptographic algorithm contracts first.
 
 ## Current state
 
 - Milestone: v0.1 foundation
 - Bootstrap: complete through step 8
-- Last completed: T-014, task commit
-- Next task: T-015, detect credential references, OAuth, JWT, and identities
+- Last completed: T-015, task commit
+- Next task: T-016, discover TLS settings, certificates, and key exchange
 - Blockers: none
 - Manual steps: none
 
@@ -18,4 +18,4 @@ secret and identity contracts first. Never retain credential values.
 - Remote: `origin/dev`
 - Contracts: frozen at version 1.0
 - Design: frozen at version 1.0
-- v0.1 tasks: 31 todo, 0 doing, 14 done, 0 blocked
+- v0.1 tasks: 30 todo, 0 doing, 15 done, 0 blocked

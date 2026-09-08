@@ -1,4 +1,5 @@
 from .agent_tools import AgentToolDiscovery, detect_agents_and_tools
+from .credentials import IdentityDiscovery, detect_identities
 from .data_paths import detect_data_paths
 from .dependencies import (
     Dependency,
@@ -51,6 +52,7 @@ __all__ = [
     "DecoratorRecord",
     "FindingTemplate",
     "ImportRecord",
+    "IdentityDiscovery",
     "InventoryError",
     "InventoryOptions",
     "JavaScriptCall",
@@ -69,6 +71,7 @@ __all__ = [
     "SyntaxLocation",
     "discover_dependency_manifests",
     "detect_frameworks",
+    "detect_identities",
     "detect_agents_and_tools",
     "detect_data_paths",
     "detect_models",

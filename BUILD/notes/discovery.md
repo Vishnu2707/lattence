@@ -49,3 +49,7 @@ Service detection applies YAML rules to dependency, import, and call records.
 It emits API, database, cache, and source-located external service nodes without
 retaining destination values. It covers three web service families, PostgreSQL,
 Redis, and common HTTP clients. The public entry point is `detect_services`.
+Credential discovery records environment and assignment names that indicate
+secrets, but never stores their values. It also identifies OAuth and JWT usage
+from imports and calls, then emits source-located identity nodes. Public imports
+are `detect_identities` and `IdentityDiscovery`.
