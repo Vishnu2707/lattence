@@ -3,7 +3,7 @@
 Each line is one commit unit. Status values are `todo`, `doing`, `done`, and
 `blocked`. A task may start only when every dependency is done.
 
-[T-001] [v0.1] [GRAPH] implement project, node, edge, and graph models | deps: none | status: todo | commit:
+[T-001] [v0.1] [GRAPH] implement project, node, edge, and graph models | deps: none | status: done | commit: self
 [T-002] [v0.1] [EVID] implement finding, evidence, and replay models | deps: T-001 | status: todo | commit:
 [T-003] [v0.1] [DISCO] implement versioned YAML rule pack loader and validation | deps: T-001 | status: todo | commit:
 [T-004] [v0.1] [SHIP] create installable package and command scaffold | deps: T-001,T-002 | status: todo | commit:
