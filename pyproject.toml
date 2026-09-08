@@ -5,6 +5,7 @@ description = "AI security and post-quantum security assurance"
 requires-python = ">=3.12"
 license = { file = "LICENSE" }
 dependencies = [
+  "lattence-ai",
   "lattence-core",
   "lattence-crypto",
   "lattence-evidence",
@@ -40,6 +41,7 @@ members = [
 ]
 
 [tool.uv.sources]
+lattence-ai = { workspace = true }
 lattence-core = { workspace = true }
 lattence-crypto = { workspace = true }
 lattence-evidence = { workspace = true }

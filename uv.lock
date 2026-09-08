@@ -459,6 +459,7 @@ name = "lattence"
 version = "0.0.0"
 source = { editable = "." }
 dependencies = [
+    { name = "lattence-ai" },
     { name = "lattence-core" },
     { name = "lattence-crypto" },
     { name = "lattence-evidence" },
@@ -477,6 +478,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
+    { name = "lattence-ai", editable = "lattence-ai" },
     { name = "lattence-core", editable = "lattence-core" },
     { name = "lattence-crypto", editable = "lattence-crypto" },
     { name = "lattence-evidence", editable = "lattence-evidence" },
@@ -496,7 +498,19 @@ dev = [
 [[package]]
 name = "lattence-ai"
 version = "0.0.0"
-source = { virtual = "lattence-ai" }
+source = { editable = "lattence-ai" }
+dependencies = [
+    { name = "lattence-core" },
+    { name = "lattence-evidence" },
+    { name = "pydantic" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "lattence-core", editable = "lattence-core" },
+    { name = "lattence-evidence", editable = "lattence-evidence" },
+    { name = "pydantic", specifier = ">=2.11,<3" },
+]
 
 [[package]]
 name = "lattence-api"

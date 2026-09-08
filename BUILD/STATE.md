@@ -1,14 +1,14 @@
 # HANDOFF
 
-Begin T-024. Read `BUILD/agents/AISEC.md`, the AI security note, the finding and
-evidence contracts, and the rule pack contract first.
+Begin T-025. Read `BUILD/agents/AISEC.md`, the AI security note, and the rule
+pack contract first.
 
 ## Current state
 
 - Milestone: v0.1 foundation
 - Bootstrap: complete through step 8
-- Last completed: T-023, task commit
-- Next task: T-024, implement attack rule runner and observation result
+- Last completed: T-024, task commit
+- Next task: T-025, add direct and indirect prompt injection tests
 - Blockers: none
 - Manual steps: none
 
@@ -18,4 +18,4 @@ evidence contracts, and the rule pack contract first.
 - Remote: `origin/dev`
 - Contracts: frozen at version 1.0
 - Design: frozen at version 1.0
-- v0.1 tasks: 22 todo, 0 doing, 23 done, 0 blocked
+- v0.1 tasks: 21 todo, 0 doing, 24 done, 0 blocked
