@@ -491,7 +491,17 @@ requires-dist = [
 [[package]]
 name = "lattence-mcp"
 version = "0.0.0"
-source = { virtual = "lattence-mcp" }
+source = { editable = "lattence-mcp" }
+dependencies = [
+    { name = "lattence-core" },
+    { name = "pyyaml" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "lattence-core", editable = "lattence-core" },
+    { name = "pyyaml", specifier = ">=6.0,<7" },
+]
 
 [[package]]
 name = "lattence-packs"

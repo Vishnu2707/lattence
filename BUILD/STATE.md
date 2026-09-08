@@ -1,14 +1,14 @@
 # HANDOFF
 
-Begin T-012. Read `BUILD/agents/MCPX.md`, the discovery note, and the server and
-tool node contracts first. Discover server configuration and exposed tools.
+Begin T-013. Read `BUILD/agents/DISCO.md`, `BUILD/notes/discovery.md`, and the
+dataset and database contracts first. Detect RAG and vector data paths.
 
 ## Current state
 
 - Milestone: v0.1 foundation
 - Bootstrap: complete through step 8
-- Last completed: T-011, task commit
-- Next task: T-012, discover MCP server configuration and exposed tools
+- Last completed: T-012, task commit
+- Next task: T-013, detect RAG pipelines, datasets, and vector stores
 - Blockers: none
 - Manual steps: none
 
@@ -18,4 +18,4 @@ tool node contracts first. Discover server configuration and exposed tools.
 - Remote: `origin/dev`
 - Contracts: frozen at version 1.0
 - Design: frozen at version 1.0
-- v0.1 tasks: 34 todo, 0 doing, 11 done, 0 blocked
+- v0.1 tasks: 33 todo, 0 doing, 12 done, 0 blocked
