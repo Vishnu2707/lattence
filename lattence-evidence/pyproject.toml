@@ -2,6 +2,14 @@
 name = "lattence-evidence"
 version = "0.0.0"
 requires-python = ">=3.12"
+dependencies = ["lattence-core", "pydantic>=2.11,<3"]
 
-[tool.uv]
-package = false
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/lattence"]
+
+[tool.uv.sources]
+lattence-core = { workspace = true }

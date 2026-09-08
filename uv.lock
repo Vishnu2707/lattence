@@ -101,7 +101,17 @@ source = { virtual = "lattence-crypto" }
 [[package]]
 name = "lattence-evidence"
 version = "0.0.0"
-source = { virtual = "lattence-evidence" }
+source = { editable = "lattence-evidence" }
+dependencies = [
+    { name = "lattence-core" },
+    { name = "pydantic" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "lattence-core", editable = "lattence-core" },
+    { name = "pydantic", specifier = ">=2.11,<3" },
+]
 
 [[package]]
 name = "lattence-mcp"
