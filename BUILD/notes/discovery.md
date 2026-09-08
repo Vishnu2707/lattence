@@ -13,3 +13,8 @@ Public imports come from `lattence.discovery`. They include `RulePack`,
 and `load_rule_packs`.
 Inventory imports are `InventoryOptions`, `ProjectFile`, `SkippedFile`,
 `ProjectInventory`, `InventoryError`, and `inventory_project`.
+Python syntax parsing uses the standard AST without executing source. It records
+imports, call names, decorator names, assignment shapes, and source locations.
+Literal values are replaced with type markers. Public imports include
+`parse_python_source`, `parse_python_file`, `PythonSyntax`, and their record and
+error types.
