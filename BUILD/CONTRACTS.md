@@ -63,7 +63,7 @@ plus the fields below.
 `Node` is the discriminated union of all concrete nodes, using `type` as the
 discriminator. `NodeType` is the snake-case form of each concrete class name.
 
-## Security graph
+## Graph schema
 
 The graph is a directed multigraph. Nodes are the project model nodes. Parallel
 edges are allowed when distinct evidence supports the same relationship.
@@ -81,7 +81,7 @@ edges are allowed when distinct evidence supports the same relationship.
 `SecurityGraph` fields: `version: Literal["1"]`, `project_id: str`,
 `nodes: list[Node]`, `edges: list[Edge]`, `generated_at: datetime`.
 
-## Findings and evidence
+## Finding schema
 
 Finding identifiers match `^LT-[A-Z][A-Z0-9]*-[0-9]{3}$`. Domains include
 `AI`, `AGENT`, `MCP`, `CRYPTO`, `PQC`, and `POLICY`.
@@ -94,6 +94,8 @@ Finding identifiers match `^LT-[A-Z][A-Z0-9]*-[0-9]{3}$`. Domains include
 `evidence: EvidenceBundle`, `reproduction: ReproductionRecipe`,
 `remediation: str`, `status: Literal["open", "accepted", "fixed",
 "false_positive"] = "open"`.
+
+## Evidence bundle
 
 `EvidenceBundle` fields: `id: str`, `inputs: list[EvidenceInput]`,
 `transcript: list[TranscriptEntry]`, `telemetry_spans: list[TelemetrySpan]`,
@@ -118,7 +120,7 @@ Supporting models:
 - `ReproductionRecipe`: `command: list[str]`, `working_directory: str`,
   `environment_names: list[str] = []`, `expected: str`, `offline: bool = True`.
 
-## Provider interface
+## Plugin interface
 
 ```python
 class SecurityProvider:
@@ -136,7 +138,7 @@ class SecurityProvider:
 Providers do not decide severity, status, or policy outcome. Normalized findings
 are validated and passed to the policy engine.
 
-## Command line
+## CLI contract
 
 Commands: `scan [PATH]`, `attack [PATH]`, `harden [PATH]`, `verify FINDING_ID`,
 `report [INPUT]`, `tui [INPUT]`, `pqc assess [PATH]`,
@@ -154,7 +156,7 @@ Machine output goes to stdout. Logs go to stderr. Exit codes are 0 for clean,
 errors. Non-interactive output contains no terminal escape sequences.
 `attack` requires `lattence.targets.yaml` and refuses execution without it.
 
-## Rule packs
+## Rule pack format
 
 Rule packs are YAML documents validated by `docs/schemas/rule-pack.v1.json`.
 Each document has `version`, `id`, `kind`, `title`, `description`, `severity`,
@@ -163,7 +165,7 @@ Rules use declarative path, dependency, syntax, configuration, and graph
 predicates. A new deterministic detection or attack belongs in YAML when the
 schema can express it.
 
-## Reports
+## Report schema
 
 JSON reports validate against `docs/schemas/report.v1.json`. The top-level
 fields are `schema_version`, `tool`, `project`, `graph`, `findings`,
