@@ -45,7 +45,7 @@ Each line is one commit unit. Status values are `todo`, `doing`, `done`, and
 [T-040] [v0.1] [UX] create logo system and raster brand assets | deps: none | status: done | commit: self
 [T-041] [v0.1] [SHIP] build deliberately vulnerable reference application | deps: T-012,T-025,T-029,T-039 | status: done | commit: self
 [T-042] [v0.1] [UX] author deterministic scan demonstration tape and GIF | deps: T-038,T-040,T-041 | status: done | commit: self
-[T-043] [v0.1] [SHIP] write accurate README and responsible-use guidance | deps: T-039,T-040,T-041,T-042 | status: todo | commit:
+[T-043] [v0.1] [SHIP] write accurate README and responsible-use guidance | deps: T-039,T-040,T-041,T-042 | status: done | commit: self
 [T-044] [v0.1] [SHIP] enforce lint, strict types, coverage, schemas, provenance, and prose in CI | deps: T-036,T-039,T-043 | status: todo | commit:
 [T-045] [v0.1] [SHIP] pass clean-clone scan, attack, and HTML report acceptance | deps: T-041,T-042,T-043,T-044 | status: todo | commit:
 

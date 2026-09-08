@@ -28,3 +28,10 @@ T-038 added plain and color terminal scan summaries under the installed
 `lattence.cli.presentation` namespace. Plain output contains no terminal escape
 sequences and reports discovery counts, attack findings, crypto inventory, PQC
 readiness, graph relationships, output path, and elapsed time.
+
+T-043 added the root `README.md`. It documents only the commands that are
+wired today: `scan`, `attack`, `report`, `pqc assess`, and `graph export`.
+`harden`, `verify`, `tui`, `crypto chaos`, `provider enable`, `provider list`,
+and `policy check` stay scaffolds, so the README lists them under Roadmap
+instead of Quickstart. There is no PyPI release and no Docker image yet, so
+install instructions cover source and pipx-from-git only.
