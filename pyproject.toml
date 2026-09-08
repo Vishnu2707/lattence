@@ -2,14 +2,16 @@
 name = "lattence"
 version = "0.0.0"
 description = "AI security and post-quantum security assurance"
+readme = "README.md"
 requires-python = ">=3.12"
 license = { file = "LICENSE" }
 dependencies = [
-  "lattence-ai",
-  "lattence-core",
-  "lattence-crypto",
-  "lattence-evidence",
-  "lattence-mcp",
+  "cryptography>=45,<51",
+  "jsonschema>=4.23,<5",
+  "packaging>=24,<27",
+  "pathspec>=0.12,<1",
+  "pydantic>=2.11,<3",
+  "pyyaml>=6.0,<7",
   "rich>=14,<15",
   "typer>=0.16,<1",
 ]
@@ -54,6 +56,12 @@ lattence-mcp = { workspace = true }
 packages = ["lattence-cli/src/lattence"]
 
 [tool.hatch.build.targets.wheel.force-include]
+"lattence-core/src/lattence/discovery" = "lattence/discovery"
+"lattence-core/src/lattence/graph" = "lattence/graph"
+"lattence-evidence/src/lattence/evidence" = "lattence/evidence"
+"lattence-mcp/src/lattence/mcp" = "lattence/mcp"
+"lattence-ai/src/lattence_ai" = "lattence_ai"
+"lattence-crypto/src/lattence_crypto" = "lattence_crypto"
 "lattence-packs/attacks" = "lattence/packs/attacks"
 "lattence-packs/discovery" = "lattence/packs/discovery"
 "docs/schemas/report.v1.json" = "lattence/schemas/report.v1.json"

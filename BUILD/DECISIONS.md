@@ -25,3 +25,7 @@ Rationale: Scoped runs never loaded both names; package markers preserve predict
 2026-09-08 D-005
 Decision: CI coverage gate is set to 85 percent through `pytest-cov`, against a current total near 91 percent.
 Rationale: The threshold catches real regressions without pinning to the exact current number and breaking on small, legitimate drops.
+
+2026-09-08 D-006
+Decision: The wheel force-includes the source of every workspace package it needs, and root dependencies list real third-party libraries instead of the workspace package names.
+Rationale: A wheel built with the workspace names as dependencies cannot be installed outside the uv workspace, and was missing most of the runtime import surface.

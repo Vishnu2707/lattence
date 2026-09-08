@@ -45,3 +45,20 @@ The `test` job now runs with `pytest-cov` and a coverage gate configured in
 `pyproject.toml` (85 percent, current total is about 91 percent). The
 `provenance`, `prose`, and `lint` jobs, and the schema tests inside the full
 suite, were already wired and needed no change.
+
+T-045 found that the built wheel was missing every module outside
+`lattence.cli`: `lattence.discovery`, `lattence.graph`, `lattence.evidence`,
+`lattence.mcp`, `lattence_ai`, and `lattence_crypto` were absent, and the root
+`dependencies` list named the workspace-only packages `lattence-ai`,
+`lattence-core`, `lattence-crypto`, `lattence-evidence`, and `lattence-mcp` as
+if they were installable distributions. A pip install of the wheel outside
+the uv workspace failed to resolve those names, and even a forced install
+would have hit `ModuleNotFoundError` on `scan`. The fix force-includes the
+five packages' source into the wheel under their real import paths and
+replaces the root dependency list with the actual third-party libraries
+(`cryptography`, `jsonschema`, `packaging`, `pathspec`, `pydantic`, `pyyaml`,
+plus `rich` and `typer`). A standalone venv install of the rebuilt wheel now
+runs `scan`, `attack`, and `report` against `examples/vulnerable-agent` with
+no workspace and no source checkout present. CI gained an `acceptance` job
+that builds the wheel, installs it into a fresh venv, and runs that same
+sequence on every push.
