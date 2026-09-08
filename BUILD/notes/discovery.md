@@ -23,3 +23,8 @@ then records static module imports, CommonJS module loads, qualified call names,
 and source locations. It never executes source. Public imports include
 `parse_javascript_source`, `parse_javascript_file`, `JavaScriptSyntax`, and
 their record and error types.
+Dependency discovery reads standard Python project files, requirements files,
+and Node package manifests. It records ecosystem, name, specifier, dependency
+group, source path, and source line where available. It never installs or
+resolves packages. Public imports include `discover_dependency_manifests`,
+`DependencyInventory`, `Dependency`, and `DependencyManifestError`.

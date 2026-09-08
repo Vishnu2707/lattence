@@ -1,3 +1,9 @@
+from .dependencies import (
+    Dependency,
+    DependencyInventory,
+    DependencyManifestError,
+    discover_dependency_manifests,
+)
 from .inventory import (
     DEFAULT_EXCLUDED_DIRECTORIES,
     InventoryError,
@@ -33,6 +39,9 @@ __all__ = [
     "AssignmentRecord",
     "CallRecord",
     "DEFAULT_EXCLUDED_DIRECTORIES",
+    "Dependency",
+    "DependencyInventory",
+    "DependencyManifestError",
     "DecoratorRecord",
     "FindingTemplate",
     "ImportRecord",
@@ -52,6 +61,7 @@ __all__ = [
     "RuleTest",
     "SkippedFile",
     "SyntaxLocation",
+    "discover_dependency_manifests",
     "inventory_project",
     "load_rule_pack",
     "load_rule_packs",

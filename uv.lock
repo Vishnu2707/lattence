@@ -453,6 +453,7 @@ version = "0.0.0"
 source = { editable = "lattence-core" }
 dependencies = [
     { name = "jsonschema" },
+    { name = "packaging" },
     { name = "pathspec" },
     { name = "pydantic" },
     { name = "pyyaml" },
@@ -461,6 +462,7 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "jsonschema", specifier = ">=4.23,<5" },
+    { name = "packaging", specifier = ">=24,<27" },
     { name = "pathspec", specifier = ">=0.12,<1" },
     { name = "pydantic", specifier = ">=2.11,<3" },
     { name = "pyyaml", specifier = ">=6.0,<7" },

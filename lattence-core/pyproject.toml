@@ -4,6 +4,7 @@ version = "0.0.0"
 requires-python = ">=3.12"
 dependencies = [
   "jsonschema>=4.23,<5",
+  "packaging>=24,<27",
   "pathspec>=0.12,<1",
   "pydantic>=2.11,<3",
   "pyyaml>=6.0,<7",
