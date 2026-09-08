@@ -1,14 +1,14 @@
 # HANDOFF
 
-Begin T-016. Read `BUILD/agents/CRYPTO.md`, the discovery note, and the
-certificate and cryptographic algorithm contracts first.
+Begin T-017. Read `BUILD/agents/CRYPTO.md`, the crypto note, and the
+cryptographic algorithm contract first.
 
 ## Current state
 
 - Milestone: v0.1 foundation
 - Bootstrap: complete through step 8
-- Last completed: T-015, task commit
-- Next task: T-016, discover TLS settings, certificates, and key exchange
+- Last completed: T-016, task commit
+- Next task: T-017, discover cryptographic libraries and algorithms
 - Blockers: none
 - Manual steps: none
 
@@ -18,4 +18,4 @@ certificate and cryptographic algorithm contracts first.
 - Remote: `origin/dev`
 - Contracts: frozen at version 1.0
 - Design: frozen at version 1.0
-- v0.1 tasks: 30 todo, 0 doing, 15 done, 0 blocked
+- v0.1 tasks: 29 todo, 0 doing, 16 done, 0 blocked
