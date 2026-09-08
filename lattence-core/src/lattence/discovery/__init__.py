@@ -1,4 +1,5 @@
 from .agent_tools import AgentToolDiscovery, detect_agents_and_tools
+from .aggregate import DiscoveryError, DiscoveryResult, discover_project
 from .credentials import IdentityDiscovery, detect_identities
 from .data_paths import detect_data_paths
 from .dependencies import (
@@ -51,6 +52,8 @@ __all__ = [
     "DependencyInventory",
     "DependencyManifestError",
     "DecoratorRecord",
+    "DiscoveryError",
+    "DiscoveryResult",
     "FindingTemplate",
     "ImportRecord",
     "IdentityDiscovery",
@@ -73,6 +76,7 @@ __all__ = [
     "SyntaxLocation",
     "discover_dependency_manifests",
     "discover_infrastructure",
+    "discover_project",
     "detect_frameworks",
     "detect_identities",
     "detect_agents_and_tools",

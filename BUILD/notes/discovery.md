@@ -57,3 +57,7 @@ Infrastructure discovery identifies container build and composition files,
 cluster workload manifests, infrastructure definitions, and CI workflows. It
 emits source-located application and external service nodes. The public entry
 point is `discover_infrastructure`.
+Aggregate discovery inventories and parses a project once, applies all core
+detectors, accepts nodes from separate feature packages, and rejects conflicting
+node identifiers. It returns a source-located project with nodes sorted by id.
+The public entry point is `discover_project`.
