@@ -7,7 +7,7 @@ Each line is one commit unit. Status values are `todo`, `doing`, `done`, and
 [T-002] [v0.1] [EVID] implement finding, evidence, and replay models | deps: T-001 | status: done | commit: self
 [T-003] [v0.1] [DISCO] implement versioned YAML rule pack loader and validation | deps: T-001 | status: done | commit: self
 [T-004] [v0.1] [SHIP] create installable package and command scaffold | deps: T-001,T-002 | status: done | commit: self
-[T-005] [v0.1] [DISCO] inventory project files with ignore and size controls | deps: T-001 | status: todo | commit:
+[T-005] [v0.1] [DISCO] inventory project files with ignore and size controls | deps: T-001 | status: done | commit: self
 [T-006] [v0.1] [DISCO] parse Python imports, calls, decorators, and assignments | deps: T-005 | status: todo | commit:
 [T-007] [v0.1] [DISCO] parse JavaScript and TypeScript imports and calls | deps: T-005 | status: todo | commit:
 [T-008] [v0.1] [DISCO] discover Python and Node dependency manifests | deps: T-005 | status: todo | commit:
