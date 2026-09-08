@@ -1,1 +1,1 @@
-Co-Authored-By|Generated with|Assisted by|Claude|Anthropic|OpenAI|GPT|Codex|Copilot|Gemini|AI-generated|as an AI
+Co-Authored-By|Generated with|Assisted by|(^|[^.])\bClaude\b|\bAnthropic\b|\bOpenAI\b|\bGPT\b|\bCodex\b|\bCopilot\b|\bGemini\b|AI-generated|as an AI
