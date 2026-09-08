@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lattence.dev/schemas/rule-pack.v1.json",
+  "title": "Lattence rule pack v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "id",
+    "kind",
+    "title",
+    "description",
+    "severity",
+    "confidence",
+    "applies_to",
+    "match",
+    "finding"
+  ],
+  "properties": {
+    "version": { "const": "1" },
+    "id": { "type": "string", "pattern": "^LT-[A-Z][A-Z0-9]*-[0-9]{3}$" },
+    "kind": { "enum": ["detection", "attack", "policy"] },
+    "title": { "type": "string", "minLength": 1 },
+    "description": { "type": "string", "minLength": 1 },
+    "severity": { "enum": ["critical", "high", "medium", "low", "info"] },
+    "confidence": { "enum": ["high", "medium", "low"] },
+    "applies_to": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "type": "string" }
+    },
+    "match": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "paths": { "type": "array", "items": { "type": "string" } },
+        "dependencies": { "type": "array", "items": { "type": "string" } },
+        "syntax": { "type": "array", "items": { "type": "string" } },
+        "config": { "type": "object" },
+        "graph": { "type": "object" }
+      }
+    },
+    "finding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["message", "remediation"],
+      "properties": {
+        "message": { "type": "string", "minLength": 1 },
+        "remediation": { "type": "string", "minLength": 1 },
+        "owasp_llm": { "type": "array", "items": { "type": "string" } },
+        "owasp_agentic": { "type": "array", "items": { "type": "string" } },
+        "cwe": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "tests": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "fixture", "expect_match"],
+        "properties": {
+          "name": { "type": "string" },
+          "fixture": { "type": "string" },
+          "expect_match": { "type": "boolean" }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://lattence.dev/schemas/report.v1.json",
+  "title": "Lattence report v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "tool", "project", "graph", "findings", "generated_at", "summary"],
+  "properties": {
+    "schema_version": { "const": "1" },
+    "tool": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "version"],
+      "properties": {
+        "name": { "const": "lattence" },
+        "version": { "type": "string" }
+      }
+    },
+    "project": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "root", "version", "scanned_at", "nodes", "metadata"],
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "root": { "type": "string" },
+        "version": { "const": "1" },
+        "scanned_at": { "type": "string", "format": "date-time" },
+        "source_revision": { "type": ["string", "null"] },
+        "nodes": { "type": "array", "items": { "$ref": "#/$defs/node" } },
+        "metadata": { "type": "object" }
+      }
+    },
+    "graph": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "project_id", "nodes", "edges", "generated_at"],
+      "properties": {
+        "version": { "const": "1" },
+        "project_id": { "type": "string" },
+        "nodes": { "type": "array", "items": { "$ref": "#/$defs/node" } },
+        "edges": { "type": "array", "items": { "$ref": "#/$defs/edge" } },
+        "generated_at": { "type": "string", "format": "date-time" }
+      }
+    },
+    "findings": { "type": "array", "items": { "$ref": "#/$defs/finding" } },
+    "generated_at": { "type": "string", "format": "date-time" },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["total", "critical", "high", "medium", "low", "info", "pqc_readiness"],
+      "properties": {
+        "total": { "type": "integer", "minimum": 0 },
+        "critical": { "type": "integer", "minimum": 0 },
+        "high": { "type": "integer", "minimum": 0 },
+        "medium": { "type": "integer", "minimum": 0 },
+        "low": { "type": "integer", "minimum": 0 },
+        "info": { "type": "integer", "minimum": 0 },
+        "pqc_readiness": { "type": "number", "minimum": 0, "maximum": 100 }
+      }
+    }
+  },
+  "$defs": {
+    "node": {
+      "type": "object",
+      "required": ["id", "type", "name", "tags", "metadata"],
+      "properties": {
+        "id": { "type": "string" },
+        "type": {
+          "enum": ["application", "agent", "model", "tool", "mcp_server", "api", "database", "secret", "identity", "certificate", "crypto_algorithm", "external_service", "dataset"]
+        },
+        "name": { "type": "string" },
+        "source": { "type": ["object", "null"] },
+        "tags": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+        "metadata": { "type": "object" }
+      }
+    },
+    "edge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "source_id", "target_id", "type", "trust_level", "evidence_refs", "metadata"],
+      "properties": {
+        "id": { "type": "string" },
+        "source_id": { "type": "string" },
+        "target_id": { "type": "string" },
+        "type": { "enum": ["calls", "accesses", "trusts", "authenticated_by", "protected_by", "key_exchange", "contains", "delegates_to"] },
+        "permission": { "type": ["string", "null"] },
+        "auth_method": { "type": ["string", "null"] },
+        "transport": { "type": ["string", "null"] },
+        "algorithm": { "type": ["string", "null"] },
+        "trust_level": { "enum": ["untrusted", "low", "medium", "high", "system", "unknown"] },
+        "evidence_refs": { "type": "array", "items": { "type": "string" } },
+        "metadata": { "type": "object" }
+      }
+    },
+    "finding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "source", "severity", "confidence", "owasp_llm", "owasp_agentic", "cwe", "target_node_id", "evidence", "reproduction", "remediation", "status"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^LT-[A-Z][A-Z0-9]*-[0-9]{3}$" },
+        "title": { "type": "string" },
+        "source": { "type": "string" },
+        "severity": { "enum": ["critical", "high", "medium", "low", "info"] },
+        "confidence": { "enum": ["high", "medium", "low"] },
+        "owasp_llm": { "type": "array", "items": { "type": "string" } },
+        "owasp_agentic": { "type": "array", "items": { "type": "string" } },
+        "cwe": { "type": "array", "items": { "type": "string" } },
+        "target_node_id": { "type": "string" },
+        "evidence": { "type": "object" },
+        "reproduction": { "type": "object" },
+        "remediation": { "type": "string" },
+        "status": { "enum": ["open", "accepted", "fixed", "false_positive"] }
+      }
+    }
+  }
+}
