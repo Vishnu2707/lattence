@@ -19,6 +19,7 @@ from .nodes import (
     Tool,
 )
 from .schema import Edge, EdgeType, Project, SecurityGraph, TrustLevel
+from .serialization import security_graph_json, write_security_graph
 from .traversal import GraphPath, find_attack_paths, reachable_nodes
 
 __all__ = [
@@ -51,4 +52,6 @@ __all__ = [
     "build_security_graph",
     "find_attack_paths",
     "reachable_nodes",
+    "security_graph_json",
+    "write_security_graph",
 ]
