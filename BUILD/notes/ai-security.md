@@ -26,3 +26,5 @@ unclassified retrieved context. Both rules include positive and negative
 fixtures.
 T-031 added LT-AGENT-003 for delegation trust boundaries and LT-AGENT-004 for
 persistent memory poisoning. Both rules include positive and negative fixtures.
+T-032 added LT-AI-009 for denial and resource exhaustion boundaries. The rule
+has positive and negative application fixtures.
