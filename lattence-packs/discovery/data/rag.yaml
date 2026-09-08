@@ -1,0 +1,13 @@
+version: "1"
+id: LT-AI-305
+kind: detection
+title: RAG Pipeline
+description: Detects retrieval and embedding data operations.
+severity: info
+confidence: medium
+applies_to: [dataset]
+match:
+  syntax: ["call:*retrieve*", "call:*embed*", "call:*similarity_search"]
+finding:
+  message: Retrieval data path detected.
+  remediation: Review ingestion provenance and context trust boundaries.

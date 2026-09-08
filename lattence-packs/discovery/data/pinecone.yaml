@@ -1,0 +1,14 @@
+version: "1"
+id: LT-AI-301
+kind: detection
+title: Pinecone
+description: Detects Pinecone vector stores and data operations.
+severity: info
+confidence: high
+applies_to: [database, dataset]
+match:
+  dependencies: [pinecone, pinecone-client]
+  syntax: ["import:pinecone*", "call:*upsert", "call:*query"]
+finding:
+  message: Pinecone vector data path detected.
+  remediation: Review data trust and retrieval boundaries.

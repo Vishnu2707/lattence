@@ -1,4 +1,5 @@
 from .agent_tools import AgentToolDiscovery, detect_agents_and_tools
+from .data_paths import detect_data_paths
 from .dependencies import (
     Dependency,
     DependencyInventory,
@@ -68,6 +69,7 @@ __all__ = [
     "discover_dependency_manifests",
     "detect_frameworks",
     "detect_agents_and_tools",
+    "detect_data_paths",
     "detect_models",
     "inventory_project",
     "load_rule_pack",

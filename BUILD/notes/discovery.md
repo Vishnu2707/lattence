@@ -41,3 +41,7 @@ tool registration calls. It infers read, write, delete, and execute permissions
 from declared names, marks side effects, and links same-file tools and models to
 agents. Delegation and memory calls set explicit agent flags. Public imports are
 `detect_agents_and_tools` and `AgentToolDiscovery`.
+Data path detection applies YAML rules to dependency, import, and call records.
+It emits vector database nodes and source-located dataset nodes for retrieval,
+embedding, indexing, and query operations. It covers four vector stores and a
+generic RAG pipeline. The public entry point is `detect_data_paths`.

@@ -1,0 +1,14 @@
+version: "1"
+id: LT-AI-303
+kind: detection
+title: Chroma
+description: Detects Chroma vector stores and data operations.
+severity: info
+confidence: high
+applies_to: [database, dataset]
+match:
+  dependencies: [chromadb]
+  syntax: ["import:chromadb*", "call:*add", "call:*query"]
+finding:
+  message: Chroma vector data path detected.
+  remediation: Review data trust and retrieval boundaries.
