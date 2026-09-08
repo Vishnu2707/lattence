@@ -36,7 +36,7 @@ Each line is one commit unit. Status values are `todo`, `doing`, `done`, and
 [T-031] [v0.1] [AISEC] add insecure delegation and memory poisoning tests | deps: T-024,T-011 | status: done | commit: self
 [T-032] [v0.1] [AISEC] add denial, resource exhaustion, and boundary tests | deps: T-024 | status: done | commit: self
 [T-033] [v0.1] [AISEC] assemble 15-test native attack catalog | deps: T-025,T-026,T-027,T-028,T-029,T-030,T-031,T-032 | status: done | commit: self
-[T-034] [v0.1] [CRYPTO] classify quantum-vulnerable and post-quantum algorithms | deps: T-016,T-017,T-020 | status: todo | commit:
+[T-034] [v0.1] [CRYPTO] classify quantum-vulnerable and post-quantum algorithms | deps: T-016,T-017,T-020 | status: done | commit: self
 [T-035] [v0.1] [CRYPTO] calculate deterministic PQC readiness percentage | deps: T-034 | status: todo | commit:
 [T-036] [v0.1] [EVID] normalize findings and write schema-valid JSON reports | deps: T-002,T-022,T-033,T-035 | status: todo | commit:
 [T-037] [v0.1] [EVID] render self-contained dense HTML reports | deps: T-036 | status: todo | commit:

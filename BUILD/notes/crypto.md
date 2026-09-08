@@ -10,3 +10,8 @@ runtime dependency of the root command distribution.
 T-017 added dependency-based cryptographic library discovery and deterministic
 source matching for encryption, signature, public-key, and hash algorithms.
 Key sizes are retained when they occur near the algorithm declaration.
+
+T-034 added deterministic post-quantum classification. Public-key and classical
+key-exchange algorithms are vulnerable, named post-quantum and strong symmetric
+algorithms are safe, mixed constructions are hybrid, and unmatched algorithms
+remain unknown.
