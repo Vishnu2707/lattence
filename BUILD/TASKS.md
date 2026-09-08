@@ -42,7 +42,7 @@ Each line is one commit unit. Status values are `todo`, `doing`, `done`, and
 [T-037] [v0.1] [EVID] render self-contained dense HTML reports | deps: T-036 | status: done | commit: self
 [T-038] [v0.1] [UX] implement terminal scan summary and plain output modes | deps: T-004,T-019,T-021,T-035,T-036 | status: done | commit: self
 [T-039] [v0.1] [SHIP] wire scan, attack, PQC, graph, and report commands | deps: T-022,T-023,T-033,T-035,T-037,T-038 | status: done | commit: self
-[T-040] [v0.1] [UX] create logo system and raster brand assets | deps: none | status: todo | commit:
+[T-040] [v0.1] [UX] create logo system and raster brand assets | deps: none | status: done | commit: self
 [T-041] [v0.1] [SHIP] build deliberately vulnerable reference application | deps: T-012,T-025,T-029,T-039 | status: todo | commit:
 [T-042] [v0.1] [UX] author deterministic scan demonstration tape and GIF | deps: T-038,T-040,T-041 | status: todo | commit:
 [T-043] [v0.1] [SHIP] write accurate README and responsible-use guidance | deps: T-039,T-040,T-041,T-042 | status: todo | commit:

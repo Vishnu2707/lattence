@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 640" role="img" aria-label="Lattence social card">
+  <rect width="1280" height="640" fill="#0B0D10"/>
+  <g transform="translate(128 176) scale(12)" fill="none" stroke="#4C8DFF" stroke-width="2" stroke-linecap="square">
+    <path d="M3 3H21M3 9H21M3 15H21M3 21H9M3 3V21M9 3V9M15 3V21M21 3V21"/>
+  </g>
+  <text x="480" y="300" fill="#E6E9EE" font-family="ui-monospace,monospace" font-size="72" letter-spacing="8">lattence</text>
+  <text x="484" y="360" fill="#8A94A6" font-family="system-ui,sans-serif" font-size="24">AI security + PQC security assurance</text>
+</svg>

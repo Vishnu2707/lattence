@@ -1,14 +1,14 @@
 # HANDOFF
 
-Begin T-040. Read `BUILD/agents/UX.md`, the CLI note, and the logo section of
-the design system first.
+Begin T-041. Read `BUILD/agents/SHIP.md`, the CLI, MCP, and AI security notes,
+and the v0.1 acceptance criteria first.
 
 ## Current state
 
 - Milestone: v0.1 foundation
 - Bootstrap: complete through step 8
-- Last completed: T-039, task commit
-- Next task: T-040, create logo system and raster brand assets
+- Last completed: T-040, task commit
+- Next task: T-041, build deliberately vulnerable reference application
 - Blockers: none
 - Manual steps: none
 
@@ -18,4 +18,4 @@ the design system first.
 - Remote: `origin/dev`
 - Contracts: frozen at version 1.0
 - Design: frozen at version 1.0
-- v0.1 tasks: 6 todo, 0 doing, 39 done, 0 blocked
+- v0.1 tasks: 5 todo, 0 doing, 40 done, 0 blocked
