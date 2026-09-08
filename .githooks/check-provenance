@@ -4,12 +4,59 @@ set -eu
 root=$(git rev-parse --show-toplevel)
 pattern=$(cat "$root/.githooks/provenance-pattern.txt")
 
+is_excluded() {
+  case "$1" in
+    .githooks/provenance-pattern.txt | \
+      .git/* | */.git/* | \
+      .venv/* | */.venv/* | \
+      node_modules/* | */node_modules/* | \
+      BUILD/logs/* | \
+      build/* | */build/* | \
+      dist/* | */dist/* | \
+      site/* | */site/* | \
+      htmlcov/* | */htmlcov/* | \
+      coverage/* | */coverage/* | \
+      out/* | */out/* | \
+      target/* | */target/* | \
+      .next/* | */.next/* | \
+      .nox/* | */.nox/* | \
+      .tox/* | */.tox/*)
+      return 0
+      ;;
+  esac
+  return 1
+}
+
+scan_tree() {
+  revision=$1
+  git grep -nI -E "$pattern" "$revision" -- . \
+    ':(exclude,top,literal).githooks/provenance-pattern.txt' \
+    ':(exclude,glob)**/.git/**' \
+    ':(exclude,glob)**/.venv/**' \
+    ':(exclude,glob)**/node_modules/**' \
+    ':(exclude,top,glob)BUILD/logs/**' \
+    ':(exclude,glob)**/build/**' \
+    ':(exclude,glob)**/dist/**' \
+    ':(exclude,glob)**/site/**' \
+    ':(exclude,glob)**/htmlcov/**' \
+    ':(exclude,glob)**/coverage/**' \
+    ':(exclude,glob)**/out/**' \
+    ':(exclude,glob)**/target/**' \
+    ':(exclude,glob)**/.next/**' \
+    ':(exclude,glob)**/.nox/**' \
+    ':(exclude,glob)**/.tox/**'
+}
+
 if [ "${1:-}" = "--all" ]; then
   failed=0
-  if git grep -nI -E "$pattern" -- . \
-    ':(exclude).githooks/provenance-pattern.txt'; then
+  if scan_tree --cached; then
     failed=1
   fi
+  for revision in $(git rev-list --all); do
+    if scan_tree "$revision"; then
+      failed=1
+    fi
+  done
   if git log --format='%an%n%ae%n%s%n%b' | grep -Ein "$pattern"; then
     failed=1
   fi
@@ -29,7 +76,7 @@ fi
 
 git diff --cached --name-only --diff-filter=ACMR |
 while IFS= read -r file; do
-  [ "$file" = ".githooks/provenance-pattern.txt" ] && continue
+  is_excluded "$file" && continue
   if git show ":$file" 2>/dev/null | grep -Ein "$pattern"; then
     echo "provenance check failed: $file" >&2
     exit 1
