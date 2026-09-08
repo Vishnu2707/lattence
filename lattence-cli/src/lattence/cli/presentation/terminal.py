@@ -38,7 +38,7 @@ def _plain_summary(
     lines.extend(("", "AI ATTACK SURFACE"))
     if report.findings:
         lines.extend(
-            _row(finding.title, finding.severity.upper())
+            _row(finding.title, finding.severity.upper(), width=28)
             for finding in report.findings[:5]
         )
     else:
