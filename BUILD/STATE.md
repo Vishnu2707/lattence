@@ -1,14 +1,14 @@
 # HANDOFF
 
-Begin T-035. Read `BUILD/agents/CRYPTO.md`, the crypto note, and the
-cryptographic algorithm contract first.
+Begin T-036. Read `BUILD/agents/EVID.md`, the evidence note, and the finding,
+evidence bundle, and report contracts first.
 
 ## Current state
 
 - Milestone: v0.1 foundation
 - Bootstrap: complete through step 8
-- Last completed: T-034, task commit
-- Next task: T-035, calculate deterministic PQC readiness percentage
+- Last completed: T-035, task commit
+- Next task: T-036, normalize findings and write schema-valid JSON reports
 - Blockers: none
 - Manual steps: none
 
@@ -18,4 +18,4 @@ cryptographic algorithm contract first.
 - Remote: `origin/dev`
 - Contracts: frozen at version 1.0
 - Design: frozen at version 1.0
-- v0.1 tasks: 11 todo, 0 doing, 34 done, 0 blocked
+- v0.1 tasks: 10 todo, 0 doing, 35 done, 0 blocked

@@ -15,3 +15,7 @@ T-034 added deterministic post-quantum classification. Public-key and classical
 key-exchange algorithms are vulnerable, named post-quantum and strong symmetric
 algorithms are safe, mixed constructions are hybrid, and unmatched algorithms
 remain unknown.
+T-035 added a deterministic readiness summary. Safe algorithms receive full
+credit, hybrid algorithms receive half credit, and vulnerable or unknown
+algorithms receive none. The result rounds half points up and returns zero when
+the inventory is empty.
