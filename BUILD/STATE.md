@@ -1,14 +1,14 @@
 # HANDOFF
 
-Begin T-017. Read `BUILD/agents/CRYPTO.md`, the crypto note, and the
-cryptographic algorithm contract first.
+Begin T-018. Read `BUILD/agents/DISCO.md`, the discovery note, and the project
+model contract first.
 
 ## Current state
 
 - Milestone: v0.1 foundation
 - Bootstrap: complete through step 8
-- Last completed: T-016, task commit
-- Next task: T-017, discover cryptographic libraries and algorithms
+- Last completed: T-017, task commit
+- Next task: T-018, discover container, cluster, infrastructure, and CI config
 - Blockers: none
 - Manual steps: none
 
@@ -18,4 +18,4 @@ cryptographic algorithm contract first.
 - Remote: `origin/dev`
 - Contracts: frozen at version 1.0
 - Design: frozen at version 1.0
-- v0.1 tasks: 29 todo, 0 doing, 16 done, 0 blocked
+- v0.1 tasks: 28 todo, 0 doing, 17 done, 0 blocked
