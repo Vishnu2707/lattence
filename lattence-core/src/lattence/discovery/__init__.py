@@ -7,6 +7,14 @@ from .inventory import (
     SkippedFile,
     inventory_project,
 )
+from .javascript_syntax import (
+    JavaScriptCall,
+    JavaScriptImport,
+    JavaScriptSyntax,
+    JavaScriptSyntaxError,
+    parse_javascript_file,
+    parse_javascript_source,
+)
 from .models import FindingTemplate, MatchSpec, RulePack, RuleTest
 from .python_syntax import (
     AssignmentRecord,
@@ -30,6 +38,10 @@ __all__ = [
     "ImportRecord",
     "InventoryError",
     "InventoryOptions",
+    "JavaScriptCall",
+    "JavaScriptImport",
+    "JavaScriptSyntax",
+    "JavaScriptSyntaxError",
     "MatchSpec",
     "ProjectFile",
     "ProjectInventory",
@@ -45,4 +57,6 @@ __all__ = [
     "load_rule_packs",
     "parse_python_file",
     "parse_python_source",
+    "parse_javascript_file",
+    "parse_javascript_source",
 ]

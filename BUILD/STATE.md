@@ -1,14 +1,14 @@
 # HANDOFF
 
-Begin T-007. Read `BUILD/agents/DISCO.md` and `BUILD/notes/discovery.md` first.
-Add deterministic JavaScript and TypeScript import and call parsing.
+Begin T-008. Read `BUILD/agents/DISCO.md` and `BUILD/notes/discovery.md` first.
+Discover Python and Node dependency manifests without installing packages.
 
 ## Current state
 
 - Milestone: v0.1 foundation
 - Bootstrap: complete through step 8
-- Last completed: T-006, task commit
-- Next task: T-007, parse JavaScript and TypeScript imports and calls
+- Last completed: T-007, task commit
+- Next task: T-008, discover Python and Node dependency manifests
 - Blockers: none
 - Manual steps: none
 
@@ -18,4 +18,4 @@ Add deterministic JavaScript and TypeScript import and call parsing.
 - Remote: `origin/dev`
 - Contracts: frozen at version 1.0
 - Design: frozen at version 1.0
-- v0.1 tasks: 39 todo, 0 doing, 6 done, 0 blocked
+- v0.1 tasks: 38 todo, 0 doing, 7 done, 0 blocked

@@ -18,3 +18,8 @@ imports, call names, decorator names, assignment shapes, and source locations.
 Literal values are replaced with type markers. Public imports include
 `parse_python_source`, `parse_python_file`, `PythonSyntax`, and their record and
 error types.
+JavaScript and TypeScript syntax parsing masks comments and literal content,
+then records static module imports, CommonJS module loads, qualified call names,
+and source locations. It never executes source. Public imports include
+`parse_javascript_source`, `parse_javascript_file`, `JavaScriptSyntax`, and
+their record and error types.
