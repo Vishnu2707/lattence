@@ -1,0 +1,14 @@
+version: "1"
+id: LT-AI-206
+kind: detection
+title: Ollama
+description: Detects local Ollama model clients.
+severity: info
+confidence: high
+applies_to: [model]
+match:
+  dependencies: [ollama]
+  syntax: ["import:ollama*", "call:*chat", "call:*generate"]
+finding:
+  message: Local model client detected.
+  remediation: Review model access and local service boundaries.

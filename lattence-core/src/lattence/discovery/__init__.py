@@ -23,6 +23,7 @@ from .javascript_syntax import (
     parse_javascript_source,
 )
 from .models import FindingTemplate, MatchSpec, RulePack, RuleTest
+from .providers import detect_models
 from .python_syntax import (
     AssignmentRecord,
     CallRecord,
@@ -64,6 +65,7 @@ __all__ = [
     "SyntaxLocation",
     "discover_dependency_manifests",
     "detect_frameworks",
+    "detect_models",
     "inventory_project",
     "load_rule_pack",
     "load_rule_packs",

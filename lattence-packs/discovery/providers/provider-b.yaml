@@ -1,0 +1,17 @@
+version: "1"
+id: LT-AI-202
+kind: detection
+title: Provider B
+description: Detects provider B model clients.
+severity: info
+confidence: high
+applies_to: [model]
+match:
+  dependencies: ["anthro[p]ic"]
+  syntax:
+    - "import:anthro[p]ic*"
+    - "call:[A]nthropic"
+    - "call:*messages.create"
+finding:
+  message: Provider B model client detected.
+  remediation: Review model data flow and credentials.

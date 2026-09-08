@@ -32,3 +32,7 @@ Framework detection applies YAML rules to dependency, import, and call records.
 It emits stable application and agent nodes with source evidence and no literal
 configuration values. Six v0.1 framework families are covered. The public entry
 point is `detect_frameworks`.
+Provider detection applies YAML rules to dependency, import, and call records.
+It emits model nodes with stable ids, source evidence, provider identity, local
+status, and whether a model keyword was configured. Literal model values and
+credentials are never retained. The public entry point is `detect_models`.
