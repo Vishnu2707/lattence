@@ -1,0 +1,14 @@
+version: "1"
+id: LT-AI-403
+kind: detection
+title: Next.js
+description: Detects Next.js applications and API handlers.
+severity: info
+confidence: high
+applies_to: [api]
+match:
+  dependencies: [next]
+  syntax: ["import:next*", "call:*NextResponse*"]
+finding:
+  message: Next.js API surface detected.
+  remediation: Review handler authentication and input boundaries.

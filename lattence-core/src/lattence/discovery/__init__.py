@@ -38,6 +38,7 @@ from .python_syntax import (
     parse_python_source,
 )
 from .rules import RulePackError, load_rule_pack, load_rule_packs
+from .services import detect_services
 
 __all__ = [
     "AgentToolDiscovery",
@@ -71,6 +72,7 @@ __all__ = [
     "detect_agents_and_tools",
     "detect_data_paths",
     "detect_models",
+    "detect_services",
     "inventory_project",
     "load_rule_pack",
     "load_rule_packs",

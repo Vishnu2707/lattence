@@ -1,0 +1,14 @@
+version: "1"
+id: LT-AI-406
+kind: detection
+title: External HTTP
+description: Detects outbound HTTP client operations.
+severity: info
+confidence: medium
+applies_to: [external_service]
+match:
+  dependencies: [httpx, requests, axios]
+  syntax: ["call:*request", "call:*get", "call:*post"]
+finding:
+  message: External HTTP operation detected.
+  remediation: Review destination trust, authentication, and data flow.

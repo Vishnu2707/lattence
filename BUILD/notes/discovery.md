@@ -45,3 +45,7 @@ Data path detection applies YAML rules to dependency, import, and call records.
 It emits vector database nodes and source-located dataset nodes for retrieval,
 embedding, indexing, and query operations. It covers four vector stores and a
 generic RAG pipeline. The public entry point is `detect_data_paths`.
+Service detection applies YAML rules to dependency, import, and call records.
+It emits API, database, cache, and source-located external service nodes without
+retaining destination values. It covers three web service families, PostgreSQL,
+Redis, and common HTTP clients. The public entry point is `detect_services`.
