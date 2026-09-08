@@ -44,6 +44,9 @@ __all__ = [
     "TranscriptEntry",
     "build_report",
     "normalize_rule_finding",
+    "render_html_report",
     "report_json",
     "write_json_report",
+    "write_html_report",
 ]
+from .html_report import render_html_report, write_html_report

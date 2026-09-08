@@ -6,7 +6,9 @@ from lattence.evidence import (
     Report,
     build_report,
     normalize_rule_finding,
+    render_html_report,
     report_json,
+    write_html_report,
     write_json_report,
 )
 from lattence.graph import Agent, Project, SecurityGraph
@@ -65,3 +67,19 @@ def test_writes_valid_json_report(tmp_path: Path) -> None:
     write_json_report(_report(), destination, SCHEMA)
 
     assert destination.read_text(encoding="utf-8").endswith("\n")
+
+
+def test_html_report_is_self_contained_and_escapes_content(tmp_path: Path) -> None:
+    report = _report().model_copy(
+        update={"project": _report().project.model_copy(update={"name": "<script>"})}
+    )
+    destination = tmp_path / "report.html"
+
+    write_html_report(report, destination)
+    rendered = render_html_report(report)
+
+    assert rendered.startswith("<!doctype html>")
+    assert "<script>" not in rendered
+    assert "&lt;script&gt;" in rendered
+    assert "https://" not in rendered
+    assert destination.read_text(encoding="utf-8") == rendered

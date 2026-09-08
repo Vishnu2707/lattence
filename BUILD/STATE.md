@@ -1,14 +1,14 @@
 # HANDOFF
 
-Begin T-037. Read `BUILD/agents/EVID.md`, the evidence note, and the report
-contract first.
+Begin T-038. Read `BUILD/agents/UX.md`, the CLI note, the evidence note, and the
+terminal section of the design system first.
 
 ## Current state
 
 - Milestone: v0.1 foundation
 - Bootstrap: complete through step 8
-- Last completed: T-036, task commit
-- Next task: T-037, render self-contained dense HTML reports
+- Last completed: T-037, task commit
+- Next task: T-038, implement terminal scan summary and plain output modes
 - Blockers: none
 - Manual steps: none
 
@@ -18,4 +18,4 @@ contract first.
 - Remote: `origin/dev`
 - Contracts: frozen at version 1.0
 - Design: frozen at version 1.0
-- v0.1 tasks: 9 todo, 0 doing, 36 done, 0 blocked
+- v0.1 tasks: 8 todo, 0 doing, 37 done, 0 blocked
