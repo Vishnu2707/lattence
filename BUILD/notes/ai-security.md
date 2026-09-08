@@ -16,3 +16,5 @@ delegated instruction-priority boundaries. Both rules include positive and
 negative fixtures.
 T-027 added LT-AI-005 for side-effecting output paths and LT-AI-006 for exposed
 secret values. Both rules include positive and negative fixtures.
+T-028 added LT-AGENT-001 for delegation agency and LT-AGENT-002 for tools with
+delete permission. Both rules include positive and negative fixtures.

@@ -1,0 +1,19 @@
+version: "1"
+id: LT-AGENT-002
+kind: attack
+title: Unsafe tool use
+description: Test tools that grant delete permission to an agent.
+severity: critical
+confidence: high
+applies_to: [tool]
+match:
+  graph:
+    field: permissions
+    contains: delete
+finding:
+  message: The tool exposes delete permission to an agent workflow.
+  remediation: Remove delete permission or require explicit approval per action.
+  owasp_llm: [LLM06]
+  owasp_agentic: [ASI02, ASI03]
+  cwe: [CWE-250]
+tests: []

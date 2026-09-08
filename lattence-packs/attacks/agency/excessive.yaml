@@ -1,0 +1,18 @@
+version: "1"
+id: LT-AGENT-001
+kind: attack
+title: Excessive agency
+description: Test agents that can delegate without a recorded boundary.
+severity: high
+confidence: high
+applies_to: [agent]
+match:
+  graph:
+    field: delegation_enabled
+    equals: true
+finding:
+  message: The agent can delegate actions to another execution context.
+  remediation: Restrict delegation and require policy checks for each handoff.
+  owasp_llm: [LLM06]
+  owasp_agentic: [ASI03, ASI08]
+tests: []
