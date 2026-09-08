@@ -1,14 +1,14 @@
 # HANDOFF
 
-Begin T-026. Read `BUILD/agents/AISEC.md`, the AI security note, and the rule
+Begin T-027. Read `BUILD/agents/AISEC.md`, the AI security note, and the rule
 pack contract first.
 
 ## Current state
 
 - Milestone: v0.1 foundation
 - Bootstrap: complete through step 8
-- Last completed: T-025, task commit
-- Next task: T-026, add system instruction extraction and override tests
+- Last completed: T-026, task commit
+- Next task: T-027, add unsafe output handling and data disclosure tests
 - Blockers: none
 - Manual steps: none
 
@@ -18,4 +18,4 @@ pack contract first.
 - Remote: `origin/dev`
 - Contracts: frozen at version 1.0
 - Design: frozen at version 1.0
-- v0.1 tasks: 20 todo, 0 doing, 25 done, 0 blocked
+- v0.1 tasks: 19 todo, 0 doing, 26 done, 0 blocked
