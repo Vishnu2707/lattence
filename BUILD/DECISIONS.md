@@ -14,3 +14,6 @@ Rationale: Installed wheels validate offline, while a test prevents schema drift
 2026-09-08 D-003
 Decision: The root project builds the public package from `lattence-cli/src`.
 Rationale: One distribution owns the binary while workspace libraries stay separate.
+## 2026-09-08, T-038, installed presentation namespace
+Decision: Place terminal presentation code under `lattence.cli.presentation`.
+Consequence: The frozen `lattence` namespace remains importable from the wheel.

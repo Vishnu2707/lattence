@@ -13,3 +13,8 @@ find a version 1 declaration, an `owned-or-authorized` acknowledgement, and an
 explicit project-root target. Invalid declarations fail without echoing file
 content. Project paths cannot escape the root and URL targets cannot embed
 credentials.
+
+T-038 added plain and color terminal scan summaries under the installed
+`lattence.cli.presentation` namespace. Plain output contains no terminal escape
+sequences and reports discovery counts, attack findings, crypto inventory, PQC
+readiness, graph relationships, output path, and elapsed time.

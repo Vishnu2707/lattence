@@ -9,6 +9,7 @@ dependencies = [
   "lattence-core",
   "lattence-crypto",
   "lattence-evidence",
+  "rich>=14,<15",
   "typer>=0.16,<1",
 ]
 
