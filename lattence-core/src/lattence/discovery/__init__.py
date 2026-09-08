@@ -1,3 +1,4 @@
+from .agent_tools import AgentToolDiscovery, detect_agents_and_tools
 from .dependencies import (
     Dependency,
     DependencyInventory,
@@ -38,6 +39,7 @@ from .python_syntax import (
 from .rules import RulePackError, load_rule_pack, load_rule_packs
 
 __all__ = [
+    "AgentToolDiscovery",
     "AssignmentRecord",
     "CallRecord",
     "DEFAULT_EXCLUDED_DIRECTORIES",
@@ -65,6 +67,7 @@ __all__ = [
     "SyntaxLocation",
     "discover_dependency_manifests",
     "detect_frameworks",
+    "detect_agents_and_tools",
     "detect_models",
     "inventory_project",
     "load_rule_pack",

@@ -36,3 +36,8 @@ Provider detection applies YAML rules to dependency, import, and call records.
 It emits model nodes with stable ids, source evidence, provider identity, local
 status, and whether a model keyword was configured. Literal model values and
 credentials are never retained. The public entry point is `detect_models`.
+Agent and tool detection recognizes agent constructors, tool decorators, and
+tool registration calls. It infers read, write, delete, and execute permissions
+from declared names, marks side effects, and links same-file tools and models to
+agents. Delegation and memory calls set explicit agent flags. Public imports are
+`detect_agents_and_tools` and `AgentToolDiscovery`.

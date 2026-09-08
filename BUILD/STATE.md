@@ -1,14 +1,14 @@
 # HANDOFF
 
-Begin T-011. Read `BUILD/agents/DISCO.md`, `BUILD/notes/discovery.md`, and the
-agent and tool node contracts first. Detect permissions and delegation.
+Begin T-012. Read `BUILD/agents/MCPX.md`, the discovery note, and the server and
+tool node contracts first. Discover server configuration and exposed tools.
 
 ## Current state
 
 - Milestone: v0.1 foundation
 - Bootstrap: complete through step 8
-- Last completed: T-010, task commit
-- Next task: T-011, detect agents, tools, permissions, and delegation
+- Last completed: T-011, task commit
+- Next task: T-012, discover MCP server configuration and exposed tools
 - Blockers: none
 - Manual steps: none
 
@@ -18,4 +18,4 @@ agent and tool node contracts first. Detect permissions and delegation.
 - Remote: `origin/dev`
 - Contracts: frozen at version 1.0
 - Design: frozen at version 1.0
-- v0.1 tasks: 35 todo, 0 doing, 10 done, 0 blocked
+- v0.1 tasks: 34 todo, 0 doing, 11 done, 0 blocked
