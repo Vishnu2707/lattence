@@ -8,6 +8,7 @@ from .dependencies import (
     discover_dependency_manifests,
 )
 from .frameworks import detect_frameworks
+from .infrastructure import InfrastructureDiscovery, discover_infrastructure
 from .inventory import (
     DEFAULT_EXCLUDED_DIRECTORIES,
     InventoryError,
@@ -53,6 +54,7 @@ __all__ = [
     "FindingTemplate",
     "ImportRecord",
     "IdentityDiscovery",
+    "InfrastructureDiscovery",
     "InventoryError",
     "InventoryOptions",
     "JavaScriptCall",
@@ -70,6 +72,7 @@ __all__ = [
     "SkippedFile",
     "SyntaxLocation",
     "discover_dependency_manifests",
+    "discover_infrastructure",
     "detect_frameworks",
     "detect_identities",
     "detect_agents_and_tools",

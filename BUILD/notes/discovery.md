@@ -53,3 +53,7 @@ Credential discovery records environment and assignment names that indicate
 secrets, but never stores their values. It also identifies OAuth and JWT usage
 from imports and calls, then emits source-located identity nodes. Public imports
 are `detect_identities` and `IdentityDiscovery`.
+Infrastructure discovery identifies container build and composition files,
+cluster workload manifests, infrastructure definitions, and CI workflows. It
+emits source-located application and external service nodes. The public entry
+point is `discover_infrastructure`.
