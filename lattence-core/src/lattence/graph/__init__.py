@@ -1,4 +1,5 @@
 from .common import JsonValue, NodeId, SourceRef, UtcDateTime
+from .construction import build_security_graph
 from .nodes import (
     API,
     Agent,
@@ -45,4 +46,5 @@ __all__ = [
     "Tool",
     "TrustLevel",
     "UtcDateTime",
+    "build_security_graph",
 ]

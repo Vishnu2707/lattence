@@ -9,3 +9,8 @@ valid when their identifiers differ.
 Public imports come from `lattence.graph`. They include every concrete node,
 `Node`, `NodeType`, `NodeId`, `SourceRef`, `Edge`, `EdgeType`, `TrustLevel`,
 `Project`, `SecurityGraph`, `JsonValue`, and `UtcDateTime`.
+
+T-020 added deterministic graph construction. It links application ownership,
+agent calls, server tools, data access, credentials, and cryptographic
+protection from explicit identifiers and shared source evidence. Duplicate edge
+candidates collapse by stable edge id.
