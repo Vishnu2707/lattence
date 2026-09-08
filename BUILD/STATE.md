@@ -1,14 +1,14 @@
 # HANDOFF
 
-Begin T-033. Read `BUILD/agents/AISEC.md`, the AI security note, and the rule
-pack contract first.
+Begin T-034. Read `BUILD/agents/CRYPTO.md`, the crypto note, and the
+cryptographic algorithm contract first.
 
 ## Current state
 
 - Milestone: v0.1 foundation
 - Bootstrap: complete through step 8
-- Last completed: T-032, task commit
-- Next task: T-033, assemble 15-test native attack catalog
+- Last completed: T-033, task commit
+- Next task: T-034, classify quantum-vulnerable and post-quantum algorithms
 - Blockers: none
 - Manual steps: none
 
@@ -18,4 +18,4 @@ pack contract first.
 - Remote: `origin/dev`
 - Contracts: frozen at version 1.0
 - Design: frozen at version 1.0
-- v0.1 tasks: 13 todo, 0 doing, 32 done, 0 blocked
+- v0.1 tasks: 12 todo, 0 doing, 33 done, 0 blocked
