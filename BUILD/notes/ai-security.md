@@ -24,3 +24,5 @@ positive and negative fixtures.
 T-030 added LT-AI-007 for vector-store poisoning paths and LT-AI-008 for
 unclassified retrieved context. Both rules include positive and negative
 fixtures.
+T-031 added LT-AGENT-003 for delegation trust boundaries and LT-AGENT-004 for
+persistent memory poisoning. Both rules include positive and negative fixtures.
