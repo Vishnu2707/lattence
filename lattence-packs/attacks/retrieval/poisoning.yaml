@@ -1,0 +1,18 @@
+version: "1"
+id: LT-AI-007
+kind: attack
+title: Retrieval corpus poisoning
+description: Test vector stores that can introduce retrieved instructions.
+severity: high
+confidence: medium
+applies_to: [database]
+match:
+  graph:
+    field: metadata.vector_store
+    equals: true
+finding:
+  message: A vector store can propagate poisoned content into agent context.
+  remediation: Authenticate ingestion, record provenance, and validate retrieved text.
+  owasp_llm: [LLM03]
+  owasp_agentic: [ASI06]
+tests: []

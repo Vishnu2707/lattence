@@ -32,7 +32,7 @@ Each line is one commit unit. Status values are `todo`, `doing`, `done`, and
 [T-027] [v0.1] [AISEC] add unsafe output handling and data disclosure tests | deps: T-024 | status: done | commit: self
 [T-028] [v0.1] [AISEC] add excessive agency and unsafe tool use tests | deps: T-024 | status: done | commit: self
 [T-029] [v0.1] [AISEC] add tool argument injection and confused deputy tests | deps: T-024,T-012 | status: done | commit: self
-[T-030] [v0.1] [AISEC] add RAG poisoning and untrusted context tests | deps: T-024,T-013 | status: todo | commit:
+[T-030] [v0.1] [AISEC] add RAG poisoning and untrusted context tests | deps: T-024,T-013 | status: done | commit: self
 [T-031] [v0.1] [AISEC] add insecure delegation and memory poisoning tests | deps: T-024,T-011 | status: todo | commit:
 [T-032] [v0.1] [AISEC] add denial, resource exhaustion, and boundary tests | deps: T-024 | status: todo | commit:
 [T-033] [v0.1] [AISEC] assemble 15-test native attack catalog | deps: T-025,T-026,T-027,T-028,T-029,T-030,T-031,T-032 | status: todo | commit:

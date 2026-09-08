@@ -21,3 +21,6 @@ delete permission. Both rules include positive and negative fixtures.
 T-029 added LT-MCP-001 for tools without input schemas and LT-MCP-002 for
 credentialed tool servers crossing trust boundaries. Both rules include
 positive and negative fixtures.
+T-030 added LT-AI-007 for vector-store poisoning paths and LT-AI-008 for
+unclassified retrieved context. Both rules include positive and negative
+fixtures.
