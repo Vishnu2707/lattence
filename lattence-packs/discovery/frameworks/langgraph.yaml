@@ -1,0 +1,16 @@
+version: "1"
+id: LT-AI-102
+kind: detection
+title: LangGraph
+description: Detects LangGraph applications and state graphs.
+severity: info
+confidence: high
+applies_to: [application, agent]
+match:
+  dependencies: [langgraph]
+  syntax:
+    - "import:langgraph*"
+    - "agent-call:*StateGraph"
+finding:
+  message: LangGraph application surface detected.
+  remediation: Review graph nodes, transitions, and tool boundaries.

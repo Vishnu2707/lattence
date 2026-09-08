@@ -11,7 +11,7 @@ Each line is one commit unit. Status values are `todo`, `doing`, `done`, and
 [T-006] [v0.1] [DISCO] parse Python imports, calls, decorators, and assignments | deps: T-005 | status: done | commit: self
 [T-007] [v0.1] [DISCO] parse JavaScript and TypeScript imports and calls | deps: T-005 | status: done | commit: self
 [T-008] [v0.1] [DISCO] discover Python and Node dependency manifests | deps: T-005 | status: done | commit: self
-[T-009] [v0.1] [DISCO] detect agent framework applications and definitions | deps: T-003,T-006,T-007,T-008 | status: todo | commit:
+[T-009] [v0.1] [DISCO] detect agent framework applications and definitions | deps: T-003,T-006,T-007,T-008 | status: done | commit: self
 [T-010] [v0.1] [DISCO] detect model provider clients and model configuration | deps: T-003,T-006,T-007,T-008 | status: todo | commit:
 [T-011] [v0.1] [DISCO] detect agents, tools, permissions, and delegation | deps: T-009,T-010 | status: todo | commit:
 [T-012] [v0.1] [MCPX] discover MCP server configuration and exposed tools | deps: T-001,T-005 | status: todo | commit:

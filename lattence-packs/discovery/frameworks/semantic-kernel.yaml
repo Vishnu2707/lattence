@@ -1,0 +1,16 @@
+version: "1"
+id: LT-AI-105
+kind: detection
+title: Semantic Kernel
+description: Detects Semantic Kernel applications and kernel definitions.
+severity: info
+confidence: high
+applies_to: [application, agent]
+match:
+  dependencies: [semantic-kernel]
+  syntax:
+    - "import:semantic_kernel*"
+    - "agent-call:*Kernel"
+finding:
+  message: Semantic Kernel application surface detected.
+  remediation: Review kernel plugins, filters, and execution boundaries.

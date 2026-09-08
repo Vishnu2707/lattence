@@ -4,6 +4,7 @@ from .dependencies import (
     DependencyManifestError,
     discover_dependency_manifests,
 )
+from .frameworks import detect_frameworks
 from .inventory import (
     DEFAULT_EXCLUDED_DIRECTORIES,
     InventoryError,
@@ -62,6 +63,7 @@ __all__ = [
     "SkippedFile",
     "SyntaxLocation",
     "discover_dependency_manifests",
+    "detect_frameworks",
     "inventory_project",
     "load_rule_pack",
     "load_rule_packs",

@@ -28,3 +28,7 @@ and Node package manifests. It records ecosystem, name, specifier, dependency
 group, source path, and source line where available. It never installs or
 resolves packages. Public imports include `discover_dependency_manifests`,
 `DependencyInventory`, `Dependency`, and `DependencyManifestError`.
+Framework detection applies YAML rules to dependency, import, and call records.
+It emits stable application and agent nodes with source evidence and no literal
+configuration values. Six v0.1 framework families are covered. The public entry
+point is `detect_frameworks`.
