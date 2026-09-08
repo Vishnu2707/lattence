@@ -21,3 +21,7 @@ Consequence: The frozen `lattence` namespace remains importable from the wheel.
 2026-09-08 D-004
 Decision: Duplicate bare test module names broke full-suite collection, so every test directory is now a package.
 Rationale: Scoped runs never loaded both names; package markers preserve predictable dotted imports as the tree grows.
+
+2026-09-08 D-005
+Decision: CI coverage gate is set to 85 percent through `pytest-cov`, against a current total near 91 percent.
+Rationale: The threshold catches real regressions without pinning to the exact current number and breaking on small, legitimate drops.

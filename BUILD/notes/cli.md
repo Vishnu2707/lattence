@@ -35,3 +35,13 @@ wired today: `scan`, `attack`, `report`, `pqc assess`, and `graph export`.
 and `policy check` stay scaffolds, so the README lists them under Roadmap
 instead of Quickstart. There is no PyPI release and no Docker image yet, so
 install instructions cover source and pipx-from-git only.
+
+T-044 added a `types` CI job that runs `mypy --strict` against every
+implemented package (`lattence-cli`, discovery, graph, `lattence-crypto`,
+`lattence-evidence`, `lattence-mcp`, and the AI attack runner), matching the
+per-role verification commands already used locally. `lattence-crypto/chaos`
+and `lattence-ai/planner` are not part of v0.1 and stay out of the matrix.
+The `test` job now runs with `pytest-cov` and a coverage gate configured in
+`pyproject.toml` (85 percent, current total is about 91 percent). The
+`provenance`, `prose`, and `lint` jobs, and the schema tests inside the full
+suite, were already wired and needed no change.
