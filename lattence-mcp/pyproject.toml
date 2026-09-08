@@ -1,0 +1,15 @@
+[project]
+name = "lattence-mcp"
+version = "0.0.0"
+requires-python = ">=3.12"
+dependencies = ["lattence-core", "pyyaml>=6.0,<7"]
+
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/lattence"]
+
+[tool.uv.sources]
+lattence-core = { workspace = true }

@@ -1,0 +1,16 @@
+version: "1"
+id: LT-AI-104
+kind: detection
+title: AutoGen
+description: Detects AutoGen applications and assistant agents.
+severity: info
+confidence: high
+applies_to: [application, agent]
+match:
+  dependencies: [autogen-agentchat]
+  syntax:
+    - "import:autogen*"
+    - "agent-call:*AssistantAgent"
+finding:
+  message: AutoGen application surface detected.
+  remediation: Review agent conversations and executable capabilities.

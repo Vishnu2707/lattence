@@ -1,0 +1,19 @@
+version: "1"
+id: LT-MCP-001
+kind: attack
+title: Tool argument injection
+description: Test tool calls that do not declare an input schema.
+severity: high
+confidence: high
+applies_to: [tool]
+match:
+  graph:
+    field: input_schema
+    equals: {}
+finding:
+  message: The tool accepts arguments without a declared schema.
+  remediation: Define a closed input schema and validate every argument.
+  owasp_llm: [LLM05]
+  owasp_agentic: [ASI02]
+  cwe: [CWE-20]
+tests: []

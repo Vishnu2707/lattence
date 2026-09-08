@@ -1,0 +1,19 @@
+version: "1"
+id: LT-AI-009
+kind: attack
+title: Resource exhaustion boundary
+description: Test applications without declared resource limits for agent work.
+severity: medium
+confidence: medium
+applies_to: [application]
+match:
+  graph:
+    field: metadata.resource_limits
+    exists: false
+finding:
+  message: The application has no discovered resource exhaustion boundary.
+  remediation: Set request, token, tool-call, concurrency, and time limits.
+  owasp_llm: [LLM10]
+  owasp_agentic: [ASI10]
+  cwe: [CWE-400]
+tests: []

@@ -1,0 +1,18 @@
+version: "1"
+id: LT-AI-004
+kind: attack
+title: System instruction override
+description: Test instruction priority across agents that can delegate work.
+severity: high
+confidence: medium
+applies_to: [agent]
+match:
+  graph:
+    field: delegation_enabled
+    equals: true
+finding:
+  message: Delegation introduces another instruction priority boundary.
+  remediation: Enforce instruction priority and reject delegated overrides.
+  owasp_llm: [LLM01]
+  owasp_agentic: [ASI01, ASI08]
+tests: []

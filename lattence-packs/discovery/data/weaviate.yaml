@@ -1,0 +1,14 @@
+version: "1"
+id: LT-AI-302
+kind: detection
+title: Weaviate
+description: Detects Weaviate vector stores and data operations.
+severity: info
+confidence: high
+applies_to: [database, dataset]
+match:
+  dependencies: [weaviate-client, weaviate-ts-client]
+  syntax: ["import:weaviate*", "call:*insert", "call:*query*"]
+finding:
+  message: Weaviate vector data path detected.
+  remediation: Review data trust and retrieval boundaries.

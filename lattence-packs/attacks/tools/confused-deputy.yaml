@@ -1,0 +1,19 @@
+version: "1"
+id: LT-MCP-002
+kind: attack
+title: Confused deputy
+description: Test credentialed tool servers acting across a trust boundary.
+severity: high
+confidence: medium
+applies_to: [mcp_server]
+match:
+  graph:
+    field: auth_method
+    equals: configured
+finding:
+  message: A credentialed tool server can act as a privileged deputy.
+  remediation: Bind caller identity and authorization to each tool operation.
+  owasp_llm: [LLM06]
+  owasp_agentic: [ASI02, ASI04]
+  cwe: [CWE-441]
+tests: []

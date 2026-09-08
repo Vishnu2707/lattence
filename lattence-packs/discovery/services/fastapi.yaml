@@ -1,0 +1,14 @@
+version: "1"
+id: LT-AI-401
+kind: detection
+title: FastAPI
+description: Detects FastAPI services and route operations.
+severity: info
+confidence: high
+applies_to: [api]
+match:
+  dependencies: [fastapi]
+  syntax: ["import:fastapi*", "call:*get", "call:*post"]
+finding:
+  message: FastAPI service surface detected.
+  remediation: Review route authentication and input boundaries.

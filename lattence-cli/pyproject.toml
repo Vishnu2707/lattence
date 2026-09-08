@@ -1,0 +1,2 @@
+[tool.lattence]
+source = "src/lattence/cli"

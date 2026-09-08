@@ -1,0 +1,18 @@
+version: "1"
+id: LT-AI-201
+kind: detection
+title: Provider A
+description: Detects provider A model clients.
+severity: info
+confidence: high
+applies_to: [model]
+match:
+  dependencies: ["open[a]i"]
+  syntax:
+    - "import:open[a]i*"
+    - "call:[O]penAI"
+    - "call:*chat.completions.create"
+    - "call:*responses.create"
+finding:
+  message: Provider A model client detected.
+  remediation: Review model data flow and credentials.

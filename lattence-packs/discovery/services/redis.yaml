@@ -1,0 +1,14 @@
+version: "1"
+id: LT-AI-405
+kind: detection
+title: Redis
+description: Detects Redis cache and data clients.
+severity: info
+confidence: high
+applies_to: [database]
+match:
+  dependencies: [redis, ioredis]
+  syntax: ["import:redis*", "import:ioredis*"]
+finding:
+  message: Redis data service detected.
+  remediation: Review cache identity and data exposure.

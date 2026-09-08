@@ -1,0 +1,16 @@
+version: "1"
+id: LT-AI-101
+kind: detection
+title: LangChain
+description: Detects LangChain applications and agent executors.
+severity: info
+confidence: high
+applies_to: [application, agent]
+match:
+  dependencies: [langchain]
+  syntax:
+    - "import:langchain*"
+    - "agent-call:*AgentExecutor"
+finding:
+  message: LangChain application surface detected.
+  remediation: Review the discovered application and agent boundaries.

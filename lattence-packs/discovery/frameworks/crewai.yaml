@@ -1,0 +1,16 @@
+version: "1"
+id: LT-AI-103
+kind: detection
+title: CrewAI
+description: Detects CrewAI applications and agent definitions.
+severity: info
+confidence: high
+applies_to: [application, agent]
+match:
+  dependencies: [crewai]
+  syntax:
+    - "import:crewai*"
+    - "agent-call:*Agent"
+finding:
+  message: CrewAI application surface detected.
+  remediation: Review agent roles, delegation, and tool permissions.

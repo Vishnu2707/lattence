@@ -1,0 +1,18 @@
+version: "1"
+id: LT-AI-003
+kind: attack
+title: System instruction extraction
+description: Test agents whose system instructions have a discoverable source.
+severity: medium
+confidence: medium
+applies_to: [agent]
+match:
+  graph:
+    field: instructions_source
+    exists: true
+finding:
+  message: System instructions are available to extraction probes.
+  remediation: Treat system instructions as policy, not as a secret boundary.
+  owasp_llm: [LLM07]
+  owasp_agentic: [ASI01]
+tests: []

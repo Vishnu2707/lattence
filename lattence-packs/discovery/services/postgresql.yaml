@@ -1,0 +1,14 @@
+version: "1"
+id: LT-AI-404
+kind: detection
+title: PostgreSQL
+description: Detects PostgreSQL database clients.
+severity: info
+confidence: high
+applies_to: [database]
+match:
+  dependencies: [psycopg, psycopg2, asyncpg, pg]
+  syntax: ["import:psycopg*", "import:asyncpg*", "call:*connect"]
+finding:
+  message: PostgreSQL data service detected.
+  remediation: Review query boundaries and database identity.

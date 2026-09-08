@@ -1,0 +1,18 @@
+version: "1"
+id: LT-AGENT-004
+kind: attack
+title: Memory poisoning
+description: Test agents that persist context across interactions.
+severity: high
+confidence: medium
+applies_to: [agent]
+match:
+  graph:
+    field: memory_enabled
+    equals: true
+finding:
+  message: Persistent memory can retain hostile or untrusted context.
+  remediation: Validate writes, preserve provenance, and expire untrusted memory.
+  owasp_llm: [LLM04]
+  owasp_agentic: [ASI06]
+tests: []

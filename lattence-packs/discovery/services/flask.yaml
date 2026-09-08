@@ -1,0 +1,14 @@
+version: "1"
+id: LT-AI-402
+kind: detection
+title: Flask
+description: Detects Flask services and route operations.
+severity: info
+confidence: high
+applies_to: [api]
+match:
+  dependencies: [flask]
+  syntax: ["import:flask*", "call:*route"]
+finding:
+  message: Flask service surface detected.
+  remediation: Review route authentication and input boundaries.

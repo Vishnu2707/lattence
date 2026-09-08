@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" role="img" aria-label="Lattence mark">
+  <rect width="24" height="24" fill="#0B0D10"/>
+  <g fill="none" stroke="#4C8DFF" stroke-width="2" stroke-linecap="square">
+    <path d="M3 3H21M3 9H21M3 15H21M3 21H9M3 3V21M9 3V9M15 3V21M21 3V21"/>
+  </g>
+</svg>

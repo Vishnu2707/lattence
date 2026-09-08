@@ -1,0 +1,19 @@
+version: "1"
+id: LT-AI-006
+kind: attack
+title: Sensitive data disclosure
+description: Test whether a discovered secret contains an exposed value.
+severity: critical
+confidence: high
+applies_to: [secret]
+match:
+  graph:
+    field: exposed_value
+    equals: true
+finding:
+  message: A secret value is exposed in the application surface.
+  remediation: Remove the value, rotate the secret, and use an external store.
+  owasp_llm: [LLM02]
+  owasp_agentic: [ASI07]
+  cwe: [CWE-200]
+tests: []

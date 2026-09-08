@@ -1,0 +1,14 @@
+version: "1"
+id: LT-AI-204
+kind: detection
+title: Cohere
+description: Detects Cohere model clients.
+severity: info
+confidence: high
+applies_to: [model]
+match:
+  dependencies: [cohere]
+  syntax: ["import:cohere*", "call:*Client"]
+finding:
+  message: Cohere model client detected.
+  remediation: Review model data flow and credentials.

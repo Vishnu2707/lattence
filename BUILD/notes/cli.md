@@ -1,0 +1,64 @@
+# CLI module
+
+The root project builds the `lattence` distribution from `lattence-cli/src` and
+installs the `lattence` binary. The command tree exposes all frozen v1 commands
+and their seven common options. Commands are scaffolds that return internal
+error code 3 until their owning implementation tasks wire behavior.
+
+Public entry points are `lattence.cli:app`, `lattence.cli:main`, and
+`python -m lattence.cli`. The current package version is `0.0.0`.
+
+T-023 added strict loading for `lattence.targets.yaml`. Attack execution must
+find a version 1 declaration, an `owned-or-authorized` acknowledgement, and an
+explicit project-root target. Invalid declarations fail without echoing file
+content. Project paths cannot escape the root and URL targets cannot embed
+credentials.
+
+T-039 wired scan, attack, PQC assessment, graph export, and report commands to
+one offline workflow. The root wheel includes discovery rules, attack rules,
+and the report schema. Scan writes JSON and HTML, attack enforces the owned
+target declaration, and machine modes write only structured data to stdout.
+
+T-041 added `examples/vulnerable-agent`, an offline fixture with agent
+delegation, persistent memory, unclassified retrieval, a destructive local
+tool, a credentialed MCP tool, and classical cryptography. CLI tests scan and
+attack it without importing or executing its declared dependencies.
+
+T-038 added plain and color terminal scan summaries under the installed
+`lattence.cli.presentation` namespace. Plain output contains no terminal escape
+sequences and reports discovery counts, attack findings, crypto inventory, PQC
+readiness, graph relationships, output path, and elapsed time.
+
+T-043 added the root `README.md`. It documents only the commands that are
+wired today: `scan`, `attack`, `report`, `pqc assess`, and `graph export`.
+`harden`, `verify`, `tui`, `crypto chaos`, `provider enable`, `provider list`,
+and `policy check` stay scaffolds, so the README lists them under Roadmap
+instead of Quickstart. There is no PyPI release and no Docker image yet, so
+install instructions cover source and pipx-from-git only.
+
+T-044 added a `types` CI job that runs `mypy --strict` against every
+implemented package (`lattence-cli`, discovery, graph, `lattence-crypto`,
+`lattence-evidence`, `lattence-mcp`, and the AI attack runner), matching the
+per-role verification commands already used locally. `lattence-crypto/chaos`
+and `lattence-ai/planner` are not part of v0.1 and stay out of the matrix.
+The `test` job now runs with `pytest-cov` and a coverage gate configured in
+`pyproject.toml` (85 percent, current total is about 91 percent). The
+`provenance`, `prose`, and `lint` jobs, and the schema tests inside the full
+suite, were already wired and needed no change.
+
+T-045 found that the built wheel was missing every module outside
+`lattence.cli`: `lattence.discovery`, `lattence.graph`, `lattence.evidence`,
+`lattence.mcp`, `lattence_ai`, and `lattence_crypto` were absent, and the root
+`dependencies` list named the workspace-only packages `lattence-ai`,
+`lattence-core`, `lattence-crypto`, `lattence-evidence`, and `lattence-mcp` as
+if they were installable distributions. A pip install of the wheel outside
+the uv workspace failed to resolve those names, and even a forced install
+would have hit `ModuleNotFoundError` on `scan`. The fix force-includes the
+five packages' source into the wheel under their real import paths and
+replaces the root dependency list with the actual third-party libraries
+(`cryptography`, `jsonschema`, `packaging`, `pathspec`, `pydantic`, `pyyaml`,
+plus `rich` and `typer`). A standalone venv install of the rebuilt wheel now
+runs `scan`, `attack`, and `report` against `examples/vulnerable-agent` with
+no workspace and no source checkout present. CI gained an `acceptance` job
+that builds the wheel, installs it into a fresh venv, and runs that same
+sequence on every push.

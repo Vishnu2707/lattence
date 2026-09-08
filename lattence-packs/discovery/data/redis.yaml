@@ -1,0 +1,14 @@
+version: "1"
+id: LT-AI-304
+kind: detection
+title: Redis Vector
+description: Detects Redis vector stores and search operations.
+severity: info
+confidence: high
+applies_to: [database, dataset]
+match:
+  dependencies: [redis, redisvl]
+  syntax: ["import:redis*", "call:*search", "call:*query"]
+finding:
+  message: Redis vector data path detected.
+  remediation: Review data trust and retrieval boundaries.

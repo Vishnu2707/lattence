@@ -1,0 +1,14 @@
+version: "1"
+id: LT-AI-205
+kind: detection
+title: Mistral
+description: Detects Mistral model clients.
+severity: info
+confidence: high
+applies_to: [model]
+match:
+  dependencies: [mistralai]
+  syntax: ["import:mistralai*", "call:*Mistral"]
+finding:
+  message: Mistral model client detected.
+  remediation: Review model data flow and credentials.

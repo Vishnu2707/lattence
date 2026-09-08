@@ -1,0 +1,18 @@
+version: "1"
+id: LT-AI-008
+kind: attack
+title: Untrusted retrieved context
+description: Test datasets whose trust sensitivity remains unknown.
+severity: high
+confidence: medium
+applies_to: [dataset]
+match:
+  graph:
+    field: sensitivity
+    equals: unknown
+finding:
+  message: Retrieved context enters the workflow without a trust classification.
+  remediation: Assign trust and sensitivity before context reaches an agent.
+  owasp_llm: [LLM03]
+  owasp_agentic: [ASI06]
+tests: []

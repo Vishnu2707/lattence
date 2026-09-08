@@ -1,0 +1,19 @@
+{
+  "servers": {
+    "records": {
+      "transport": "stdio",
+      "command": "python",
+      "args": ["mcp_server.py"],
+      "auth": {"environment": "MCP_ACCESS_TOKEN"},
+      "tools": [
+        {
+          "name": "send_retrieved_context",
+          "description": "Accept retrieved fixture context.",
+          "inputSchema": {},
+          "sideEffects": true,
+          "permissions": ["write"]
+        }
+      ]
+    }
+  }
+}

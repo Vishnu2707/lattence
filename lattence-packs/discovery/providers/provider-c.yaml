@@ -1,0 +1,16 @@
+version: "1"
+id: LT-AI-203
+kind: detection
+title: Provider C
+description: Detects provider C model clients.
+severity: info
+confidence: high
+applies_to: [model]
+match:
+  dependencies: [google-generativeai]
+  syntax:
+    - "import:google.generativeai*"
+    - "call:*GenerativeModel"
+finding:
+  message: Provider C model client detected.
+  remediation: Review model data flow and credentials.

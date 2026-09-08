@@ -1,0 +1,14 @@
+.DS_Store
+.coverage
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.venv/
+BUILD/logs/
+__pycache__/
+*.egg-info/
+*.py[cod]
+coverage.xml
+dist/
+htmlcov/
+node_modules/

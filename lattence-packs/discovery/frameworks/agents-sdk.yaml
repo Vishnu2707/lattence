@@ -1,0 +1,16 @@
+version: "1"
+id: LT-AI-106
+kind: detection
+title: Agents SDK
+description: Detects applications built with the Agents SDK.
+severity: info
+confidence: medium
+applies_to: [application, agent]
+match:
+  dependencies: [agents]
+  syntax:
+    - "import:agents*"
+    - "agent-call:*Agent"
+finding:
+  message: Agents SDK application surface detected.
+  remediation: Review agent handoffs, tools, and guardrail boundaries.
