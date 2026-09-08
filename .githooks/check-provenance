@@ -29,7 +29,12 @@ is_excluded() {
 
 scan_tree() {
   revision=$1
-  git grep -nI -E "$pattern" "$revision" -- . \
+  if [ "$revision" = "--cached" ]; then
+    set -- git grep --cached -nI -E "$pattern"
+  else
+    set -- git grep -nI -E "$pattern" "$revision"
+  fi
+  "$@" -- . \
     ':(exclude,top,literal).githooks/provenance-pattern.txt' \
     ':(exclude,glob)**/.git/**' \
     ':(exclude,glob)**/.venv/**' \
