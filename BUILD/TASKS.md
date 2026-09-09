@@ -54,3 +54,60 @@ Each line is one commit unit. Status values are `todo`, `doing`, `done`, and
 After T-045, run the full suite, create the annotated `v0.1` tag on `dev`, open
 the milestone pull request to `main`, merge with a merge commit, then fast-forward
 `dev` to `main`.
+
+v0.1.0 shipped 2026-09-08. `dev` and `main` are both at the release commit.
+
+# v0.2 task ledger
+
+v0.2 closes CLI-contract gaps left by v0.1's scaffolded commands, favoring
+tasks whose behavior `BUILD/CONTRACTS.md` and `BUILD/DESIGN.md` already
+specify precisely, over inventing product behavior for commands the
+contracts name but do not describe (see "Deferred" below).
+
+[T-046] [v0.2] [SHIP] wire the --fail-on severity gate to scan and attack exit codes | deps: none | status: done | commit: self
+[T-047] [v0.2] [AISEC] implement deterministic single-finding replay verification | deps: T-024 | status: todo | commit:
+[T-048] [v0.2] [SHIP] wire the verify command to replay verification | deps: T-047 | status: todo | commit:
+
+## T-047 design note
+
+`AttackRunner.observe(test)` in `lattence-ai/src/lattence_ai/attacks/runner.py`
+is already a pure function of `(rule_id, target_node_id)` against a graph. A
+`Finding`'s `id` and `target_node_id`, together with the `SecurityGraph`
+already embedded in a `Report`, are enough to rebuild the same `TestCase` and
+re-observe it without rescanning the project. T-047 adds a function that
+takes a `Report` and a finding id, rebuilds the runner from the report's own
+graph and the loaded native attack catalog, re-observes the one test, and
+returns whether it still matches. T-048 wires `verify FINDING_ID` to it,
+reading the existing report from `--out` (there is no path argument on
+`verify` in the CLI contract), and prints `VULNERABLE` if it still matches,
+`PASS` if it no longer does, or `BLOCKED` if the finding id or report is not
+found, per the valid state words in `BUILD/DESIGN.md`.
+
+## Deferred pending a design decision
+
+These CLI-contract commands remain scaffolds. Each needs a scoping decision
+before it can become a task, because the contracts name the command but not
+its behavior in enough detail to implement without inventing it:
+
+- `harden`: no spec for what it changes or how a change is proposed, applied,
+  or reverted.
+- `tui`: `BUILD/DESIGN.md` specifies the dashboard information architecture
+  in detail; this is the most ready of the deferred items, but is a large
+  unit of work (a full-screen keyboard-driven view, not a small task).
+- `crypto chaos`: `BUILD/agents/CHAOS.md` requires mutations to be reversible
+  and bounded, but no task has defined what gets mutated or how.
+- `provider enable` / `provider list`: unclear whether "provider" means the
+  `SecurityProvider` plugin interface in `BUILD/CONTRACTS.md`, or enabling
+  model-provider detection rules already in `lattence-packs/discovery/providers/`.
+- `policy check`: `PolicyDecision` already exists per-finding in evidence;
+  unclear what a standalone policy check command evaluates that `scan` does
+  not already produce.
+- `--planner llm`: `BUILD/agents/PLAN.md` specifies caching, retry, and
+  fallback behavior, but bringing in a real model provider call is a larger
+  and riskier unit of work than the other items here.
+
+## Milestone gate
+
+After the last v0.2 task, run the full suite, create the annotated `v0.2` tag
+on `dev`, and hold for review before opening a pull request to `main` or
+starting v0.3.

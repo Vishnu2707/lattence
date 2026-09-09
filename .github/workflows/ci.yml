@@ -69,8 +69,8 @@ jobs:
       - name: Scan the vulnerable-agent fixture offline
         run: |
           cd examples/vulnerable-agent
-          /tmp/lattence-acceptance/bin/lattence scan .
-          /tmp/lattence-acceptance/bin/lattence attack .
+          /tmp/lattence-acceptance/bin/lattence scan . --fail-on none
+          /tmp/lattence-acceptance/bin/lattence attack . --fail-on none
           /tmp/lattence-acceptance/bin/lattence report lattence-report.json
           test -f lattence-report.html
 

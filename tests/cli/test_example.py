@@ -10,10 +10,28 @@ EXAMPLE = Path(__file__).parents[2] / "examples" / "vulnerable-agent"
 def test_vulnerable_example_scans_and_attacks_offline(tmp_path: Path) -> None:
     scan = runner.invoke(
         app,
-        ["scan", str(EXAMPLE), "--offline", "--no-color", "--out", str(tmp_path)],
+        [
+            "scan",
+            str(EXAMPLE),
+            "--offline",
+            "--no-color",
+            "--out",
+            str(tmp_path),
+            "--fail-on",
+            "none",
+        ],
     )
     attack = runner.invoke(
-        app, ["attack", str(EXAMPLE), "--offline", "--out", str(tmp_path)]
+        app,
+        [
+            "attack",
+            str(EXAMPLE),
+            "--offline",
+            "--out",
+            str(tmp_path),
+            "--fail-on",
+            "none",
+        ],
     )
 
     assert scan.exit_code == 0, scan.output

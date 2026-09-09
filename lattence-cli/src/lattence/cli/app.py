@@ -22,6 +22,7 @@ from .targets import TargetDeclarationError, load_target_declaration
 from .workflow import (
     attack_text,
     create_report,
+    exceeds_gate,
     load_report,
     machine_report,
     readiness_json,
@@ -67,7 +68,7 @@ def scan(
     planner: PlannerOption = Planner.RULES,
     fail_on: FailOnOption = SeverityGate.HIGH,
 ) -> None:
-    del offline, planner, fail_on
+    del offline, planner
     result = create_report(path)
     artifacts = write_report_artifacts(result, out)
     if json_output:
@@ -83,6 +84,8 @@ def scan(
             ),
             nl=False,
         )
+    if exceeds_gate(result.summary, fail_on):
+        raise typer.Exit(code=1)
 
 
 @app.command()
@@ -96,7 +99,7 @@ def attack(
     planner: PlannerOption = Planner.RULES,
     fail_on: FailOnOption = SeverityGate.HIGH,
 ) -> None:
-    del offline, planner, fail_on
+    del offline, planner
     try:
         load_target_declaration(path)
     except TargetDeclarationError as error:
@@ -113,6 +116,8 @@ def attack(
             ),
             nl=False,
         )
+    if exceeds_gate(result.summary, fail_on):
+        raise typer.Exit(code=1)
 
 
 @app.command()

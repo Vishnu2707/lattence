@@ -70,3 +70,15 @@ last line instead of the whole line), `tui` prints the same banner before
 its pending-scaffold exit, and `attack` now honors `--no-color` and colors
 `VULNERABLE` lines instead of ignoring the option entirely. See
 `BUILD/notes/ux.md` for the design-token rationale.
+
+T-046 wired `--fail-on` to `scan` and `attack` exit codes, via a new
+`exceeds_gate(summary, gate)` in `workflow.py`. This closes a gap where the
+CLI contract's "exit 1 for findings at or above the gate" was not
+implemented even though both commands were marked done in v0.1. Scope is
+`scan` and `attack` only: `report` re-renders an already-scanned report,
+and `pqc assess` / `graph export` do not carry finding-severity semantics,
+so extending the gate to them is a separate decision, not folded into this
+task. Existing tests that scanned the vulnerable fixture without disabling
+the gate now pass `--fail-on none` explicitly, and so does the CI
+acceptance job, which otherwise would have started failing on its own
+expected findings.

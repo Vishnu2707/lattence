@@ -10,6 +10,7 @@ from lattence.discovery import (
 )
 from lattence.evidence import (
     Report,
+    ReportSummary,
     build_report,
     normalize_rule_finding,
     report_json,
@@ -35,11 +36,23 @@ from lattence_crypto import (
     discover_tls,
 )
 
+from .options import SeverityGate
+
 
 @dataclass(frozen=True)
 class ArtifactPaths:
     json: Path
     html: Path
+
+
+_SEVERITY_ORDER = ("critical", "high", "medium", "low", "info")
+
+
+def exceeds_gate(summary: ReportSummary, gate: SeverityGate) -> bool:
+    if gate == SeverityGate.NONE:
+        return False
+    index = _SEVERITY_ORDER.index(gate.value)
+    return any(getattr(summary, level) > 0 for level in _SEVERITY_ORDER[: index + 1])
 
 
 def _data_root() -> Path:
