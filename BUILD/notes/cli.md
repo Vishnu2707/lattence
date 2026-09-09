@@ -62,3 +62,11 @@ runs `scan`, `attack`, and `report` against `examples/vulnerable-agent` with
 no workspace and no source checkout present. CI gained an `acceptance` job
 that builds the wheel, installs it into a fresh venv, and runs that same
 sequence on every push.
+
+A later design-system pass changed three command behaviors: `--version` now
+prints the block-character banner from `assets/brand/banner.txt` before the
+version line (previously version-only, pinned by a test that now checks the
+last line instead of the whole line), `tui` prints the same banner before
+its pending-scaffold exit, and `attack` now honors `--no-color` and colors
+`VULNERABLE` lines instead of ignoring the option entirely. See
+`BUILD/notes/ux.md` for the design-token rationale.

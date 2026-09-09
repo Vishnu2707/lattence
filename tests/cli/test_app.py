@@ -34,7 +34,9 @@ def test_package_and_version_entrypoint() -> None:
     result = runner.invoke(app, ["--version"])
 
     assert result.exit_code == 0
-    assert result.stdout == f"lattence {version('lattence')}\n"
+    lines = result.stdout.splitlines()
+    assert 1 <= len(lines) - 1 <= 6
+    assert lines[-1] == f"lattence {version('lattence')}"
 
 
 @pytest.mark.parametrize("command", COMMANDS)

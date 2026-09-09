@@ -65,6 +65,37 @@ def _plain_summary(
     return "\n".join(lines) + "\n"
 
 
+def _banner_path() -> Path:
+    for parent in Path(__file__).resolve().parents:
+        candidate = parent / "assets" / "brand" / "banner.txt"
+        if candidate.is_file():
+            return candidate
+    installed = Path(__file__).resolve().parents[2] / "assets" / "banner.txt"
+    if installed.is_file():
+        return installed
+    raise RuntimeError("cannot locate bundled banner")
+
+
+def render_banner() -> str:
+    return _banner_path().read_text(encoding="utf-8")
+
+
+def render_attack_summary(plain: str, color: bool = False) -> str:
+    if not color:
+        return plain
+    console = Console(
+        record=True, force_terminal=True, color_system="truecolor", width=100
+    )
+    for line in plain.rstrip().splitlines():
+        text = Text(line)
+        if line.startswith("LATTENCE"):
+            text.stylize("bold #4C8DFF")
+        elif line.startswith("VULNERABLE"):
+            text.stylize("#E5484D")
+        console.print(text)
+    return console.export_text(styles=True)
+
+
 def render_scan_summary(
     report: Report,
     target: Path,

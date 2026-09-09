@@ -10,3 +10,29 @@ T-042 added a deterministic scan tape and a 1000 by 600 GIF under
 dark palette, 40 millisecond typing, a fixed fixture, and no cursor blink. Run
 `make demos` from a synced source checkout to reproduce it. The GIF is checked
 for its signature and the 2 MB release limit.
+
+A later design-system pass added an `attack.tape` and `attack.gif` alongside
+`scan`, both re-rendered from the real `examples/vulnerable-agent` output
+(the `LT-AGENT`, `LT-AI`, and `LT-MCP` findings, and the indirect prompt
+injection chain). `tests/ux/test_demo.py` parametrizes over both pairs. The
+same pass wired the existing `assets/brand/banner.txt` into the CLI: it now
+renders on `lattence --version` and at the top of `lattence tui`'s pending
+scaffold output, force-included into the wheel at `lattence/assets/banner.txt`
+the same way the report schema is bundled. It also fixed a gap where `attack`
+accepted `--no-color` but never used it: `attack` output now colors
+`VULNERABLE` lines with the `fail` token, the same way `scan` colors severity
+words, matching "color is never the only signal, but a signal all the same"
+in `BUILD/DESIGN.md`. The HTML report and terminal severity colors were
+checked against the frozen tokens directly and already matched; no change
+was needed there.
+
+Note for a future session: the wheel's force-included packages
+(`lattence_ai`, `lattence_crypto`, and the `lattence.discovery` /
+`lattence.graph` / `lattence.evidence` / `lattence.mcp` subpackages, added in
+T-045) now install as physical directories in the shared `.venv`
+alongside the same packages' own editable workspace installs. Both resolve
+to the same import names. `uv run` rebuilds the root wheel each invocation
+so behavior stays correct, but `pytest --cov` sometimes reports paths under
+`.venv/lib/.../site-packages/` instead of the source tree depending on
+install order. This is cosmetic today; revisit if it ever causes a real
+import resolution conflict.

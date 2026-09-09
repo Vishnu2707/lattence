@@ -22,6 +22,8 @@ project you already own.
 
 ![Lattence scanning the vulnerable-agent fixture](assets/demo/scan.gif)
 
+![Lattence attacking the vulnerable-agent fixture](assets/demo/attack.gif)
+
 ## Install
 
 Lattence is not yet published to PyPI. Install it from source.

@@ -29,3 +29,7 @@ Rationale: The threshold catches real regressions without pinning to the exact c
 2026-09-08 D-006
 Decision: The wheel force-includes the source of every workspace package it needs, and root dependencies list real third-party libraries instead of the workspace package names.
 Rationale: A wheel built with the workspace names as dependencies cannot be installed outside the uv workspace, and was missing most of the runtime import surface.
+
+2026-09-09 D-007
+Decision: `--version` now prints the frozen ASCII banner before the version line, changing its previously exact-match output contract.
+Rationale: BUILD/DESIGN.md allows a banner on the version command and at TUI start; the existing test pinned a narrower contract than the design system called for, so the test was widened to check the version line specifically rather than the whole output.

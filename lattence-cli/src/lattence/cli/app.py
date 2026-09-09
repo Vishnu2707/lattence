@@ -1,4 +1,5 @@
 import sys
+from importlib.metadata import version as package_version
 from pathlib import Path
 from typing import Annotated
 
@@ -15,7 +16,7 @@ from .options import (
     QuietOption,
     SeverityGate,
 )
-from .presentation import render_scan_summary
+from .presentation import render_attack_summary, render_banner, render_scan_summary
 from .scaffold import common_options, named_command, path_command, pending
 from .targets import TargetDeclarationError, load_target_declaration
 from .workflow import (
@@ -50,7 +51,8 @@ def root(
     ] = None,
 ) -> None:
     if version:
-        typer.echo("lattence 0.0.0")
+        typer.echo(render_banner())
+        typer.echo(f"lattence {package_version('lattence')}")
         raise typer.Exit()
 
 
@@ -94,7 +96,7 @@ def attack(
     planner: PlannerOption = Planner.RULES,
     fail_on: FailOnOption = SeverityGate.HIGH,
 ) -> None:
-    del offline, no_color, planner, fail_on
+    del offline, planner, fail_on
     try:
         load_target_declaration(path)
     except TargetDeclarationError as error:
@@ -104,7 +106,13 @@ def attack(
     if json_output:
         typer.echo(machine_report(result), nl=False)
     elif not quiet:
-        typer.echo(attack_text(result, path), nl=False)
+        typer.echo(
+            render_attack_summary(
+                attack_text(result, path),
+                color=not no_color and sys.stdout.isatty(),
+            ),
+            nl=False,
+        )
 
 
 @app.command()
@@ -169,6 +177,8 @@ def tui(
     fail_on: FailOnOption = SeverityGate.HIGH,
 ) -> None:
     common_options(json_output, out, offline, no_color, quiet, planner, fail_on)
+    if not quiet and not json_output:
+        typer.echo(render_banner())
     pending(f"tui {input_path}")
 
 
