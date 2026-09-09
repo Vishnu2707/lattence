@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: If you use this software, cite it as below.
+title: Lattence
+abstract: AI security and post-quantum security assurance for agentic systems.
+type: software
+authors:
+  - name: "Vishnu2707"
+repository-code: "https://github.com/Vishnu2707/lattence"
+license: Apache-2.0
+version: 0.1.0
+date-released: "2026-09-08"

@@ -209,11 +209,7 @@ and it loads on the next run.
 
 ## Roadmap
 
-There is no `ROADMAP.md` yet. Commands scaffolded but not yet implemented:
-`harden`, `verify`, `tui`, `crypto chaos`, `provider enable`, `provider list`,
-and `policy check`. They currently exit with an internal error and no
-behavior. Also planned: an `llm` planner mode alongside the default
-deterministic rules planner, and a published PyPI package.
+See [ROADMAP.md](ROADMAP.md) for scaffolded commands and planned work.
 
 ## Security and responsible use
 
@@ -233,13 +229,15 @@ are explicitly authorized to test.
 - The bundled `examples/vulnerable-agent` fixture is intentionally unsafe.
   Do not deploy it or connect it to real credentials, tools, or data.
 
-There is no `SECURITY.md` yet. To report a vulnerability in Lattence itself,
-open an issue in this repository.
+To report a vulnerability in Lattence itself, see [SECURITY.md](SECURITY.md).
+Do not open a public issue for a security report.
 
 ## Contributing and license
 
-This project does not yet have a contributing guide. Open an issue to
-discuss a change before sending a pull request.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for local setup, what CI checks, and
+how to add a detection or attack rule. See
+[CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) for expected behavior in project
+spaces, and [GOVERNANCE.md](GOVERNANCE.md) for how decisions are made.
 
 Lattence is licensed under the Apache License, Version 2.0. See
 [LICENSE](LICENSE).
