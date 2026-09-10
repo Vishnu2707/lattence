@@ -1,5 +1,5 @@
-from .models import ObservationResult, RawResult, TestCase
-from .runner import AttackRunner
+from .models import ObservationResult, RawResult, TestCase, VerificationOutcome
+from .runner import AttackRunner, verify_finding
 
 __all__ = [
     "NATIVE_ATTACK_COUNT",
@@ -9,7 +9,9 @@ __all__ = [
     "ObservationResult",
     "RawResult",
     "TestCase",
+    "VerificationOutcome",
     "load_native_attack_catalog",
+    "verify_finding",
 ]
 from .catalog import (
     NATIVE_ATTACK_COUNT,

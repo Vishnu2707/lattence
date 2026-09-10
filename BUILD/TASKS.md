@@ -65,7 +65,7 @@ specify precisely, over inventing product behavior for commands the
 contracts name but do not describe (see "Deferred" below).
 
 [T-046] [v0.2] [SHIP] wire the --fail-on severity gate to scan and attack exit codes | deps: none | status: done | commit: self
-[T-047] [v0.2] [AISEC] implement deterministic single-finding replay verification | deps: T-024 | status: todo | commit:
+[T-047] [v0.2] [AISEC] implement deterministic single-finding replay verification | deps: T-024 | status: done | commit: self
 [T-048] [v0.2] [SHIP] wire the verify command to replay verification | deps: T-047 | status: todo | commit:
 
 ## T-047 design note

@@ -26,13 +26,20 @@ in `BUILD/DESIGN.md`. The HTML report and terminal severity colors were
 checked against the frozen tokens directly and already matched; no change
 was needed there.
 
-Note for a future session: the wheel's force-included packages
-(`lattence_ai`, `lattence_crypto`, and the `lattence.discovery` /
-`lattence.graph` / `lattence.evidence` / `lattence.mcp` subpackages, added in
-T-045) now install as physical directories in the shared `.venv`
-alongside the same packages' own editable workspace installs. Both resolve
-to the same import names. `uv run` rebuilds the root wheel each invocation
-so behavior stays correct, but `pytest --cov` sometimes reports paths under
-`.venv/lib/.../site-packages/` instead of the source tree depending on
-install order. This is cosmetic today; revisit if it ever causes a real
-import resolution conflict.
+Note for a future session, corrected after hitting this directly during
+T-047: the wheel's force-included packages (`lattence_ai`, `lattence_crypto`,
+and the `lattence.discovery` / `lattence.graph` / `lattence.evidence` /
+`lattence.mcp` subpackages, added in T-045) install as physical directories
+in the shared `.venv`, alongside the same packages' own editable workspace
+installs, both under the same import names. This is not merely cosmetic:
+`uv run` only rebuilds the root `lattence` wheel when files inside its own
+declared package tree (`lattence-cli/src/lattence`) change. Editing
+`lattence-ai`, `lattence-core`, `lattence-crypto`, `lattence-evidence`, or
+`lattence-mcp` source and then running `uv run pytest` or `uv run python`
+can silently import the stale physical copy bundled at the last root-wheel
+build, not the edit. Force a rebuild after such edits with
+`uv sync --all-packages --dev --reinstall-package lattence` before trusting
+a test run. This does not affect CI: every CI job starts from a fresh
+checkout, so its one `uv sync` builds everything from the same current
+source with nothing stale to shadow it. Revisit the packaging split if this
+keeps costing local iteration time.
