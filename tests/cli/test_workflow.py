@@ -167,3 +167,72 @@ def test_attack_refuses_project_without_declaration(tmp_path: Path) -> None:
 
     assert result.exit_code == 2
     assert "attack requires lattence.targets.yaml" in result.output
+
+
+def test_verify_reports_vulnerable_and_exits_nonzero(tmp_path: Path) -> None:
+    _project(tmp_path)
+    runner.invoke(
+        app,
+        [
+            "attack",
+            str(tmp_path),
+            "--offline",
+            "--quiet",
+            "--out",
+            str(tmp_path),
+            "--fail-on",
+            "none",
+        ],
+    )
+
+    result = runner.invoke(app, ["verify", "LT-AI-001", "--out", str(tmp_path)])
+
+    assert result.exit_code == 1
+    assert "VULNERABLE  LT-AI-001" in result.stdout
+
+
+def test_verify_reports_blocked_for_unknown_finding(tmp_path: Path) -> None:
+    _project(tmp_path)
+    runner.invoke(
+        app,
+        [
+            "attack",
+            str(tmp_path),
+            "--offline",
+            "--quiet",
+            "--out",
+            str(tmp_path),
+            "--fail-on",
+            "none",
+        ],
+    )
+
+    result = runner.invoke(app, ["verify", "LT-AI-999", "--out", str(tmp_path)])
+
+    assert result.exit_code == 2
+    assert "BLOCKED  LT-AI-999" in result.stdout
+
+
+def test_verify_json_output_is_machine_readable(tmp_path: Path) -> None:
+    _project(tmp_path)
+    runner.invoke(
+        app,
+        [
+            "attack",
+            str(tmp_path),
+            "--offline",
+            "--quiet",
+            "--out",
+            str(tmp_path),
+            "--fail-on",
+            "none",
+        ],
+    )
+
+    result = runner.invoke(
+        app, ["verify", "LT-AI-001", "--out", str(tmp_path), "--json"]
+    )
+
+    payload = json.loads(result.stdout)
+    assert payload["outcome"] == "vulnerable"
+    assert payload["finding_id"] == "LT-AI-001"

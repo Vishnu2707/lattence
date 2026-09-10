@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import Annotated
 
 import typer
+from lattence_ai.attacks import VerificationOutcome
 
 from .options import (
     FailOnOption,
@@ -26,6 +27,10 @@ from .workflow import (
     load_report,
     machine_report,
     readiness_json,
+    severity_meets_gate,
+    verify_json,
+    verify_report,
+    verify_text,
     write_graph,
     write_report_artifacts,
 )
@@ -146,8 +151,18 @@ def verify(
     planner: PlannerOption = Planner.RULES,
     fail_on: FailOnOption = SeverityGate.HIGH,
 ) -> None:
-    common_options(json_output, out, offline, no_color, quiet, planner, fail_on)
-    pending(f"verify {finding_id}")
+    del offline, no_color, planner
+    result = verify_report(out, finding_id)
+    if json_output:
+        typer.echo(verify_json(result), nl=False)
+    elif not quiet:
+        typer.echo(verify_text(result), nl=False)
+    if result.outcome is VerificationOutcome.NOT_FOUND:
+        raise typer.Exit(code=2)
+    if result.outcome is VerificationOutcome.VULNERABLE and (
+        result.severity is not None and severity_meets_gate(result.severity, fail_on)
+    ):
+        raise typer.Exit(code=1)
 
 
 @app.command()

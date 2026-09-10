@@ -71,6 +71,17 @@ its pending-scaffold exit, and `attack` now honors `--no-color` and colors
 `VULNERABLE` lines instead of ignoring the option entirely. See
 `BUILD/notes/ux.md` for the design-token rationale.
 
+T-048 wired `verify FINDING_ID` to `lattence_ai.attacks.verify_finding`
+(T-047). `verify` takes no path argument, per the CLI contract; `--out`
+names the directory (or file) holding the existing report to verify
+against, the same convention `scan`/`attack`/`report` use for where they
+write. Prints `VULNERABLE  ID  title  target` (still reproduces),
+`PASS  ID  title  target` (no longer reproduces), or
+`BLOCKED  ID  finding not found` (unknown id, exit 2). A `VULNERABLE`
+outcome exits 1 only if the finding's own severity meets `--fail-on`,
+reusing the same severity ordering as `exceeds_gate` through a new
+`severity_meets_gate(severity, gate)`.
+
 T-046 wired `--fail-on` to `scan` and `attack` exit codes, via a new
 `exceeds_gate(summary, gate)` in `workflow.py`. This closes a gap where the
 CLI contract's "exit 1 for findings at or above the gate" was not
