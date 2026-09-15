@@ -97,7 +97,7 @@ dependencies. Their results normalize into the frozen `Finding` schema through
 the frozen `SecurityProvider` interface.
 
 [T-049] [v0.3] [SHIP] implement the SecurityProvider runtime and strict provider result validation | deps: T-002,T-024 | status: done | commit: self
-[T-050] [v0.3] [SHIP] add an optional Garak SecurityProvider adapter | deps: T-049 | status: todo
+[T-050] [v0.3] [SHIP] add an optional Garak SecurityProvider adapter | deps: T-049 | status: done | commit: self
 [T-051] [v0.3] [SHIP] add an optional PyRIT SecurityProvider adapter | deps: T-049 | status: todo
 [T-052] [v0.3] [SHIP] add an optional Promptfoo SecurityProvider adapter | deps: T-049 | status: todo
 [T-053] [v0.3] [SHIP] persist provider enablement and wire provider enable and list | deps: T-049 | status: todo

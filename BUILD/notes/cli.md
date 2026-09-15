@@ -99,3 +99,9 @@ T-049 added the frozen `SecurityProvider` runtime contract under
 methods. Raw results are revalidated for matching test identifiers, named
 providers, and ordered timestamps. Normalized findings are strictly validated,
 must have unique identifiers, and must target the test node.
+
+T-050 added the optional Garak adapter. It creates one deterministic Garak
+test per graph model, invokes the external `garak` executable without importing
+its package, reads the JSONL report, and normalizes failed evaluation rows into
+provider-neutral findings. Missing executables and malformed reports remain
+provider errors. Garak is not a Lattence package dependency.

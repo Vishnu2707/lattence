@@ -1,8 +1,8 @@
 # Current state
 
 - Milestone: v0.3 implementation
-- Last completed: T-049, task commit
-- Next task: T-050, optional Garak adapter
+- Last completed: T-050, task commit
+- Next task: T-051, optional PyRIT adapter
 - Blockers: none
 - Manual steps: branch protection and tag protection commands from the
   v0.1.0 release are still printed for review only, not run
@@ -16,4 +16,4 @@
 - Design: frozen at version 1.0
 - v0.1 tasks: 45 done
 - v0.2 tasks: 3 done (T-046, T-047, T-048), 0 todo
-- v0.3 tasks: 1 done (T-049), 12 todo (T-050 through T-061)
+- v0.3 tasks: 2 done (T-049, T-050), 11 todo (T-051 through T-061)
