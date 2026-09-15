@@ -98,7 +98,7 @@ the frozen `SecurityProvider` interface.
 
 [T-049] [v0.3] [SHIP] implement the SecurityProvider runtime and strict provider result validation | deps: T-002,T-024 | status: done | commit: self
 [T-050] [v0.3] [SHIP] add an optional Garak SecurityProvider adapter | deps: T-049 | status: done | commit: self
-[T-051] [v0.3] [SHIP] add an optional PyRIT SecurityProvider adapter | deps: T-049 | status: todo
+[T-051] [v0.3] [SHIP] add an optional PyRIT SecurityProvider adapter | deps: T-049 | status: done | commit: self
 [T-052] [v0.3] [SHIP] add an optional Promptfoo SecurityProvider adapter | deps: T-049 | status: todo
 [T-053] [v0.3] [SHIP] persist provider enablement and wire provider enable and list | deps: T-049 | status: todo
 [T-054] [v0.3] [SHIP] execute enabled external providers and merge normalized findings into attack reports | deps: T-050,T-051,T-052,T-053 | status: todo

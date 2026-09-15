@@ -105,3 +105,9 @@ test per graph model, invokes the external `garak` executable without importing
 its package, reads the JSONL report, and normalizes failed evaluation rows into
 provider-neutral findings. Missing executables and malformed reports remain
 provider errors. Garak is not a Lattence package dependency.
+
+T-051 added the optional PyRIT adapter. Graph model metadata selects a
+registered scanner target and scenario. The adapter invokes `pyrit_scan` as an
+external process, parses its JSON result, and normalizes successful objectives
+into provider-neutral findings. Missing executables and malformed output remain
+provider errors. PyRIT is not a Lattence package dependency.
