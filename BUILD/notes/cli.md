@@ -93,3 +93,9 @@ task. Existing tests that scanned the vulnerable fixture without disabling
 the gate now pass `--fail-on none` explicitly, and so does the CI
 acceptance job, which otherwise would have started failing on its own
 expected findings.
+
+T-049 added the frozen `SecurityProvider` runtime contract under
+`lattence.providers`. Provider objects must implement all four contract
+methods. Raw results are revalidated for matching test identifiers, named
+providers, and ordered timestamps. Normalized findings are strictly validated,
+must have unique identifiers, and must target the test node.

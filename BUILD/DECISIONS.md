@@ -41,3 +41,7 @@ Rationale: BUILD/CONTRACTS.md names these commands but does not specify their be
 2026-09-15 D-009
 Decision: v0.3 adds optional Garak, PyRIT, and Promptfoo adapters, read-only harden output, and declared-scope policy checks. TUI moves to v0.5, crypto chaos stays in v0.4, and the LLM planner moves to v0.4 or later with an explicit v0.3 not-implemented error.
 Rationale: This scope preserves frozen interfaces, keeps external engines optional, and separates read-only guidance and policy enforcement from mutation and model-backed planning.
+
+2026-09-15 D-010
+Decision: The SecurityProvider runtime and external adapters live under the SHIP-owned `lattence.providers` namespace.
+Rationale: External engines are integrations, while the AISEC role owns native attack rules and explicitly excludes the provider interface.
