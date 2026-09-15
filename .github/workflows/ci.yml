@@ -66,12 +66,17 @@ jobs:
       - run: uv build
       - run: python -m venv /tmp/lattence-acceptance
       - run: /tmp/lattence-acceptance/bin/pip install dist/*.whl
-      - name: Scan the vulnerable-agent fixture offline
+      - name: Run clean-wheel acceptance
         run: |
+          export PATH="$GITHUB_WORKSPACE/tests/acceptance/bin:$PATH"
           cd examples/vulnerable-agent
           /tmp/lattence-acceptance/bin/lattence scan . --fail-on none
+          /tmp/lattence-acceptance/bin/lattence provider list --out .
+          /tmp/lattence-acceptance/bin/lattence provider enable garak --out .
           /tmp/lattence-acceptance/bin/lattence attack . --fail-on none
           /tmp/lattence-acceptance/bin/lattence report lattence-report.json
+          /tmp/lattence-acceptance/bin/lattence harden lattence-report.json --fail-on none
+          /tmp/lattence-acceptance/bin/lattence policy check lattence-report.json
           test -f lattence-report.html
 
   provenance:

@@ -1,8 +1,8 @@
 # Current state
 
 - Milestone: v0.3 implementation
-- Last completed: T-060, task commit
-- Next task: T-061, clean-clone v0.3 acceptance
+- Last completed: T-061, task commit
+- Next task: run the full suite and tag v0.3.0
 - Blockers: none
 - Manual steps: branch protection and tag protection commands from the
   v0.1.0 release are still printed for review only, not run
@@ -16,4 +16,4 @@
 - Design: frozen at version 1.0
 - v0.1 tasks: 45 done
 - v0.2 tasks: 3 done (T-046, T-047, T-048), 0 todo
-- v0.3 tasks: 12 done (T-049 through T-060), 1 todo (T-061)
+- v0.3 tasks: 13 done (T-049 through T-061), 0 todo

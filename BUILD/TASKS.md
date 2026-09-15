@@ -108,7 +108,7 @@ the frozen `SecurityProvider` interface.
 [T-058] [v0.3] [SHIP] wire policy check with non-zero exit on every out-of-scope target node | deps: T-057 | status: done | commit: self
 [T-059] [v0.3] [SHIP] reject --planner llm with a clear not-implemented error | deps: T-004 | status: done | commit: self
 [T-060] [v0.3] [SHIP] document v0.3 commands and optional external engine setup | deps: T-054,T-056,T-058,T-059 | status: done | commit: self
-[T-061] [v0.3] [SHIP] pass clean-clone external provider, harden, and policy acceptance | deps: T-060 | status: todo
+[T-061] [v0.3] [SHIP] pass clean-clone external provider, harden, and policy acceptance | deps: T-060 | status: done | commit: self
 
 ## v0.3 scope notes
 

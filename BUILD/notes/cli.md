@@ -162,3 +162,9 @@ now documents read-only hardening, scope checks, optional provider enablement,
 external execution boundaries, and explicit LLM planner rejection. The roadmap
 keeps crypto chaos in v0.4, moves the TUI to v0.5 with the dashboard, and leaves
 model-backed planning for v0.4 or later.
+
+T-061 extended clean-wheel acceptance with an executable Garak fixture. The
+installed wheel lists and enables the optional adapter, merges its normalized
+findings into an attack report, renders read-only hardening guidance, and passes
+declared-scope policy validation. The acceptance path uses no external engine
+package or network service.
