@@ -5,6 +5,23 @@ Versions before 1.0 may include breaking changes in a minor release.
 
 ## [Unreleased]
 
+### Added
+
+- Deterministic crypto dependency graph projections and direct and transitive
+  quantum-vulnerable dependency paths.
+- ML-KEM-768 and ML-DSA-65 migration tests, hybrid TLS validation, and a
+  five-component crypto agility score with explicit limiting factors.
+- Consent-gated, bounded, reversible key-exchange and signature downgrade
+  experiments with deterministic evidence and rollback verification.
+- A complete cryptographic assurance guide and architecture and safety
+  diagrams.
+
+### Changed
+
+- `pqc assess` now emits the full crypto assessment and normalized findings.
+- `crypto chaos` is implemented and requires an exact declared configuration
+  file in addition to project-root consent.
+
 ## [0.3.0] - 2026-09-15
 
 ### Added

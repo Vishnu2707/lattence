@@ -189,3 +189,8 @@ builds the crypto projection, migration checks, hybrid TLS validation, agility
 score, and normalized findings. Chaos requires both project-root consent and
 an explicitly declared configuration file, runs local bounded downgrade probes,
 verifies restoration, writes report artifacts, and applies the severity gate.
+
+T-079 adds the complete cryptographic assurance guide, links the flagship
+pipeline and safety diagrams, expands the README's PQC section, removes crypto
+chaos from the scaffold roadmap, and records the v0.4 feature set under the
+unreleased changelog.

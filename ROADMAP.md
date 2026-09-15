@@ -6,18 +6,15 @@ that.
 
 ## Scaffolded commands
 
-These commands exist in the CLI tree and accept their documented options,
-but exit with an internal error and no behavior:
-
-- `tui`
-- `crypto chaos`
+The `tui` command exists in the CLI tree and accepts its documented options,
+but exits with an internal error until its visual system ships with the
+dashboard.
 
 ## Planned
 
-- `crypto chaos` remains scheduled for v0.4.
-- An `llm` planner mode may land in v0.4 or later. `--planner llm` is
+- An `llm` planner mode may land in a future release. `--planner llm` is
   recognized today and exits with a not-implemented error.
-- The terminal UI moves to v0.5 alongside the dashboard so both use one visual
+- The terminal UI is planned for v0.5 alongside the dashboard so both use one visual
   grammar.
 - A published PyPI package. Install is source-only today.
 - A Docker image. None exists yet.

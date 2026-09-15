@@ -193,18 +193,43 @@ walks the graph and evaluates the rule pack catalog against it, producing
 findings with replayable evidence, then evidence rendering writes a
 schema-valid JSON report and a self-contained HTML report.
 
-## PQC assurance
+## PQC and crypto assurance
 
-Lattence classifies discovered cryptographic usage as quantum-vulnerable or
-post-quantum and computes a deterministic readiness percentage.
+Lattence builds a cryptographic dependency graph, reports direct and transitive
+quantum-vulnerable paths, tests ML-KEM-768 and ML-DSA-65 migration readiness,
+validates hybrid TLS, and calculates a five-component crypto agility score.
 
 ```bash
-lattence pqc assess examples/vulnerable-agent
+lattence pqc assess examples/vulnerable-agent --offline
 ```
 
 ```
-PQC readiness  0%
+LATTENCE  crypto  examples/vulnerable-agent
+
+CRYPTO GRAPH
+  Nodes                   5
+  Relationships           3
+  Vulnerable paths        4
+
+MIGRATION TESTS
+  ML-KEM                  BLOCKED
+  ML-DSA                  BLOCKED
+
+HYBRID TLS
+  Validation              PARTIAL
+
+CRYPTO AGILITY
+  Score                   25%
+
+DOWNGRADE VALIDATION
+  Status                  BLOCKED
 ```
+
+`crypto chaos` runs bounded key-exchange and signature downgrade experiments
+against exact local configuration files named in `lattence.targets.yaml`. It
+restores and checksum-verifies the original bytes on every outcome. See the
+[complete cryptographic assurance guide](docs/crypto-assurance.md) and the
+[assurance pipeline](docs/architecture/crypto-assurance-pipeline.svg).
 
 ## CI integration
 
@@ -264,9 +289,11 @@ are explicitly authorized to test.
   the project root that names the target and acknowledges
   `owned-or-authorized`. Project targets cannot resolve outside the
   declared root, and URL targets cannot embed credentials.
-- Native scan, attack, harden, policy, and report workflows make no network
+- Native scan, attack, harden, policy, PQC, crypto chaos, and report workflows make no network
   calls and execute none of the target project's code. Detection and native
   attack rules match on parsed source, configuration, and graph structure.
+- `crypto chaos` additionally requires each mutable configuration file to be
+  declared. It runs bounded local probes and restores the original bytes.
 - External engines are opt in. Their own target, credential, network, and data
   handling rules apply. Use `--offline` to prevent external provider execution.
 - Reports include file paths and matched code locations. Treat generated
