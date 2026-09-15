@@ -48,3 +48,8 @@ T-077 added a dense flagship crypto view with explicit graph, ML-KEM and
 ML-DSA migration, hybrid TLS, five-component agility, downgrade, and finding
 sections. Plain mode contains no terminal escapes; color mode uses the frozen
 status and heading tokens without making color the only signal.
+
+T-078 added two accessible 1200 by 680 SVG diagrams under
+`docs/architecture/`: the offline crypto assurance pipeline and the bounded
+crypto chaos safety boundary. Both use the frozen palette, plain geometric
+shapes, embedded titles and descriptions, and no generator metadata.

@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="680" viewBox="0 0 1200 680" role="img" aria-labelledby="title desc">
+  <title id="title">Lattence crypto chaos safety boundary</title>
+  <desc id="desc">A declared local configuration is checksummed, mutated to a classical downgrade, probed within a timeout, restored in all outcomes, and validated with redacted evidence.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 Z" fill="#4C8DFF"/>
+    </marker>
+    <style>
+      .bg{fill:#0B0D10}.boundary{fill:none;stroke:#E2A336;stroke-width:3;stroke-dasharray:10 8}.panel{fill:#14181F;stroke:#30363D;stroke-width:2}.gate{fill:#111B2B;stroke:#4C8DFF;stroke-width:2}.restore{fill:#102016;stroke:#3E9B4F;stroke-width:3}.text{fill:#F2F4F8;font:600 18px ui-monospace,monospace}.small{fill:#A7B0BE;font:14px ui-monospace,monospace}.warn{fill:#E2A336;font:600 14px ui-monospace,monospace}.line{fill:none;stroke:#4C8DFF;stroke-width:3;marker-end:url(#arrow)}
+    </style>
+  </defs>
+  <rect class="bg" width="1200" height="680"/>
+  <text class="text" x="60" y="65" font-size="28">CRYPTO CHAOS SAFETY BOUNDARY</text>
+  <text class="small" x="60" y="95">explicit consent · bounded mutation · unconditional rollback</text>
+
+  <rect class="boundary" x="40" y="125" width="1120" height="480"/>
+  <text class="warn" x="65" y="155">DECLARED LOCAL TARGET ONLY</text>
+
+  <rect class="gate" x="80" y="210" width="190" height="110"/>
+  <text class="text" x="105" y="248">CONSENT GATE</text>
+  <text class="small" x="105" y="278">root + exact file</text>
+  <text class="small" x="105" y="300">UTF-8 · ≤ 1 MiB</text>
+
+  <rect class="panel" x="330" y="210" width="190" height="110"/>
+  <text class="text" x="355" y="248">CHECKSUM</text>
+  <text class="small" x="355" y="278">original SHA-256</text>
+  <text class="small" x="355" y="300">≤ 32 replacements</text>
+
+  <rect class="panel" x="580" y="210" width="190" height="110"/>
+  <text class="text" x="605" y="248">DOWNGRADE</text>
+  <text class="small" x="605" y="278">ML-KEM → X25519</text>
+  <text class="small" x="605" y="300">ML-DSA → ECDSA</text>
+
+  <rect class="panel" x="830" y="210" width="250" height="110"/>
+  <text class="text" x="855" y="248">BOUNDED PROBE</text>
+  <text class="small" x="855" y="278">argument vector · no shell</text>
+  <text class="small" x="855" y="300">timeout ≤ 60 seconds</text>
+
+  <path class="line" d="M 270 265 L 330 265"/>
+  <path class="line" d="M 520 265 L 580 265"/>
+  <path class="line" d="M 770 265 L 830 265"/>
+
+  <rect class="restore" x="440" y="410" width="320" height="105"/>
+  <text class="text" x="475" y="450">RESTORE ORIGINAL BYTES</text>
+  <text class="small" x="475" y="480">success · rejection · error · timeout</text>
+  <text class="small" x="475" y="502">verify original SHA-256</text>
+  <path class="line" d="M 955 320 L 955 462 L 760 462"/>
+
+  <rect class="panel" x="830" y="430" width="250" height="85"/>
+  <text class="text" x="855" y="467">EVIDENCE</text>
+  <text class="small" x="855" y="493">outcome + hashes only</text>
+  <path class="line" d="M 760 490 L 830 490"/>
+
+  <text class="warn" x="80" y="570">NO UNDECLARED HOSTS · NO LIVE-TARGET DISCOVERY · NO MUTATED CONTENT IN REPORTS</text>
+</svg>
