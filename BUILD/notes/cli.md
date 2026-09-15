@@ -156,3 +156,9 @@ T-059 made the shared `--planner llm` parser fail with usage exit code 2 and a
 clear not-implemented message. The callback applies to all 12 commands. Rules
 remain the default, and no command can silently discard an explicit LLM planner
 request.
+
+T-060 updated the README, roadmap, and changelog for v0.3 behavior. The README
+now documents read-only hardening, scope checks, optional provider enablement,
+external execution boundaries, and explicit LLM planner rejection. The roadmap
+keeps crypto chaos in v0.4, moves the TUI to v0.5 with the dashboard, and leaves
+model-backed planning for v0.4 or later.

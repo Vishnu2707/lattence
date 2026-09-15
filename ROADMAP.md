@@ -9,22 +9,20 @@ that.
 These commands exist in the CLI tree and accept their documented options,
 but exit with an internal error and no behavior:
 
-- `harden`
-- `verify`
 - `tui`
 - `crypto chaos`
-- `provider enable`
-- `provider list`
-- `policy check`
 
 ## Planned
 
-- An `llm` planner mode alongside the default deterministic rules planner.
-  `--planner llm` is accepted today but not implemented.
+- `crypto chaos` remains scheduled for v0.4.
+- An `llm` planner mode may land in v0.4 or later. `--planner llm` is
+  recognized today and exits with a not-implemented error.
+- The terminal UI moves to v0.5 alongside the dashboard so both use one visual
+  grammar.
 - A published PyPI package. Install is source-only today.
 - A Docker image. None exists yet.
 - Private vulnerability reporting through GitHub, once the repository is
   public or otherwise eligible. See [SECURITY.md](SECURITY.md).
 
-Nothing here is scheduled to a date. Open an issue if one of these matters
-to your use case.
+No roadmap item has a calendar date. Open an issue if one matters to your use
+case.

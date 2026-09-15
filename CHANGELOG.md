@@ -5,6 +5,18 @@ Versions before 1.0 may include breaking changes in a minor release.
 
 ## [Unreleased]
 
+### Added
+
+- Optional Garak, PyRIT, and Promptfoo adapters behind persistent provider
+  enablement. External results normalize into the existing finding schema.
+- Read-only `harden` output for one finding or a complete report.
+- `policy check` validation of report target nodes against a versioned declared
+  scope, with non-zero exit on out-of-scope access.
+- An explicit usage error for the reserved `--planner llm` mode.
+- `README.md`, `SECURITY.md`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`,
+  `GOVERNANCE.md`, `MAINTAINERS.md`, `SUPPORT.md`, `ROADMAP.md`, and this
+  changelog.
+
 ### Fixed
 
 - The built wheel now bundles the full runtime source (`discovery`,
@@ -20,12 +32,6 @@ Versions before 1.0 may include breaking changes in a minor release.
   percent.
 - `.claude/`, a local coding-assistant mirror of `BUILD/agents/`, is no
   longer tracked.
-
-### Added
-
-- `README.md`, `SECURITY.md`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`,
-  `GOVERNANCE.md`, `MAINTAINERS.md`, `SUPPORT.md`, `ROADMAP.md`, and this
-  changelog.
 
 ## [0.1.0] - 2026-09-08
 

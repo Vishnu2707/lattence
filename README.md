@@ -16,7 +16,8 @@ graph to find prompt injection, unsafe tool use, and delegation risks. It also
 inventories cryptographic usage and scores post-quantum readiness. It is built
 for engineers who ship LLM agents and need evidence of what an agent can
 reach, not a general code scanner. Everything below runs offline, against a
-project you already own.
+project you already own, unless you explicitly enable an external security
+engine.
 
 ## Demo
 
@@ -121,6 +122,45 @@ lattence report lattence-report.json
 Report  lattence-report.html
 ```
 
+`harden` reads a saved report and prints remediation without changing project
+files. Pass a report path for every finding, or a finding identifier with
+`--out` pointing to the report directory:
+
+```bash
+lattence harden lattence-report.json
+lattence harden LT-AI-001 --out .
+```
+
+`policy check` compares the target nodes recorded in a report with
+`lattence.targets.yaml`. Any out-of-scope node exits non-zero. Use `--scope`
+for an equivalent declaration file with another name or location:
+
+```bash
+lattence policy check lattence-report.json
+lattence policy check lattence-report.json --scope declared-scope.yaml --json
+```
+
+### Optional external engines
+
+Lattence has adapters for Garak, PyRIT, and Promptfoo. Install and configure an
+engine from its upstream package, then enable its adapter in the same output
+directory used by `attack`:
+
+```bash
+lattence provider list --out .
+lattence provider enable garak --out .
+lattence attack . --out .
+```
+
+`provider list` reports enablement and executable availability separately.
+Enabling an unavailable engine does not install it and does not break
+Lattence. An online attack runs adapters that are both enabled and available.
+`attack --offline` always skips external engines. Adapter output is normalized
+into the same `Finding` schema as native results.
+
+The `--planner llm` option is reserved but not implemented. It exits with a
+usage error. Use the default `--planner rules` mode.
+
 ## What it finds
 
 Lattence ships a native catalog of 15 attack rules. A sample:
@@ -143,7 +183,8 @@ Agentic Security Initiative mapping and a CWE identifier where one applies.
 
 ## Architecture
 
-Lattence runs three stages against a project on disk, offline. Discovery
+The native Lattence workflow runs three stages against a project on disk,
+offline. Discovery
 parses source, config, and dependency manifests into agents, tools, models,
 MCP servers, data stores, and cryptographic usage. Graph construction turns
 that discovery output into a directed security graph with stable node
@@ -180,8 +221,9 @@ severity threshold.
 ## Deployment modes
 
 Today, Lattence runs as a local CLI against a project checkout, and as a step
-in a CI pipeline using the same binary. Both modes are offline: scan, attack,
-and report never make a network call. There is no hosted service or API
+in a CI pipeline using the same binary. Native scan, attack, harden, policy,
+and report workflows can run offline. Enabled external engine adapters may
+make network calls during an online attack. There is no hosted service or API
 server yet.
 
 ## Extending it
@@ -222,9 +264,11 @@ are explicitly authorized to test.
   the project root that names the target and acknowledges
   `owned-or-authorized`. Project targets cannot resolve outside the
   declared root, and URL targets cannot embed credentials.
-- Scan, attack, and report make no network calls and execute none of the
-  target project's code. Detection and attack rules match on parsed source,
-  configuration, and graph structure.
+- Native scan, attack, harden, policy, and report workflows make no network
+  calls and execute none of the target project's code. Detection and native
+  attack rules match on parsed source, configuration, and graph structure.
+- External engines are opt in. Their own target, credential, network, and data
+  handling rules apply. Use `--offline` to prevent external provider execution.
 - Reports include file paths and matched code locations. Treat generated
   reports as sensitive and store them with the same access controls as the
   scanned project.
