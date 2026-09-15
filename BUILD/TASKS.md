@@ -164,7 +164,7 @@ section and diagrams for the end-to-end workflow.
 [T-077] [v0.4] [UX] render crypto graph, migration, agility, and downgrade terminal output | deps: T-070,T-075,T-076 | status: done | commit: self
 [T-078] [v0.4] [UX] create flagship crypto architecture and migration workflow diagrams | deps: T-077 | status: done | commit: self
 [T-079] [v0.4] [SHIP] author the complete v0.4 cryptography documentation section | deps: T-076,T-078 | status: done | commit: self
-[T-080] [v0.4] [SHIP] pass clean-clone crypto assessment, chaos, and downgrade acceptance | deps: T-079 | status: todo | commit: self
+[T-080] [v0.4] [SHIP] pass clean-clone crypto assessment, chaos, and downgrade acceptance | deps: T-079 | status: done | commit: self
 [T-081] [v0.4] [ORCH] record the v0.4 release gate and changelog | deps: T-080 | status: todo | commit: self
 
 ## v0.4 scope notes

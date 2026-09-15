@@ -1,0 +1,7 @@
+version: "1"
+authorization: owned-or-authorized
+targets:
+  - kind: project
+    value: "."
+  - kind: project
+    value: "tls.conf"

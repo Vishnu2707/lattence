@@ -78,6 +78,14 @@ jobs:
           /tmp/lattence-acceptance/bin/lattence harden lattence-report.json --fail-on none
           /tmp/lattence-acceptance/bin/lattence policy check lattence-report.json
           test -f lattence-report.html
+          cd ../crypto-migration
+          cp tls.conf /tmp/lattence-tls-original.conf
+          /tmp/lattence-acceptance/bin/lattence pqc assess . --offline --json --out /tmp/lattence-crypto-report --fail-on none > /tmp/lattence-pqc.json
+          /tmp/lattence-acceptance/bin/lattence crypto chaos . --offline --json --out /tmp/lattence-crypto-report --fail-on none > /tmp/lattence-chaos.json
+          cmp tls.conf /tmp/lattence-tls-original.conf
+          python -c 'import json; p=json.load(open("/tmp/lattence-pqc.json")); assert p["ml_kem"]["status"] == "already_migrated" and p["hybrid_tls"]["status"] == "valid"'
+          python -c 'import json; p=json.load(open("/tmp/lattence-chaos.json")); assert p["downgrade"]["status"] == "resistant" and len(p["downgrade"]["evidence"]) == 2'
+          test -f /tmp/lattence-crypto-report/lattence-report.html
 
   provenance:
     runs-on: ubuntu-latest

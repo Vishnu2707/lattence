@@ -194,3 +194,7 @@ T-079 adds the complete cryptographic assurance guide, links the flagship
 pipeline and safety diagrams, expands the README's PQC section, removes crypto
 chaos from the scaffold roadmap, and records the v0.4 feature set under the
 unreleased changelog.
+
+T-080 adds an isolated crypto migration fixture and extends clean-wheel
+acceptance to assert ML-KEM, ML-DSA, hybrid TLS, resistant key-exchange and
+signature downgrade probes, report generation, and byte-for-byte rollback.

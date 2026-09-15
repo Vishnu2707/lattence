@@ -231,6 +231,9 @@ restores and checksum-verifies the original bytes on every outcome. See the
 [complete cryptographic assurance guide](docs/crypto-assurance.md) and the
 [assurance pipeline](docs/architecture/crypto-assurance-pipeline.svg).
 
+The offline [`examples/crypto-migration`](examples/crypto-migration) fixture
+contains a complete hybrid configuration and an enforced no-fallback control.
+
 ## CI integration
 
 Run a scan on every push and fail the build on findings at or above a
