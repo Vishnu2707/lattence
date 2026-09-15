@@ -111,6 +111,7 @@ the frozen `SecurityProvider` interface.
 [T-061] [v0.3] [SHIP] pass clean-clone external provider, harden, and policy acceptance | deps: T-060 | status: done | commit: self
 [T-062] [v0.3] [SHIP] satisfy the milestone formatting gate for v0.3 changes | deps: T-061 | status: done | commit: self
 [T-063] [v0.3] [SHIP] satisfy the milestone strict typing gate for provider modules | deps: T-062 | status: done | commit: self
+[T-064] [v0.3] [ORCH] record the v0.3 release gate and changelog | deps: T-063 | status: done | commit: self
 
 ## v0.3 scope notes
 
@@ -135,6 +136,6 @@ the frozen `SecurityProvider` interface.
 
 ## v0.3 milestone gate
 
-After T-061, run the full suite, create and push the annotated `v0.3.0` tag on
+After T-064, run the full suite, create and push the annotated `v0.3.0` tag on
 `dev`, then run acceptance from a fresh clean clone. Hold at the tag for review
 before opening a milestone pull request or starting v0.4.

@@ -178,3 +178,8 @@ the source root for strict type checking. Provider modules now resolve as
 `lattence.providers` instead of appearing under two module names. Runtime
 method validation uses the built-in callable check. The complete CLI type
 command passes.
+
+T-064 recorded the v0.3 release gate. The full suite passes 215 tests at 89.84
+percent coverage, lint, formatting, seven strict type targets, package build
+and validation, provenance, and prose checks. The annotated v0.3.0 tag is
+pushed on `dev`, followed by clean-clone acceptance from the tag.

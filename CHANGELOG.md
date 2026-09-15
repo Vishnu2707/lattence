@@ -5,6 +5,8 @@ Versions before 1.0 may include breaking changes in a minor release.
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-09-15
+
 ### Added
 
 - Optional Garak, PyRIT, and Promptfoo adapters behind persistent provider
@@ -13,25 +15,22 @@ Versions before 1.0 may include breaking changes in a minor release.
 - `policy check` validation of report target nodes against a versioned declared
   scope, with non-zero exit on out-of-scope access.
 - An explicit usage error for the reserved `--planner llm` mode.
-- `README.md`, `SECURITY.md`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`,
-  `GOVERNANCE.md`, `MAINTAINERS.md`, `SUPPORT.md`, `ROADMAP.md`, and this
-  changelog.
-
-### Fixed
-
-- The built wheel now bundles the full runtime source (`discovery`,
-  `graph`, `evidence`, `mcp`, `lattence_ai`, `lattence_crypto`) and depends
-  on real third-party libraries instead of workspace-only package names.
-  Previously, installing the wheel outside the uv workspace failed.
 
 ### Changed
 
-- CI gained `types` (`mypy --strict` per package) and `acceptance`
-  (clean-venv install, then `scan`, `attack`, `report` against
-  `examples/vulnerable-agent`) jobs, alongside a coverage gate at 85
-  percent.
-- `.claude/`, a local coding-assistant mirror of `BUILD/agents/`, is no
-  longer tracked.
+- Clean-wheel acceptance now covers an optional external adapter, hardening,
+  and scope policy validation.
+
+## [0.2.0] - 2026-09-10
+
+### Added
+
+- Deterministic single-finding replay through `verify FINDING_ID`.
+
+### Changed
+
+- `scan`, `attack`, and `verify` apply the configured finding severity gate to
+  their exit codes.
 
 ## [0.1.0] - 2026-09-08
 
