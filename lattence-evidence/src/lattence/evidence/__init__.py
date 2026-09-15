@@ -15,6 +15,7 @@ from .models import (
     TranscriptEntry,
 )
 from .normalization import normalize_rule_finding
+from .remediation import RemediationError, RemediationPlan, remediation_plans
 from .reporting import (
     Report,
     ReportSummary,
@@ -37,6 +38,8 @@ __all__ = [
     "PolicyOutcome",
     "Report",
     "ReportSummary",
+    "RemediationError",
+    "RemediationPlan",
     "ReproductionRecipe",
     "Severity",
     "TelemetrySpan",
@@ -44,6 +47,7 @@ __all__ = [
     "TranscriptEntry",
     "build_report",
     "normalize_rule_finding",
+    "remediation_plans",
     "render_html_report",
     "report_json",
     "write_json_report",

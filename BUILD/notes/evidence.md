@@ -16,3 +16,9 @@ newline.
 T-037 added a self-contained HTML renderer with the frozen dark palette, dense
 summary metrics, finding and graph tables, embedded report JSON, responsive
 layout, and HTML escaping. It does not load external assets.
+
+T-055 added deterministic read-only remediation plans. Each plan contains the
+finding identifier, title, severity, existing remediation text, full target
+node, evidence identifier, and existing reproduction recipe. Plans may cover a
+whole report or one finding identifier. Unknown findings and missing graph
+targets fail explicitly.
