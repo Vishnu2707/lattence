@@ -50,3 +50,8 @@ factor is returned explicitly in deterministic order.
 T-071 defines dry-run-first crypto mutation plans. Plans require an exact
 project-relative declared path, UTF-8 text below one megabyte, no more than 32
 replacements, a bounded timeout, and a checksum of the untouched source.
+
+T-072 executes key-exchange downgrade plans only from PQC or hybrid groups to
+an allowlisted classical group. A bounded argument-vector probe observes the
+mutated state, and the original bytes are restored and checksum-verified after
+success, failure, launch error, or timeout.
