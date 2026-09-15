@@ -32,3 +32,7 @@ relationships and deduplicated source evidence; cycles are bounded.
 T-067 assesses ML-KEM-768 migration against discovered key-exchange assets and
 explicit runtime group capabilities. It distinguishes an existing migration,
 direct readiness, hybrid-transition readiness, and concrete blocking factors.
+
+T-068 applies the same deterministic migration states to ML-DSA-65 signing
+assets, including vulnerable certificates, explicit signature capabilities,
+and classical-plus-PQC credential transitions.

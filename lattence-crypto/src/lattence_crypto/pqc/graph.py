@@ -73,6 +73,7 @@ def _project_node(node: Node) -> CryptoGraphNode:
         name=node.name,
         source_path=source_path,
         quantum_status=quantum_status,
+        purpose="signature" if isinstance(node, Certificate) else None,
     )
 
 
