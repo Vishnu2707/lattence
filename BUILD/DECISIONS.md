@@ -37,3 +37,7 @@ Rationale: BUILD/DESIGN.md allows a banner on the version command and at TUI sta
 2026-09-10 D-008
 Decision: v0.2 scopes to CLI-contract gaps with a precise existing spec (the fail-on exit gate, finding replay verification), and defers harden, tui, crypto chaos, provider, policy, and the llm planner pending a scoping decision for each.
 Rationale: BUILD/CONTRACTS.md names these commands but does not specify their behavior in enough detail to implement without inventing product decisions unilaterally.
+
+2026-09-15 D-009
+Decision: v0.3 adds optional Garak, PyRIT, and Promptfoo adapters, read-only harden output, and declared-scope policy checks. TUI moves to v0.5, crypto chaos stays in v0.4, and the LLM planner moves to v0.4 or later with an explicit v0.3 not-implemented error.
+Rationale: This scope preserves frozen interfaces, keeps external engines optional, and separates read-only guidance and policy enforcement from mutation and model-backed planning.

@@ -83,31 +83,56 @@ reading the existing report from `--out` (there is no path argument on
 `PASS` if it no longer does, or `BLOCKED` if the finding id or report is not
 found, per the valid state words in `BUILD/DESIGN.md`.
 
-## Deferred pending a design decision
-
-These CLI-contract commands remain scaffolds. Each needs a scoping decision
-before it can become a task, because the contracts name the command but not
-its behavior in enough detail to implement without inventing it:
-
-- `harden`: no spec for what it changes or how a change is proposed, applied,
-  or reverted.
-- `tui`: `BUILD/DESIGN.md` specifies the dashboard information architecture
-  in detail; this is the most ready of the deferred items, but is a large
-  unit of work (a full-screen keyboard-driven view, not a small task).
-- `crypto chaos`: `BUILD/agents/CHAOS.md` requires mutations to be reversible
-  and bounded, but no task has defined what gets mutated or how.
-- `provider enable` / `provider list`: unclear whether "provider" means the
-  `SecurityProvider` plugin interface in `BUILD/CONTRACTS.md`, or enabling
-  model-provider detection rules already in `lattence-packs/discovery/providers/`.
-- `policy check`: `PolicyDecision` already exists per-finding in evidence;
-  unclear what a standalone policy check command evaluates that `scan` does
-  not already produce.
-- `--planner llm`: `BUILD/agents/PLAN.md` specifies caching, retry, and
-  fallback behavior, but bringing in a real model provider call is a larger
-  and riskier unit of work than the other items here.
-
 ## Milestone gate
 
 After the last v0.2 task, run the full suite, create the annotated `v0.2` tag
 on `dev`, and hold for review before opening a pull request to `main` or
 starting v0.3.
+
+# v0.3 task ledger
+
+v0.3 adds optional external security engines, read-only remediation output,
+and declared-scope policy validation. External engines are never hard
+dependencies. Their results normalize into the frozen `Finding` schema through
+the frozen `SecurityProvider` interface.
+
+[T-049] [v0.3] [AISEC] implement the SecurityProvider runtime and strict provider result validation | deps: T-002,T-024 | status: todo
+[T-050] [v0.3] [AISEC] add an optional Garak SecurityProvider adapter | deps: T-049 | status: todo
+[T-051] [v0.3] [AISEC] add an optional PyRIT SecurityProvider adapter | deps: T-049 | status: todo
+[T-052] [v0.3] [AISEC] add an optional Promptfoo SecurityProvider adapter | deps: T-049 | status: todo
+[T-053] [v0.3] [SHIP] persist provider enablement and wire provider enable and list | deps: T-049 | status: todo
+[T-054] [v0.3] [AISEC] execute enabled external providers and merge normalized findings into attack reports | deps: T-050,T-051,T-052,T-053 | status: todo
+[T-055] [v0.3] [EVID] build structured read-only remediation plans from report findings and evidence | deps: T-036 | status: todo
+[T-056] [v0.3] [SHIP] wire harden for a finding id or scan report without modifying project files | deps: T-055 | status: todo
+[T-057] [v0.3] [SHIP] validate report target nodes against a versioned declared-scope file | deps: T-023,T-036 | status: todo
+[T-058] [v0.3] [SHIP] wire policy check with non-zero exit on every out-of-scope target node | deps: T-057 | status: todo
+[T-059] [v0.3] [SHIP] reject --planner llm with a clear not-implemented error | deps: T-004 | status: todo
+[T-060] [v0.3] [SHIP] document v0.3 commands and optional external engine setup | deps: T-054,T-056,T-058,T-059 | status: todo
+[T-061] [v0.3] [SHIP] pass clean-clone external provider, harden, and policy acceptance | deps: T-060 | status: todo
+
+## v0.3 scope notes
+
+- `harden` is read-only. It prints a structured remediation list per finding
+  from `Finding.remediation`, the target node, and reproduction context in the
+  evidence bundle. It has no patch or file-modification mode.
+- `provider enable` and `provider list` manage Garak, PyRIT, and Promptfoo
+  adapters. Missing external engines produce an unavailable provider state,
+  not an installation failure for Lattence.
+- `policy check` reads a scan or attack report and a
+  `lattence.targets.yaml` or equivalent versioned scope declaration. It checks
+  the actual target nodes recorded in the report graph and exits non-zero when
+  any touched node is outside the declaration.
+- `--planner llm` remains recognized but not implemented. It fails clearly and
+  never falls back silently.
+
+## Deferred after v0.3
+
+- `tui` moves to v0.5 with the dashboard so both use one visual grammar.
+- `crypto chaos` remains in v0.4 as originally scheduled.
+- The model-backed LLM planner moves to v0.4 or later.
+
+## v0.3 milestone gate
+
+After T-061, run the full suite, create and push the annotated `v0.3.0` tag on
+`dev`, then run acceptance from a fresh clean clone. Hold at the tag for review
+before opening a milestone pull request or starting v0.4.
