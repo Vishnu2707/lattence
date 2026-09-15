@@ -52,13 +52,7 @@ def load_target_declaration(root: Path) -> TargetDeclaration:
         raise TargetDeclarationError(
             f"attack requires {TARGET_DECLARATION_NAME} in the target root"
         )
-    try:
-        document = yaml.safe_load(declaration_path.read_text(encoding="utf-8"))
-        declaration = TargetDeclaration.model_validate(document)
-    except (OSError, UnicodeError, YAMLError, ValidationError) as error:
-        raise TargetDeclarationError(
-            f"invalid target declaration: {TARGET_DECLARATION_NAME}"
-        ) from error
+    declaration = load_scope_declaration(declaration_path)
     if not any(
         target.kind == "project" and target.value in {".", "./"}
         for target in declaration.targets
@@ -66,4 +60,18 @@ def load_target_declaration(root: Path) -> TargetDeclaration:
         raise TargetDeclarationError(
             "target declaration must authorize the project root"
         )
+    return declaration
+
+
+def load_scope_declaration(source: Path) -> TargetDeclaration:
+    declaration_path = source / TARGET_DECLARATION_NAME if source.is_dir() else source
+    if declaration_path.is_symlink() or not declaration_path.is_file():
+        raise TargetDeclarationError("declared-scope file not found")
+    try:
+        document = yaml.safe_load(declaration_path.read_text(encoding="utf-8"))
+        declaration = TargetDeclaration.model_validate(document)
+    except (OSError, UnicodeError, YAMLError, ValidationError) as error:
+        raise TargetDeclarationError(
+            f"invalid target declaration: {declaration_path.name}"
+        ) from error
     return declaration

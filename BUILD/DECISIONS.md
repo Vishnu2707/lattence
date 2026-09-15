@@ -57,3 +57,7 @@ Rationale: This preserves optional installation and gives the existing offline f
 2026-09-15 D-013
 Decision: `harden INPUT` treats an `LT-` value as a finding identifier resolved from the report under `--out`; every other value is a report path or directory.
 Rationale: The frozen command has one positional argument, so this preserves that contract while supporting both requested read-only input forms.
+
+2026-09-15 D-014
+Decision: Policy checks define touched nodes as unique `Finding.target_node_id` values recorded in a report, with remote non-offline reproductions requiring matching URL scope.
+Rationale: Findings record the targets actually exercised, while requiring URL declarations prevents project source authorization from implicitly authorizing external endpoint attacks.

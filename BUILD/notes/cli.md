@@ -138,3 +138,10 @@ prints only that plan. Text output contains the target, action, evidence, and
 reproduction context. JSON output contains the complete structured plans.
 Severity gates apply to the selected plans. Tests confirm that the command does
 not modify the project or report.
+
+T-057 added declared-scope evaluation for completed reports. Finding target
+identifiers define the graph nodes touched by a run. Project declarations match
+project-relative source paths. URL declarations match remote node endpoints by
+origin and path boundary. A non-offline reproduction against a remote node
+requires URL scope rather than source-file scope. Scope files use the existing
+version 1 target declaration schema and may have any filename.
