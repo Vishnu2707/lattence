@@ -151,3 +151,8 @@ the target declaration beside the report by default. `--scope PATH` selects an
 equivalent declaration file explicitly. Plain and JSON output list the touched
 and out-of-scope node identifiers. Any out-of-scope node exits 1 regardless of
 the finding severity gate. Invalid reports or declarations exit 2.
+
+T-059 made the shared `--planner llm` parser fail with usage exit code 2 and a
+clear not-implemented message. The callback applies to all 12 commands. Rules
+remain the default, and no command can silently discard an explicit LLM planner
+request.
