@@ -1,3 +1,4 @@
+from .crypto_normalization import normalize_crypto_findings
 from .models import (
     Confidence,
     Digest,
@@ -47,6 +48,7 @@ __all__ = [
     "TranscriptEntry",
     "build_report",
     "normalize_rule_finding",
+    "normalize_crypto_findings",
     "remediation_plans",
     "render_html_report",
     "report_json",

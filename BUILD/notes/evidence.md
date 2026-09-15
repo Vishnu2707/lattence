@@ -22,3 +22,8 @@ finding identifier, title, severity, existing remediation text, full target
 node, evidence identifier, and existing reproduction recipe. Plans may cover a
 whole report or one finding identifier. Unknown findings and missing graph
 targets fail explicitly.
+
+T-075 normalizes blocked ML-KEM and ML-DSA migrations, limited agility,
+accepted downgrades, and incomplete downgrade validation into stable
+`LT-PQC-2xx` findings. Evidence contains deterministic summaries and hashes,
+never mutated file content.

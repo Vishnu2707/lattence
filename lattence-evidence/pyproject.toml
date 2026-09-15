@@ -2,7 +2,12 @@
 name = "lattence-evidence"
 version = "0.0.0"
 requires-python = ">=3.12"
-dependencies = ["jsonschema>=4.23,<5", "lattence-core", "pydantic>=2.11,<3"]
+dependencies = [
+  "jsonschema>=4.23,<5",
+  "lattence-core",
+  "lattence-crypto",
+  "pydantic>=2.11,<3",
+]
 
 [build-system]
 requires = ["hatchling>=1.27"]
@@ -13,3 +18,4 @@ packages = ["src/lattence"]
 
 [tool.uv.sources]
 lattence-core = { workspace = true }
+lattence-crypto = { workspace = true }
