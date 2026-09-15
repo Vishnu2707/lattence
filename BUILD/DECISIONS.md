@@ -69,3 +69,7 @@ Rationale: Automatic lookup covers the standard project-local workflow, while th
 2026-09-15 D-016
 Decision: The combined wheel carries a root PEP 561 marker, and strict type checking uses `lattence-cli/src` as an explicit package base.
 Rationale: The project uses a namespace package in source and a combined wheel at distribution time, so both contexts need one canonical `lattence.providers` module path.
+
+2026-09-15 D-017
+Decision: v0.4 is the flagship cryptography release: crypto graph projections, direct and transitive quantum-vulnerable dependency detection, separate ML-KEM and ML-DSA migration tests, hybrid TLS validation, deterministic crypto agility scoring, consent-gated reversible crypto chaos, downgrade validation, and a complete documentation section with diagrams.
+Rationale: This preserves the frozen graph and report contracts while connecting the existing cryptographic inventory to actionable migration and safely contained resilience testing; the model-backed LLM planner remains deferred.

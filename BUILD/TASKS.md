@@ -139,3 +139,55 @@ the frozen `SecurityProvider` interface.
 After T-064, run the full suite, create and push the annotated `v0.3.0` tag on
 `dev`, then run acceptance from a fresh clean clone. Hold at the tag for review
 before opening a milestone pull request or starting v0.4.
+
+# v0.4 task ledger
+
+v0.4 is the flagship post-quantum release. It turns discovered cryptography
+into a dependency graph, identifies quantum-vulnerable dependency paths,
+tests ML-KEM and ML-DSA migration readiness, validates hybrid TLS, scores
+crypto agility, and runs bounded reversible downgrade chaos only against
+explicitly declared targets. The release includes a complete documentation
+section and diagrams for the end-to-end workflow.
+
+[T-065] [v0.4] [CRYPTO] build deterministic cryptographic dependency graph projections | deps: T-020,T-034 | status: todo | commit: self
+[T-066] [v0.4] [CRYPTO] detect quantum-vulnerable direct and transitive dependency paths | deps: T-065 | status: todo | commit: self
+[T-067] [v0.4] [CRYPTO] test ML-KEM migration compatibility and readiness | deps: T-065,T-066 | status: todo | commit: self
+[T-068] [v0.4] [CRYPTO] test ML-DSA migration compatibility and readiness | deps: T-065,T-066 | status: todo | commit: self
+[T-069] [v0.4] [CRYPTO] validate hybrid TLS key exchange and signature configurations | deps: T-067,T-068 | status: todo | commit: self
+[T-070] [v0.4] [CRYPTO] calculate deterministic crypto agility scores and limiting factors | deps: T-066,T-067,T-068,T-069 | status: todo | commit: self
+[T-071] [v0.4] [CHAOS] define bounded reversible crypto mutation plans and safety guards | deps: T-023,T-065 | status: todo | commit: self
+[T-072] [v0.4] [CHAOS] execute contained key-exchange downgrade experiments with rollback | deps: T-067,T-069,T-071 | status: todo | commit: self
+[T-073] [v0.4] [CHAOS] execute contained signature downgrade experiments with rollback | deps: T-068,T-069,T-071 | status: todo | commit: self
+[T-074] [v0.4] [CHAOS] validate downgrade resistance with deterministic evidence capture | deps: T-072,T-073 | status: todo | commit: self
+[T-075] [v0.4] [EVID] normalize migration, agility, and downgrade results into findings | deps: T-070,T-074 | status: todo | commit: self
+[T-076] [v0.4] [SHIP] wire PQC assessment and consent-gated crypto chaos workflows | deps: T-023,T-075 | status: todo | commit: self
+[T-077] [v0.4] [UX] render crypto graph, migration, agility, and downgrade terminal output | deps: T-070,T-075,T-076 | status: todo | commit: self
+[T-078] [v0.4] [UX] create flagship crypto architecture and migration workflow diagrams | deps: T-077 | status: todo | commit: self
+[T-079] [v0.4] [SHIP] author the complete v0.4 cryptography documentation section | deps: T-076,T-078 | status: todo | commit: self
+[T-080] [v0.4] [SHIP] pass clean-clone crypto assessment, chaos, and downgrade acceptance | deps: T-079 | status: todo | commit: self
+[T-081] [v0.4] [ORCH] record the v0.4 release gate and changelog | deps: T-080 | status: todo | commit: self
+
+## v0.4 scope notes
+
+- The crypto graph is an offline deterministic projection of the existing
+  security graph and discovery evidence. It includes algorithms, libraries,
+  certificates, TLS configuration, and the dependency paths that connect
+  them, without changing frozen graph or report schemas.
+- Quantum-vulnerable dependency detection covers direct and transitive paths.
+  Migration testing separately evaluates ML-KEM key establishment and ML-DSA
+  signatures, then validates classical-plus-PQC hybrid TLS configurations.
+- Crypto agility is a deterministic score with explicit limiting factors,
+  derived from replaceability, configurability, dependency exposure,
+  migration readiness, and downgrade resistance.
+- Crypto chaos requires an owned-target declaration, operates only on bounded
+  local configuration targets, records deterministic dry runs and evidence,
+  and restores every mutation on success, failure, or timeout.
+- `--planner llm` remains recognized but not implemented in v0.4. It continues
+  to fail clearly instead of falling back to the rules planner.
+
+## v0.4 milestone gate
+
+After T-081, run the full suite, create and push the annotated `v0.4.0` tag on
+`dev`, then run crypto assessment, consent-gated chaos, downgrade validation,
+and documentation acceptance from a fresh clean clone. Hold at the tag for
+review before opening a milestone pull request or starting v0.5.

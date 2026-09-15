@@ -1,8 +1,8 @@
 # Current state
 
-- Milestone: v0.3.0 complete and tagged
-- Last completed: T-064, v0.3 release gate
-- Next task: hold for review before v0.4
+- Milestone: v0.4.0 scoped
+- Last completed: v0.4 task planning
+- Next task: T-065, build deterministic cryptographic dependency graph projections
 - Blockers: none
 - Manual steps: branch protection and tag protection commands from the
   v0.1.0 release are still printed for review only, not run
@@ -17,3 +17,4 @@
 - v0.1 tasks: 45 done
 - v0.2 tasks: 3 done (T-046, T-047, T-048), 0 todo
 - v0.3 tasks: 16 done (T-049 through T-064), 0 todo
+- v0.4 tasks: 0 done, 17 todo (T-065 through T-081)
