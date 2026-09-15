@@ -157,7 +157,7 @@ section and diagrams for the end-to-end workflow.
 [T-070] [v0.4] [CRYPTO] calculate deterministic crypto agility scores and limiting factors | deps: T-066,T-067,T-068,T-069 | status: done | commit: self
 [T-071] [v0.4] [CHAOS] define bounded reversible crypto mutation plans and safety guards | deps: T-023,T-065 | status: done | commit: self
 [T-072] [v0.4] [CHAOS] execute contained key-exchange downgrade experiments with rollback | deps: T-067,T-069,T-071 | status: done | commit: self
-[T-073] [v0.4] [CHAOS] execute contained signature downgrade experiments with rollback | deps: T-068,T-069,T-071 | status: todo | commit: self
+[T-073] [v0.4] [CHAOS] execute contained signature downgrade experiments with rollback | deps: T-068,T-069,T-071 | status: done | commit: self
 [T-074] [v0.4] [CHAOS] validate downgrade resistance with deterministic evidence capture | deps: T-072,T-073 | status: todo | commit: self
 [T-075] [v0.4] [EVID] normalize migration, agility, and downgrade results into findings | deps: T-070,T-074 | status: todo | commit: self
 [T-076] [v0.4] [SHIP] wire PQC assessment and consent-gated crypto chaos workflows | deps: T-023,T-075 | status: todo | commit: self

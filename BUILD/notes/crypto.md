@@ -55,3 +55,7 @@ T-072 executes key-exchange downgrade plans only from PQC or hybrid groups to
 an allowlisted classical group. A bounded argument-vector probe observes the
 mutated state, and the original bytes are restored and checksum-verified after
 success, failure, launch error, or timeout.
+
+T-073 applies the same contained executor and rollback guarantee to signature
+downgrades, allowing only recognized PQC or hybrid sources and allowlisted
+classical signature destinations.

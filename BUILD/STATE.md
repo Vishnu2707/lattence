@@ -1,8 +1,8 @@
 # Current state
 
 - Milestone: v0.4.0 scoped
-- Last completed: T-072, execute contained key-exchange downgrade experiments with rollback
-- Next task: T-073, execute contained signature downgrade experiments with rollback
+- Last completed: T-073, execute contained signature downgrade experiments with rollback
+- Next task: T-074, validate downgrade resistance with deterministic evidence capture
 - Blockers: none
 - Manual steps: branch protection and tag protection commands from the
   v0.1.0 release are still printed for review only, not run
@@ -17,4 +17,4 @@
 - v0.1 tasks: 45 done
 - v0.2 tasks: 3 done (T-046, T-047, T-048), 0 todo
 - v0.3 tasks: 16 done (T-049 through T-064), 0 todo
-- v0.4 tasks: 8 done, 9 todo (T-073 through T-081)
+- v0.4 tasks: 9 done, 8 todo (T-074 through T-081)
