@@ -1,8 +1,8 @@
 # Current state
 
 - Milestone: v0.4.0 scoped
-- Last completed: T-065, build deterministic cryptographic dependency graph projections
-- Next task: T-066, detect quantum-vulnerable direct and transitive dependency paths
+- Last completed: T-066, detect quantum-vulnerable direct and transitive dependency paths
+- Next task: T-067, test ML-KEM migration compatibility and readiness
 - Blockers: none
 - Manual steps: branch protection and tag protection commands from the
   v0.1.0 release are still printed for review only, not run
@@ -17,4 +17,4 @@
 - v0.1 tasks: 45 done
 - v0.2 tasks: 3 done (T-046, T-047, T-048), 0 todo
 - v0.3 tasks: 16 done (T-049 through T-064), 0 todo
-- v0.4 tasks: 1 done, 16 todo (T-066 through T-081)
+- v0.4 tasks: 2 done, 15 todo (T-067 through T-081)

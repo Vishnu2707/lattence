@@ -14,7 +14,12 @@ from lattence_crypto.pqc import build_crypto_graph
 
 def test_projects_crypto_assets_libraries_and_transitive_ancestors() -> None:
     application = Application(id="application:demo", name="demo")
-    certificate = Certificate(id="certificate:server", name="server")
+    certificate = Certificate(
+        id="certificate:server",
+        name="server",
+        public_key_algorithm="RSA",
+        signature_algorithm="sha256WithRSAEncryption",
+    )
     algorithm = CryptoAlgorithm(
         id="crypto_algorithm:x25519",
         name="X25519",
@@ -67,6 +72,10 @@ def test_projects_crypto_assets_libraries_and_transitive_ancestors() -> None:
         "implements",
         algorithm.id,
     ) in relationships
+    projected_certificate = next(
+        node for node in projection.nodes if node.id == certificate.id
+    )
+    assert projected_certificate.quantum_status == "vulnerable"
 
 
 def test_projection_excludes_unrelated_components_and_is_deterministic() -> None:

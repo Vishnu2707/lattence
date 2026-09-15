@@ -150,7 +150,7 @@ explicitly declared targets. The release includes a complete documentation
 section and diagrams for the end-to-end workflow.
 
 [T-065] [v0.4] [CRYPTO] build deterministic cryptographic dependency graph projections | deps: T-020,T-034 | status: done | commit: self
-[T-066] [v0.4] [CRYPTO] detect quantum-vulnerable direct and transitive dependency paths | deps: T-065 | status: todo | commit: self
+[T-066] [v0.4] [CRYPTO] detect quantum-vulnerable direct and transitive dependency paths | deps: T-065 | status: done | commit: self
 [T-067] [v0.4] [CRYPTO] test ML-KEM migration compatibility and readiness | deps: T-065,T-066 | status: todo | commit: self
 [T-068] [v0.4] [CRYPTO] test ML-DSA migration compatibility and readiness | deps: T-065,T-066 | status: todo | commit: self
 [T-069] [v0.4] [CRYPTO] validate hybrid TLS key exchange and signature configurations | deps: T-067,T-068 | status: todo | commit: self

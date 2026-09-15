@@ -24,3 +24,7 @@ T-065 added an offline crypto dependency projection. It retains algorithms,
 certificates, their transitive graph ancestors, original relationship evidence,
 and optional discovered library links in stable order without changing the
 frozen security graph schema.
+
+T-066 identifies every direct and transitive path into algorithms and
+certificates classified as quantum-vulnerable. Paths retain ordered graph
+relationships and deduplicated source evidence; cycles are bounded.

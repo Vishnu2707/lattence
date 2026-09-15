@@ -55,11 +55,22 @@ def _project_node(node: Node) -> CryptoGraphNode:
             quantum_status=node.quantum_status,
             implementation=node.implementation,
         )
+    quantum_status = None
+    if isinstance(node, Certificate):
+        certificate_algorithms = " ".join(
+            filter(None, (node.public_key_algorithm, node.signature_algorithm))
+        ).lower()
+        if any(
+            name in certificate_algorithms
+            for name in ("dsa", "ec", "ed25519", "ed448", "rsa")
+        ):
+            quantum_status = "vulnerable"
     return CryptoGraphNode(
         id=node.id,
         kind=_kind(node),
         name=node.name,
         source_path=source_path,
+        quantum_status=quantum_status,
     )
 
 
