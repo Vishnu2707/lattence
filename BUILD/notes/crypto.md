@@ -36,3 +36,8 @@ direct readiness, hybrid-transition readiness, and concrete blocking factors.
 T-068 applies the same deterministic migration states to ML-DSA-65 signing
 assets, including vulnerable certificates, explicit signature capabilities,
 and classical-plus-PQC credential transitions.
+
+T-069 validates hybrid TLS as three independent requirements: TLS 1.3,
+classical-plus-PQC key exchange, and classical-plus-PQC signatures. It accepts
+explicit hybrid nodes or paired safe and vulnerable assets and reports partial
+configurations with exact missing requirements.
