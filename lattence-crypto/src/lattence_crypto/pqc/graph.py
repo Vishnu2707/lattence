@@ -18,6 +18,7 @@ class CryptoGraphNode:
     source_path: str | None = None
     quantum_status: str | None = None
     implementation: str | None = None
+    purpose: str | None = None
 
 
 @dataclass(frozen=True, order=True)
@@ -54,6 +55,7 @@ def _project_node(node: Node) -> CryptoGraphNode:
             source_path=source_path,
             quantum_status=node.quantum_status,
             implementation=node.implementation,
+            purpose=node.purpose,
         )
     quantum_status = None
     if isinstance(node, Certificate):
