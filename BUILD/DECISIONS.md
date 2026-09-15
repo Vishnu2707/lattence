@@ -65,3 +65,7 @@ Rationale: Findings record the targets actually exercised, while requiring URL d
 2026-09-15 D-015
 Decision: `policy check` auto-loads `lattence.targets.yaml` beside the report and accepts `--scope PATH` for an equivalent declaration file.
 Rationale: Automatic lookup covers the standard project-local workflow, while the explicit option supports renamed or separately stored scope declarations.
+
+2026-09-15 D-016
+Decision: The combined wheel carries a root PEP 561 marker, and strict type checking uses `lattence-cli/src` as an explicit package base.
+Rationale: The project uses a namespace package in source and a combined wheel at distribution time, so both contexts need one canonical `lattence.providers` module path.

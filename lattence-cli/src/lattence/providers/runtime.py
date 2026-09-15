@@ -1,4 +1,3 @@
-from collections.abc import Callable
 from typing import Protocol, cast, runtime_checkable
 
 from lattence.evidence import Finding
@@ -28,7 +27,7 @@ class SecurityProvider(Protocol):
 def validate_provider(provider: object) -> SecurityProvider:
     for method in _METHODS:
         candidate = getattr(provider, method, None)
-        if not isinstance(candidate, Callable):
+        if not callable(candidate):
             raise ProviderValidationError(f"provider is missing method: {method}")
     return cast(SecurityProvider, provider)
 

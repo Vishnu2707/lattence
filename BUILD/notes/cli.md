@@ -172,3 +172,9 @@ package or network service.
 T-062 applied the repository formatter to six v0.3 Python files identified by
 the milestone gate. The CLI tests, lint, format check, build, and package checks
 pass after the mechanical changes.
+
+T-063 added the PEP 561 marker for the combined `lattence` wheel and configured
+the source root for strict type checking. Provider modules now resolve as
+`lattence.providers` instead of appearing under two module names. Runtime
+method validation uses the built-in callable check. The complete CLI type
+command passes.

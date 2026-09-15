@@ -1,7 +1,7 @@
 # Current state
 
 - Milestone: v0.3 implementation
-- Last completed: T-062, task commit
+- Last completed: T-063, task commit
 - Next task: run the full suite and tag v0.3.0
 - Blockers: none
 - Manual steps: branch protection and tag protection commands from the
@@ -16,4 +16,4 @@
 - Design: frozen at version 1.0
 - v0.1 tasks: 45 done
 - v0.2 tasks: 3 done (T-046, T-047, T-048), 0 todo
-- v0.3 tasks: 14 done (T-049 through T-062), 0 todo
+- v0.3 tasks: 15 done (T-049 through T-063), 0 todo

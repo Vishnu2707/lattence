@@ -110,6 +110,7 @@ the frozen `SecurityProvider` interface.
 [T-060] [v0.3] [SHIP] document v0.3 commands and optional external engine setup | deps: T-054,T-056,T-058,T-059 | status: done | commit: self
 [T-061] [v0.3] [SHIP] pass clean-clone external provider, harden, and policy acceptance | deps: T-060 | status: done | commit: self
 [T-062] [v0.3] [SHIP] satisfy the milestone formatting gate for v0.3 changes | deps: T-061 | status: done | commit: self
+[T-063] [v0.3] [SHIP] satisfy the milestone strict typing gate for provider modules | deps: T-062 | status: done | commit: self
 
 ## v0.3 scope notes
 
