@@ -19,3 +19,8 @@ T-035 added a deterministic readiness summary. Safe algorithms receive full
 credit, hybrid algorithms receive half credit, and vulnerable or unknown
 algorithms receive none. The result rounds half points up and returns zero when
 the inventory is empty.
+
+T-065 added an offline crypto dependency projection. It retains algorithms,
+certificates, their transitive graph ancestors, original relationship evidence,
+and optional discovered library links in stable order without changing the
+frozen security graph schema.
