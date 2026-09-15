@@ -1,8 +1,8 @@
 # Current state
 
 - Milestone: v0.3 implementation
-- Last completed: T-053, task commit
-- Next task: T-054, external provider attack integration
+- Last completed: T-054, task commit
+- Next task: T-055, structured remediation plans
 - Blockers: none
 - Manual steps: branch protection and tag protection commands from the
   v0.1.0 release are still printed for review only, not run
@@ -16,4 +16,4 @@
 - Design: frozen at version 1.0
 - v0.1 tasks: 45 done
 - v0.2 tasks: 3 done (T-046, T-047, T-048), 0 todo
-- v0.3 tasks: 5 done (T-049 through T-053), 8 todo (T-054 through T-061)
+- v0.3 tasks: 6 done (T-049 through T-054), 7 todo (T-055 through T-061)

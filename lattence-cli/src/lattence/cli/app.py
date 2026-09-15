@@ -23,6 +23,7 @@ from .scaffold import common_options, path_command, pending
 from .targets import TargetDeclarationError, load_target_declaration
 from .workflow import (
     attack_text,
+    create_attack_report,
     create_report,
     exceeds_gate,
     load_report,
@@ -104,12 +105,13 @@ def attack(
     planner: PlannerOption = Planner.RULES,
     fail_on: FailOnOption = SeverityGate.HIGH,
 ) -> None:
-    del offline, planner
+    del planner
     try:
         load_target_declaration(path)
     except TargetDeclarationError as error:
         raise typer.BadParameter(str(error)) from error
-    result = create_report(path)
+    provider_directory = out.parent if out.suffix else out
+    result = create_attack_report(path, provider_directory, offline)
     write_report_artifacts(result, out)
     if json_output:
         typer.echo(machine_report(result), nl=False)

@@ -124,3 +124,10 @@ current directory. Enablement is independent of executable availability, so a
 provider can be configured before its optional engine is installed. Text and
 JSON listings report enabled and available states separately. The provider
 command group moved out of `app.py`, returning that source below 300 lines.
+
+T-054 added the external provider lifecycle to `attack`. Available enabled
+providers may discover graph nodes, generate tests, execute them, and normalize
+their results. Provider tests must target known nodes, and finding identifiers
+must remain unique across native and external results. Normalized findings are
+merged through the existing report builder. `--offline` skips all external
+provider execution.

@@ -5,6 +5,7 @@ from .registry import (
     ProviderRegistryError,
     ProviderState,
     enable_provider,
+    enabled_providers,
     list_providers,
 )
 from .runtime import (
@@ -25,5 +26,6 @@ __all__ = [
     "normalize_provider_result",
     "validate_provider",
     "enable_provider",
+    "enabled_providers",
     "list_providers",
 ]

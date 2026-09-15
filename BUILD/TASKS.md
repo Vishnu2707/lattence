@@ -101,7 +101,7 @@ the frozen `SecurityProvider` interface.
 [T-051] [v0.3] [SHIP] add an optional PyRIT SecurityProvider adapter | deps: T-049 | status: done | commit: self
 [T-052] [v0.3] [SHIP] add an optional Promptfoo SecurityProvider adapter | deps: T-049 | status: done | commit: self
 [T-053] [v0.3] [SHIP] persist provider enablement and wire provider enable and list | deps: T-049 | status: done | commit: self
-[T-054] [v0.3] [SHIP] execute enabled external providers and merge normalized findings into attack reports | deps: T-050,T-051,T-052,T-053 | status: todo
+[T-054] [v0.3] [SHIP] execute enabled external providers and merge normalized findings into attack reports | deps: T-050,T-051,T-052,T-053 | status: done | commit: self
 [T-055] [v0.3] [EVID] build structured read-only remediation plans from report findings and evidence | deps: T-036 | status: todo
 [T-056] [v0.3] [SHIP] wire harden for a finding id or scan report without modifying project files | deps: T-055 | status: todo
 [T-057] [v0.3] [SHIP] validate report target nodes against a versioned declared-scope file | deps: T-023,T-036 | status: todo

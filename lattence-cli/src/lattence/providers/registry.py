@@ -6,6 +6,8 @@ from typing import cast
 
 from lattence.graph import JsonValue
 
+from .runtime import SecurityProvider
+
 _EXECUTABLES = {
     "garak": "garak",
     "promptfoo": "promptfoo",
@@ -83,3 +85,20 @@ def enable_provider(name: str, directory: Path) -> ProviderState:
     )
     temporary.replace(path)
     return _state(normalized, enabled)
+
+
+def enabled_providers(directory: Path) -> tuple[SecurityProvider, ...]:
+    from .garak import GarakProvider
+    from .promptfoo import PromptfooProvider
+    from .pyrit import PyritProvider
+
+    factories = {
+        "garak": GarakProvider,
+        "promptfoo": PromptfooProvider,
+        "pyrit": PyritProvider,
+    }
+    return tuple(
+        factories[state.name]()
+        for state in list_providers(directory)
+        if state.enabled and state.available
+    )

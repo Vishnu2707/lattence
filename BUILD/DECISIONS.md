@@ -49,3 +49,7 @@ Rationale: External engines are integrations, while the AISEC role owns native a
 2026-09-15 D-011
 Decision: Provider enablement is stored in a version 1 `providers.json` file under the command's `--out` directory, and availability is detected independently.
 Rationale: Project-local state is deterministic and testable, while separate availability lets optional engines remain absent without invalidating configuration.
+
+2026-09-15 D-012
+Decision: Attack runs execute only providers that are both enabled and available, and `--offline` skips every external provider.
+Rationale: This preserves optional installation and gives the existing offline flag a strict no-external-execution guarantee.

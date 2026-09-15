@@ -5,6 +5,7 @@ import pytest
 from lattence.providers.registry import (
     ProviderRegistryError,
     enable_provider,
+    enabled_providers,
     list_providers,
 )
 
@@ -37,3 +38,18 @@ def test_registry_rejects_invalid_state(tmp_path: Path) -> None:
 
     with pytest.raises(ProviderRegistryError, match="version"):
         list_providers(tmp_path)
+
+
+def test_registry_builds_only_enabled_available_providers(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    enable_provider("garak", tmp_path)
+    enable_provider("pyrit", tmp_path)
+    monkeypatch.setattr(
+        "lattence.providers.registry.which",
+        lambda name: f"/bin/{name}" if name == "garak" else None,
+    )
+
+    providers = enabled_providers(tmp_path)
+
+    assert [type(provider).__name__ for provider in providers] == ["GarakProvider"]

@@ -1,4 +1,5 @@
 import json
+from collections.abc import Iterable
 from dataclasses import dataclass
 from importlib.metadata import version
 from pathlib import Path
@@ -24,6 +25,13 @@ from lattence.graph import (
     security_graph_json,
 )
 from lattence.mcp import discover_mcp_configs
+from lattence.providers import (
+    ProviderValidationError,
+    SecurityProvider,
+    enabled_providers,
+    normalize_provider_result,
+    validate_provider,
+)
 from lattence_ai.attacks import (
     AttackRunner,
     ObservationResult,
@@ -130,6 +138,53 @@ def create_report(root: Path) -> Report:
     return build_report(
         project, graph, findings, version("lattence"), readiness.score_percent
     )
+
+
+def run_external_providers(
+    report: Report, providers: Iterable[SecurityProvider]
+) -> Report:
+    project = report.project
+    graph = report.graph
+    findings = list(report.findings)
+    finding_ids = {finding.id for finding in findings}
+    for provider in providers:
+        checked = validate_provider(provider)
+        discovered = checked.discover(project)
+        if discovered:
+            nodes = [*graph.nodes, *discovered]
+            node_ids = [node.id for node in nodes]
+            if len(node_ids) != len(set(node_ids)):
+                raise ProviderValidationError("provider discovered a duplicate node")
+            project = project.model_copy(update={"nodes": nodes})
+            graph = graph.model_copy(update={"nodes": nodes})
+        known_nodes = {node.id for node in graph.nodes}
+        for test in checked.generate_tests(graph):
+            if test.target_node_id not in known_nodes:
+                raise ProviderValidationError(
+                    f"provider test targets unknown node: {test.target_node_id}"
+                )
+            raw = checked.execute(test)
+            for finding in normalize_provider_result(checked, test, raw):
+                if finding.id in finding_ids:
+                    raise ProviderValidationError(
+                        f"duplicate finding id across providers: {finding.id}"
+                    )
+                finding_ids.add(finding.id)
+                findings.append(finding)
+    return build_report(
+        project,
+        graph,
+        findings,
+        report.tool.version,
+        report.summary.pqc_readiness,
+    )
+
+
+def create_attack_report(root: Path, provider_directory: Path, offline: bool) -> Report:
+    report = create_report(root)
+    if offline:
+        return report
+    return run_external_providers(report, enabled_providers(provider_directory))
 
 
 def artifact_paths(output: Path) -> ArtifactPaths:
