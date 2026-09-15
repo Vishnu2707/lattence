@@ -161,7 +161,7 @@ section and diagrams for the end-to-end workflow.
 [T-074] [v0.4] [CHAOS] validate downgrade resistance with deterministic evidence capture | deps: T-072,T-073 | status: done | commit: self
 [T-075] [v0.4] [EVID] normalize migration, agility, and downgrade results into findings | deps: T-070,T-074 | status: done | commit: self
 [T-076] [v0.4] [SHIP] wire PQC assessment and consent-gated crypto chaos workflows | deps: T-023,T-075 | status: done | commit: self
-[T-077] [v0.4] [UX] render crypto graph, migration, agility, and downgrade terminal output | deps: T-070,T-075,T-076 | status: todo | commit: self
+[T-077] [v0.4] [UX] render crypto graph, migration, agility, and downgrade terminal output | deps: T-070,T-075,T-076 | status: done | commit: self
 [T-078] [v0.4] [UX] create flagship crypto architecture and migration workflow diagrams | deps: T-077 | status: todo | commit: self
 [T-079] [v0.4] [SHIP] author the complete v0.4 cryptography documentation section | deps: T-076,T-078 | status: todo | commit: self
 [T-080] [v0.4] [SHIP] pass clean-clone crypto assessment, chaos, and downgrade acceptance | deps: T-079 | status: todo | commit: self

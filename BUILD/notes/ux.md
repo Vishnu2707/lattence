@@ -43,3 +43,8 @@ a test run. This does not affect CI: every CI job starts from a fresh
 checkout, so its one `uv sync` builds everything from the same current
 source with nothing stale to shadow it. Revisit the packaging split if this
 keeps costing local iteration time.
+
+T-077 added a dense flagship crypto view with explicit graph, ML-KEM and
+ML-DSA migration, hybrid TLS, five-component agility, downgrade, and finding
+sections. Plain mode contains no terminal escapes; color mode uses the frozen
+status and heading tokens without making color the only signal.

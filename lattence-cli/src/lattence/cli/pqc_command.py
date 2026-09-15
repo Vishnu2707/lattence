@@ -1,3 +1,4 @@
+import sys
 from pathlib import Path
 from typing import Annotated
 
@@ -15,6 +16,7 @@ from .options import (
     QuietOption,
     SeverityGate,
 )
+from .presentation import render_crypto_assessment
 from .workflow import exceeds_gate, write_report_artifacts
 
 PathArgument = Annotated[Path, typer.Argument()]
@@ -30,18 +32,19 @@ def pqc_assess(
     planner: PlannerOption = Planner.RULES,
     fail_on: FailOnOption = SeverityGate.HIGH,
 ) -> None:
-    del offline, no_color, planner
+    del offline, planner
     assessment = create_crypto_assessment(path)
     write_report_artifacts(assessment.report, out)
     if json_output:
         typer.echo(crypto_assessment_json(assessment), nl=False)
     elif not quiet:
         typer.echo(
-            f"PQC readiness  {assessment.report.summary.pqc_readiness:g}%\n"
-            f"Crypto agility  {assessment.agility.percentage}%\n"
-            f"ML-KEM  {assessment.ml_kem.status}\n"
-            f"ML-DSA  {assessment.ml_dsa.status}\n"
-            f"Hybrid TLS  {assessment.hybrid_tls.status}"
+            render_crypto_assessment(
+                assessment,
+                path,
+                color=not no_color and sys.stdout.isatty(),
+            ),
+            nl=False,
         )
     if exceeds_gate(assessment.report.summary, fail_on):
         raise typer.Exit(code=1)

@@ -1,3 +1,4 @@
+import sys
 from pathlib import Path
 from typing import Annotated
 
@@ -20,6 +21,7 @@ from .options import (
     QuietOption,
     SeverityGate,
 )
+from .presentation import render_crypto_assessment
 from .targets import TargetDeclarationError, load_target_declaration
 from .workflow import exceeds_gate, write_report_artifacts
 
@@ -36,7 +38,7 @@ def crypto_chaos(
     planner: PlannerOption = Planner.RULES,
     fail_on: FailOnOption = SeverityGate.HIGH,
 ) -> None:
-    del offline, no_color, planner
+    del offline, planner
     try:
         declaration = load_target_declaration(path)
         declared_paths = tuple(
@@ -56,9 +58,12 @@ def crypto_chaos(
         typer.echo(crypto_assessment_json(assessment), nl=False)
     elif not quiet:
         typer.echo(
-            f"Crypto chaos  {assessment.downgrade.status}\n"
-            f"Experiments  {len(assessment.downgrade.evidence)}\n"
-            "Rollback  verified"
+            render_crypto_assessment(
+                assessment,
+                path,
+                color=not no_color and sys.stdout.isatty(),
+            ),
+            nl=False,
         )
     if exceeds_gate(assessment.report.summary, fail_on):
         raise typer.Exit(code=1)
