@@ -117,3 +117,10 @@ for each graph model target, reads the documented JSON output envelope, and
 normalizes failed red-team assertions into provider-neutral findings. Missing
 executables and malformed output remain provider errors. Promptfoo is not a
 Lattence package dependency.
+
+T-053 wired `provider enable NAME` and `provider list`. State is a version 1
+JSON document named `providers.json` under `--out`, which defaults to the
+current directory. Enablement is independent of executable availability, so a
+provider can be configured before its optional engine is installed. Text and
+JSON listings report enabled and available states separately. The provider
+command group moved out of `app.py`, returning that source below 300 lines.

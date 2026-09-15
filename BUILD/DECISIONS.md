@@ -45,3 +45,7 @@ Rationale: This scope preserves frozen interfaces, keeps external engines option
 2026-09-15 D-010
 Decision: The SecurityProvider runtime and external adapters live under the SHIP-owned `lattence.providers` namespace.
 Rationale: External engines are integrations, while the AISEC role owns native attack rules and explicitly excludes the provider interface.
+
+2026-09-15 D-011
+Decision: Provider enablement is stored in a version 1 `providers.json` file under the command's `--out` directory, and availability is detected independently.
+Rationale: Project-local state is deterministic and testable, while separate availability lets optional engines remain absent without invalidating configuration.

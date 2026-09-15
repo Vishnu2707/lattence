@@ -18,7 +18,8 @@ from .options import (
     SeverityGate,
 )
 from .presentation import render_attack_summary, render_banner, render_scan_summary
-from .scaffold import common_options, named_command, path_command, pending
+from .provider_commands import provider_app
+from .scaffold import common_options, path_command, pending
 from .targets import TargetDeclarationError, load_target_declaration
 from .workflow import (
     attack_text,
@@ -43,7 +44,6 @@ app = typer.Typer(
 )
 pqc_app = typer.Typer(name="pqc", no_args_is_help=True)
 crypto_app = typer.Typer(name="crypto", no_args_is_help=True)
-provider_app = typer.Typer(name="provider", no_args_is_help=True)
 graph_app = typer.Typer(name="graph", no_args_is_help=True)
 policy_app = typer.Typer(name="policy", no_args_is_help=True)
 PathArgument = Annotated[Path, typer.Argument()]
@@ -237,44 +237,6 @@ def crypto_chaos(
         path,
         (json_output, out, offline, no_color, quiet, planner, fail_on),
     )
-
-
-@provider_app.command("enable")
-def provider_enable(
-    name: str,
-    json_output: JsonOption = False,
-    out: OutOption = Path("."),
-    offline: OfflineOption = False,
-    no_color: NoColorOption = False,
-    quiet: QuietOption = False,
-    planner: PlannerOption = Planner.RULES,
-    fail_on: FailOnOption = SeverityGate.HIGH,
-) -> None:
-    named_command(
-        "provider enable",
-        name,
-        json_output,
-        out,
-        offline,
-        no_color,
-        quiet,
-        planner,
-        fail_on,
-    )
-
-
-@provider_app.command("list")
-def provider_list(
-    json_output: JsonOption = False,
-    out: OutOption = Path("."),
-    offline: OfflineOption = False,
-    no_color: NoColorOption = False,
-    quiet: QuietOption = False,
-    planner: PlannerOption = Planner.RULES,
-    fail_on: FailOnOption = SeverityGate.HIGH,
-) -> None:
-    common_options(json_output, out, offline, no_color, quiet, planner, fail_on)
-    pending("provider list")
 
 
 @graph_app.command("export")
