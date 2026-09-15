@@ -111,3 +111,9 @@ registered scanner target and scenario. The adapter invokes `pyrit_scan` as an
 external process, parses its JSON result, and normalizes successful objectives
 into provider-neutral findings. Missing executables and malformed output remain
 provider errors. PyRIT is not a Lattence package dependency.
+
+T-052 added the optional Promptfoo adapter. It invokes `promptfoo redteam run`
+for each graph model target, reads the documented JSON output envelope, and
+normalizes failed red-team assertions into provider-neutral findings. Missing
+executables and malformed output remain provider errors. Promptfoo is not a
+Lattence package dependency.
