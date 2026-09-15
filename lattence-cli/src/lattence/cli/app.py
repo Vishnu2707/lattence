@@ -18,6 +18,7 @@ from .options import (
     QuietOption,
     SeverityGate,
 )
+from .policy_command import policy_app
 from .presentation import render_attack_summary, render_banner, render_scan_summary
 from .provider_commands import provider_app
 from .scaffold import common_options, path_command, pending
@@ -47,7 +48,6 @@ app = typer.Typer(
 pqc_app = typer.Typer(name="pqc", no_args_is_help=True)
 crypto_app = typer.Typer(name="crypto", no_args_is_help=True)
 graph_app = typer.Typer(name="graph", no_args_is_help=True)
-policy_app = typer.Typer(name="policy", no_args_is_help=True)
 PathArgument = Annotated[Path, typer.Argument()]
 
 
@@ -248,24 +248,6 @@ def graph_export(
         destination = write_graph(result, out)
         if not quiet:
             typer.echo(f"Graph  {destination}")
-
-
-@policy_app.command("check")
-def policy_check(
-    input_path: PathArgument = Path("."),
-    json_output: JsonOption = False,
-    out: OutOption = Path("."),
-    offline: OfflineOption = False,
-    no_color: NoColorOption = False,
-    quiet: QuietOption = False,
-    planner: PlannerOption = Planner.RULES,
-    fail_on: FailOnOption = SeverityGate.HIGH,
-) -> None:
-    path_command(
-        "policy check",
-        input_path,
-        (json_output, out, offline, no_color, quiet, planner, fail_on),
-    )
 
 
 app.add_typer(pqc_app, name="pqc")

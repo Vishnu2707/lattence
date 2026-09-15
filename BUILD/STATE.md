@@ -1,8 +1,8 @@
 # Current state
 
 - Milestone: v0.3 implementation
-- Last completed: T-057, task commit
-- Next task: T-058, policy check command
+- Last completed: T-058, task commit
+- Next task: T-059, explicit LLM planner rejection
 - Blockers: none
 - Manual steps: branch protection and tag protection commands from the
   v0.1.0 release are still printed for review only, not run
@@ -16,4 +16,4 @@
 - Design: frozen at version 1.0
 - v0.1 tasks: 45 done
 - v0.2 tasks: 3 done (T-046, T-047, T-048), 0 todo
-- v0.3 tasks: 9 done (T-049 through T-057), 4 todo (T-058 through T-061)
+- v0.3 tasks: 10 done (T-049 through T-058), 3 todo (T-059 through T-061)

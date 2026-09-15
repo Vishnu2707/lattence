@@ -145,3 +145,9 @@ project-relative source paths. URL declarations match remote node endpoints by
 origin and path boundary. A non-offline reproduction against a remote node
 requires URL scope rather than source-file scope. Scope files use the existing
 version 1 target declaration schema and may have any filename.
+
+T-058 wired `policy check INPUT`. It reads a report file or directory and uses
+the target declaration beside the report by default. `--scope PATH` selects an
+equivalent declaration file explicitly. Plain and JSON output list the touched
+and out-of-scope node identifiers. Any out-of-scope node exits 1 regardless of
+the finding severity gate. Invalid reports or declarations exit 2.

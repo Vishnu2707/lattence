@@ -61,3 +61,7 @@ Rationale: The frozen command has one positional argument, so this preserves tha
 2026-09-15 D-014
 Decision: Policy checks define touched nodes as unique `Finding.target_node_id` values recorded in a report, with remote non-offline reproductions requiring matching URL scope.
 Rationale: Findings record the targets actually exercised, while requiring URL declarations prevents project source authorization from implicitly authorizing external endpoint attacks.
+
+2026-09-15 D-015
+Decision: `policy check` auto-loads `lattence.targets.yaml` beside the report and accepts `--scope PATH` for an equivalent declaration file.
+Rationale: Automatic lookup covers the standard project-local workflow, while the explicit option supports renamed or separately stored scope declarations.
