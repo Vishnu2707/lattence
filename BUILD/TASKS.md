@@ -154,7 +154,7 @@ section and diagrams for the end-to-end workflow.
 [T-067] [v0.4] [CRYPTO] test ML-KEM migration compatibility and readiness | deps: T-065,T-066 | status: done | commit: self
 [T-068] [v0.4] [CRYPTO] test ML-DSA migration compatibility and readiness | deps: T-065,T-066 | status: done | commit: self
 [T-069] [v0.4] [CRYPTO] validate hybrid TLS key exchange and signature configurations | deps: T-067,T-068 | status: done | commit: self
-[T-070] [v0.4] [CRYPTO] calculate deterministic crypto agility scores and limiting factors | deps: T-066,T-067,T-068,T-069 | status: todo | commit: self
+[T-070] [v0.4] [CRYPTO] calculate deterministic crypto agility scores and limiting factors | deps: T-066,T-067,T-068,T-069 | status: done | commit: self
 [T-071] [v0.4] [CHAOS] define bounded reversible crypto mutation plans and safety guards | deps: T-023,T-065 | status: todo | commit: self
 [T-072] [v0.4] [CHAOS] execute contained key-exchange downgrade experiments with rollback | deps: T-067,T-069,T-071 | status: todo | commit: self
 [T-073] [v0.4] [CHAOS] execute contained signature downgrade experiments with rollback | deps: T-068,T-069,T-071 | status: todo | commit: self

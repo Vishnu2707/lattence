@@ -41,3 +41,8 @@ T-069 validates hybrid TLS as three independent requirements: TLS 1.3,
 classical-plus-PQC key exchange, and classical-plus-PQC signatures. It accepts
 explicit hybrid nodes or paired safe and vulnerable assets and reports partial
 configurations with exact missing requirements.
+
+T-070 scores crypto agility from five equally weighted components:
+replaceability, configurability, quantum-vulnerable dependency exposure, PQC
+migration readiness, and downgrade resistance. Each component and limiting
+factor is returned explicitly in deterministic order.
