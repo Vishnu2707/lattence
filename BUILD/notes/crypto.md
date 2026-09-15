@@ -46,3 +46,7 @@ T-070 scores crypto agility from five equally weighted components:
 replaceability, configurability, quantum-vulnerable dependency exposure, PQC
 migration readiness, and downgrade resistance. Each component and limiting
 factor is returned explicitly in deterministic order.
+
+T-071 defines dry-run-first crypto mutation plans. Plans require an exact
+project-relative declared path, UTF-8 text below one megabyte, no more than 32
+replacements, a bounded timeout, and a checksum of the untouched source.
