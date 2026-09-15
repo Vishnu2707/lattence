@@ -64,3 +64,7 @@ T-074 validates downgrade resistance only when every executed probe completes,
 produces an acceptance result, and verifies rollback. Evidence is stable,
 redacted to hashes and result metadata, and distinguishes resistant,
 vulnerable, and blocked outcomes.
+
+T-076 extends source discovery to ML-KEM-512/768/1024 and ML-DSA-44/65/87 so
+the wired assessment can validate real declared configuration rather than
+requiring synthetic graph input.

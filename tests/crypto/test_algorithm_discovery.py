@@ -41,3 +41,19 @@ def test_unknown_dependencies_and_plain_source_produce_no_results(
 
     assert result.libraries == ()
     assert result.algorithms == ()
+
+
+def test_discovers_ml_kem_and_ml_dsa_parameter_sets(tmp_path: Path) -> None:
+    (tmp_path / "tls.conf").write_text(
+        "group = X25519 + ML-KEM-768 hybrid\n"
+        "signature = ECDSA + ML-DSA-65 hybrid\n",
+        encoding="utf-8",
+    )
+
+    result = discover_crypto((), tmp_path, inventory_project(tmp_path).files)
+
+    algorithms = {item.algorithm: item for item in result.algorithms}
+    assert algorithms["ML-KEM-768"].purpose == "key exchange"
+    assert algorithms["ML-KEM-768"].key_size_bits == 768
+    assert algorithms["ML-DSA-65"].purpose == "signature"
+    assert algorithms["ML-DSA-65"].key_size_bits == 65

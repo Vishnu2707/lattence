@@ -183,3 +183,9 @@ T-064 recorded the v0.3 release gate. The full suite passes 215 tests at 89.84
 percent coverage, lint, formatting, seven strict type targets, package build
 and validation, provenance, and prose checks. The annotated v0.3.0 tag is
 pushed on `dev`, followed by clean-clone acceptance from the tag.
+
+T-076 wires the complete PQC assessment and crypto chaos workflows. Assessment
+builds the crypto projection, migration checks, hybrid TLS validation, agility
+score, and normalized findings. Chaos requires both project-root consent and
+an explicitly declared configuration file, runs local bounded downgrade probes,
+verifies restoration, writes report artifacts, and applies the severity gate.

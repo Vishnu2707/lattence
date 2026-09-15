@@ -6,6 +6,7 @@ from typing import Annotated
 import typer
 from lattence_ai.attacks import VerificationOutcome
 
+from .crypto_command import crypto_chaos
 from .harden_command import harden
 from .options import (
     FailOnOption,
@@ -19,9 +20,10 @@ from .options import (
     SeverityGate,
 )
 from .policy_command import policy_app
+from .pqc_command import pqc_assess
 from .presentation import render_attack_summary, render_banner, render_scan_summary
 from .provider_commands import provider_app
-from .scaffold import common_options, path_command, pending
+from .scaffold import common_options, pending
 from .targets import TargetDeclarationError, load_target_declaration
 from .workflow import (
     attack_text,
@@ -30,7 +32,6 @@ from .workflow import (
     exceeds_gate,
     load_report,
     machine_report,
-    readiness_json,
     severity_meets_gate,
     verify_json,
     verify_report,
@@ -190,43 +191,6 @@ def tui(
     pending(f"tui {input_path}")
 
 
-@pqc_app.command("assess")
-def pqc_assess(
-    path: PathArgument = Path("."),
-    json_output: JsonOption = False,
-    out: OutOption = Path("."),
-    offline: OfflineOption = False,
-    no_color: NoColorOption = False,
-    quiet: QuietOption = False,
-    planner: PlannerOption = Planner.RULES,
-    fail_on: FailOnOption = SeverityGate.HIGH,
-) -> None:
-    del out, offline, no_color, planner, fail_on
-    result = create_report(path)
-    if json_output:
-        typer.echo(readiness_json(result), nl=False)
-    elif not quiet:
-        typer.echo(f"PQC readiness  {result.summary.pqc_readiness:g}%")
-
-
-@crypto_app.command("chaos")
-def crypto_chaos(
-    path: PathArgument = Path("."),
-    json_output: JsonOption = False,
-    out: OutOption = Path("."),
-    offline: OfflineOption = False,
-    no_color: NoColorOption = False,
-    quiet: QuietOption = False,
-    planner: PlannerOption = Planner.RULES,
-    fail_on: FailOnOption = SeverityGate.HIGH,
-) -> None:
-    path_command(
-        "crypto chaos",
-        path,
-        (json_output, out, offline, no_color, quiet, planner, fail_on),
-    )
-
-
 @graph_app.command("export")
 def graph_export(
     input_path: PathArgument = Path("."),
@@ -256,3 +220,5 @@ app.add_typer(provider_app, name="provider")
 app.add_typer(graph_app, name="graph")
 app.add_typer(policy_app, name="policy")
 app.command("harden")(harden)
+pqc_app.command("assess")(pqc_assess)
+crypto_app.command("chaos")(crypto_chaos)

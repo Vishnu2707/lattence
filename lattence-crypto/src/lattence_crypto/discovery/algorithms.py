@@ -41,6 +41,16 @@ _ALGORITHM_PATTERNS = (
     ),
     (re.compile(r"\bChaCha20(?:Poly1305)?\b", re.I), "ChaCha20-Poly1305", "encryption"),
     (re.compile(r"\bRSA\b", re.I), "RSA", "public-key encryption"),
+    (
+        re.compile(r"\bML[-_ ]?KEM(?:[-_ ]?(512|768|1024))?\b", re.I),
+        "ML-KEM",
+        "key exchange",
+    ),
+    (
+        re.compile(r"\bML[-_ ]?DSA(?:[-_ ]?(44|65|87))?\b", re.I),
+        "ML-DSA",
+        "signature",
+    ),
     (re.compile(r"\bECDSA\b", re.I), "ECDSA", "signature"),
     (re.compile(r"\bEd25519\b", re.I), "Ed25519", "signature"),
     (re.compile(r"\bSHA[-_ ]?256\b", re.I), "SHA-256", "hash"),
@@ -54,6 +64,9 @@ def _slug(value: str) -> str:
 
 
 def _key_bits(name: str, match: re.Match[str], source: str) -> int | None:
+    if name in {"ML-KEM", "ML-DSA"} and match.lastindex:
+        captured = match.group(1)
+        return int(captured) if captured else None
     if name == "AES-GCM" and match.lastindex:
         captured = match.group(1)
         return int(captured) if captured else None
@@ -69,14 +82,20 @@ def _source_algorithms(path: str, source: str) -> list[CryptoAlgorithm]:
     for pattern, name, purpose in _ALGORITHM_PATTERNS:
         for match in pattern.finditer(source):
             line = source.count("\n", 0, match.start()) + 1
+            key_bits = _key_bits(name, match, source)
+            algorithm_name = (
+                f"{name}-{key_bits}"
+                if name in {"ML-KEM", "ML-DSA"} and key_bits is not None
+                else name
+            )
             algorithms.append(
                 CryptoAlgorithm(
-                    id=f"crypto_algorithm:{path}:{line}:{_slug(name)}",
-                    name=name,
+                    id=f"crypto_algorithm:{path}:{line}:{_slug(algorithm_name)}",
+                    name=algorithm_name,
                     source=SourceRef(path=path, line=line),
-                    algorithm=name,
+                    algorithm=algorithm_name,
                     purpose=purpose,
-                    key_size_bits=_key_bits(name, match, source),
+                    key_size_bits=key_bits,
                     quantum_status="unknown",
                     implementation=path,
                 )
