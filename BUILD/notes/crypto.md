@@ -59,3 +59,8 @@ success, failure, launch error, or timeout.
 T-073 applies the same contained executor and rollback guarantee to signature
 downgrades, allowing only recognized PQC or hybrid sources and allowlisted
 classical signature destinations.
+
+T-074 validates downgrade resistance only when every executed probe completes,
+produces an acceptance result, and verifies rollback. Evidence is stable,
+redacted to hashes and result metadata, and distinguishes resistant,
+vulnerable, and blocked outcomes.
