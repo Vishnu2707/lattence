@@ -1,8 +1,8 @@
 # Current state
 
 - Milestone: v0.3 implementation
-- Last completed: T-055, task commit
-- Next task: T-056, harden command
+- Last completed: T-056, task commit
+- Next task: T-057, declared-scope report validation
 - Blockers: none
 - Manual steps: branch protection and tag protection commands from the
   v0.1.0 release are still printed for review only, not run
@@ -16,4 +16,4 @@
 - Design: frozen at version 1.0
 - v0.1 tasks: 45 done
 - v0.2 tasks: 3 done (T-046, T-047, T-048), 0 todo
-- v0.3 tasks: 7 done (T-049 through T-055), 6 todo (T-056 through T-061)
+- v0.3 tasks: 8 done (T-049 through T-056), 5 todo (T-057 through T-061)

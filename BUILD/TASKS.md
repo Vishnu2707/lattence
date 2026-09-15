@@ -103,7 +103,7 @@ the frozen `SecurityProvider` interface.
 [T-053] [v0.3] [SHIP] persist provider enablement and wire provider enable and list | deps: T-049 | status: done | commit: self
 [T-054] [v0.3] [SHIP] execute enabled external providers and merge normalized findings into attack reports | deps: T-050,T-051,T-052,T-053 | status: done | commit: self
 [T-055] [v0.3] [EVID] build structured read-only remediation plans from report findings and evidence | deps: T-036 | status: done | commit: self
-[T-056] [v0.3] [SHIP] wire harden for a finding id or scan report without modifying project files | deps: T-055 | status: todo
+[T-056] [v0.3] [SHIP] wire harden for a finding id or scan report without modifying project files | deps: T-055 | status: done | commit: self
 [T-057] [v0.3] [SHIP] validate report target nodes against a versioned declared-scope file | deps: T-023,T-036 | status: todo
 [T-058] [v0.3] [SHIP] wire policy check with non-zero exit on every out-of-scope target node | deps: T-057 | status: todo
 [T-059] [v0.3] [SHIP] reject --planner llm with a clear not-implemented error | deps: T-004 | status: todo

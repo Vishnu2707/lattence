@@ -131,3 +131,10 @@ their results. Provider tests must target known nodes, and finding identifiers
 must remain unique across native and external results. Normalized findings are
 merged through the existing report builder. `--offline` skips all external
 provider execution.
+
+T-056 wired read-only `harden`. A report path or directory prints all
+remediation plans. A finding identifier reads the report under `--out` and
+prints only that plan. Text output contains the target, action, evidence, and
+reproduction context. JSON output contains the complete structured plans.
+Severity gates apply to the selected plans. Tests confirm that the command does
+not modify the project or report.

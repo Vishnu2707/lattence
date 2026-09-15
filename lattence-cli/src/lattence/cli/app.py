@@ -6,6 +6,7 @@ from typing import Annotated
 import typer
 from lattence_ai.attacks import VerificationOutcome
 
+from .harden_command import harden
 from .options import (
     FailOnOption,
     JsonOption,
@@ -125,21 +126,6 @@ def attack(
         )
     if exceeds_gate(result.summary, fail_on):
         raise typer.Exit(code=1)
-
-
-@app.command()
-def harden(
-    path: PathArgument = Path("."),
-    json_output: JsonOption = False,
-    out: OutOption = Path("."),
-    offline: OfflineOption = False,
-    no_color: NoColorOption = False,
-    quiet: QuietOption = False,
-    planner: PlannerOption = Planner.RULES,
-    fail_on: FailOnOption = SeverityGate.HIGH,
-) -> None:
-    common_options(json_output, out, offline, no_color, quiet, planner, fail_on)
-    pending(f"harden {path}")
 
 
 @app.command()
@@ -287,3 +273,4 @@ app.add_typer(crypto_app, name="crypto")
 app.add_typer(provider_app, name="provider")
 app.add_typer(graph_app, name="graph")
 app.add_typer(policy_app, name="policy")
+app.command("harden")(harden)

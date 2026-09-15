@@ -53,3 +53,7 @@ Rationale: Project-local state is deterministic and testable, while separate ava
 2026-09-15 D-012
 Decision: Attack runs execute only providers that are both enabled and available, and `--offline` skips every external provider.
 Rationale: This preserves optional installation and gives the existing offline flag a strict no-external-execution guarantee.
+
+2026-09-15 D-013
+Decision: `harden INPUT` treats an `LT-` value as a finding identifier resolved from the report under `--out`; every other value is a report path or directory.
+Rationale: The frozen command has one positional argument, so this preserves that contract while supporting both requested read-only input forms.
