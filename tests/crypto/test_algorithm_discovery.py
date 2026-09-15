@@ -45,8 +45,7 @@ def test_unknown_dependencies_and_plain_source_produce_no_results(
 
 def test_discovers_ml_kem_and_ml_dsa_parameter_sets(tmp_path: Path) -> None:
     (tmp_path / "tls.conf").write_text(
-        "group = X25519 + ML-KEM-768 hybrid\n"
-        "signature = ECDSA + ML-DSA-65 hybrid\n",
+        "group = X25519 + ML-KEM-768 hybrid\nsignature = ECDSA + ML-DSA-65 hybrid\n",
         encoding="utf-8",
     )
 

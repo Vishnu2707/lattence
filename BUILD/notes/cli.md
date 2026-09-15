@@ -198,3 +198,8 @@ unreleased changelog.
 T-080 adds an isolated crypto migration fixture and extends clean-wheel
 acceptance to assert ML-KEM, ML-DSA, hybrid TLS, resistant key-exchange and
 signature downgrade probes, report generation, and byte-for-byte rollback.
+
+T-081 recorded the v0.4 release gate. The full suite passes 260 tests at 90.59
+percent coverage, lint, formatting, seven strict type targets, package build
+and validation, provenance, prose, and fresh-clone crypto acceptance with
+byte-for-byte rollback verification.

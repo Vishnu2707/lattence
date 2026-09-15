@@ -28,9 +28,7 @@ def test_executes_signature_downgrade_and_restores_original(tmp_path: Path) -> N
         "raise SystemExit('ECDSA' not in Path('tls.conf').read_text())",
     )
 
-    result = execute_signature_downgrade(
-        tmp_path, plan, probe_command=command
-    )
+    result = execute_signature_downgrade(tmp_path, plan, probe_command=command)
 
     assert result.experiment == "signature-downgrade"
     assert result.downgrade_accepted is True
@@ -39,9 +37,7 @@ def test_executes_signature_downgrade_and_restores_original(tmp_path: Path) -> N
 
 
 def test_refuses_nonclassical_signature_destination(tmp_path: Path) -> None:
-    (tmp_path / "tls.conf").write_text(
-        "signature = ML-DSA-65\n", encoding="utf-8"
-    )
+    (tmp_path / "tls.conf").write_text("signature = ML-DSA-65\n", encoding="utf-8")
     plan = plan_crypto_mutation(
         tmp_path,
         "tls.conf",

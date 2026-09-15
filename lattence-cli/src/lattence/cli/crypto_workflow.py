@@ -69,9 +69,7 @@ def create_crypto_assessment(
     )
     crypto_graph = build_crypto_graph(report.graph, discovery.libraries)
     vulnerable_paths = find_quantum_vulnerable_paths(crypto_graph)
-    names = tuple(
-        node.name for node in crypto_graph.nodes if node.kind == "algorithm"
-    )
+    names = tuple(node.name for node in crypto_graph.nodes if node.kind == "algorithm")
     hybrid_supported = any("hybrid" in name.lower() for name in names)
     ml_kem = assess_ml_kem_migration(
         crypto_graph,

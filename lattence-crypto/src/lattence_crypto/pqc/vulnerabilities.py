@@ -18,11 +18,7 @@ def _path_evidence(
     return tuple(
         sorted(
             {
-                *(
-                    node.source_path
-                    for node in nodes
-                    if node.source_path is not None
-                ),
+                *(node.source_path for node in nodes if node.source_path is not None),
                 *(reference for edge in edges for reference in edge.evidence_refs),
             }
         )

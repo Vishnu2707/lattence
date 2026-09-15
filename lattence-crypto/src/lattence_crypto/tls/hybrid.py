@@ -23,12 +23,8 @@ def _is_hybrid(nodes: tuple[CryptoGraphNode, ...]) -> bool:
 
 def validate_hybrid_tls(graph: CryptoDependencyGraph) -> HybridTLSValidation:
     """Validate a TLS 1.3 configuration with hybrid KEM and signatures."""
-    transports = tuple(
-        node for node in graph.nodes if node.kind == "tls_configuration"
-    )
-    key_exchange = tuple(
-        node for node in graph.nodes if node.purpose == "key exchange"
-    )
+    transports = tuple(node for node in graph.nodes if node.kind == "tls_configuration")
+    key_exchange = tuple(node for node in graph.nodes if node.purpose == "key exchange")
     signatures = tuple(node for node in graph.nodes if node.purpose == "signature")
     tls_13 = any("tls 1.3" in node.name.lower() for node in transports)
     hybrid_key_exchange = _is_hybrid(key_exchange)

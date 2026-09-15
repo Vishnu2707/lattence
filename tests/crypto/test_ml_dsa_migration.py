@@ -10,9 +10,7 @@ def _graph(*assets: CryptoGraphNode) -> CryptoDependencyGraph:
     return CryptoDependencyGraph(nodes=assets, edges=())
 
 
-def _signature(
-    name: str, status: str, *, kind: str = "algorithm"
-) -> CryptoGraphNode:
+def _signature(name: str, status: str, *, kind: str = "algorithm") -> CryptoGraphNode:
     return CryptoGraphNode(
         id=f"{kind}:{name}",
         kind="certificate" if kind == "certificate" else "algorithm",

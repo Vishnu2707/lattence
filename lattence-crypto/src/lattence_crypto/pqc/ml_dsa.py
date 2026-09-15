@@ -35,8 +35,7 @@ def assess_ml_dsa_migration(
         sorted(
             node
             for node in graph.nodes
-            if node.purpose == "signature"
-            and node.kind in {"algorithm", "certificate"}
+            if node.purpose == "signature" and node.kind in {"algorithm", "certificate"}
         )
     )
     affected = tuple(

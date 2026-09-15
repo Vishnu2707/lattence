@@ -28,9 +28,7 @@ def test_finds_direct_and_transitive_quantum_vulnerable_paths() -> None:
         ),
         edges=(
             CryptoGraphEdge("application", "certificate", "protected_by"),
-            CryptoGraphEdge(
-                "certificate", "rsa", "protected_by", ("tls.py",)
-            ),
+            CryptoGraphEdge("certificate", "rsa", "protected_by", ("tls.py",)),
         ),
     )
 

@@ -112,8 +112,7 @@ def score_crypto_agility(
         )
     )
     return CryptoAgilityScore(
-        percentage=sum(component.score for component in components)
-        // len(components),
+        percentage=sum(component.score for component in components) // len(components),
         components=components,
         limiting_factors=tuple(
             component.limiting_factor

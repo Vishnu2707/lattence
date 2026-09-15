@@ -5,6 +5,8 @@ Versions before 1.0 may include breaking changes in a minor release.
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-09-15
+
 ### Added
 
 - Deterministic crypto dependency graph projections and direct and transitive

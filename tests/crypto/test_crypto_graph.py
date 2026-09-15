@@ -62,8 +62,7 @@ def test_projects_crypto_assets_libraries_and_transitive_ancestors() -> None:
         ]
     )
     relationships = {
-        (edge.source_id, edge.relationship, edge.target_id)
-        for edge in projection.edges
+        (edge.source_id, edge.relationship, edge.target_id) for edge in projection.edges
     }
     assert (application.id, "protected_by", certificate.id) in relationships
     assert (certificate.id, "protected_by", algorithm.id) in relationships

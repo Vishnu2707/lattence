@@ -120,9 +120,7 @@ def build_crypto_graph(
         if edge.source_id in included_ids and edge.target_id in included_ids
     ]
 
-    algorithms = [
-        node for node in graph.nodes if isinstance(node, CryptoAlgorithm)
-    ]
+    algorithms = [node for node in graph.nodes if isinstance(node, CryptoAlgorithm)]
     for library in libraries:
         library_node = _library_node(library)
         projected_nodes.append(library_node)
