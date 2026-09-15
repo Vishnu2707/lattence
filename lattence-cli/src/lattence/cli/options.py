@@ -22,9 +22,7 @@ class SeverityGate(StrEnum):
 
 def require_implemented_planner(value: Planner) -> Planner:
     if value is Planner.LLM:
-        raise typer.BadParameter(
-            "LLM planner is not implemented; use --planner rules"
-        )
+        raise typer.BadParameter("LLM planner is not implemented; use --planner rules")
     return value
 
 

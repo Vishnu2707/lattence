@@ -93,9 +93,9 @@ def test_scope_check_rejects_finding_with_missing_graph_target() -> None:
     report = _report().model_copy(
         update={
             "findings": [
-                _report().findings[0].model_copy(
-                    update={"target_node_id": "agent:missing"}
-                )
+                _report()
+                .findings[0]
+                .model_copy(update={"target_node_id": "agent:missing"})
             ]
         }
     )

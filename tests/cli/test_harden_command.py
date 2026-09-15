@@ -65,9 +65,7 @@ def test_harden_unknown_finding_exits_two(tmp_path: Path) -> None:
     _project(tmp_path)
     _scan(tmp_path)
 
-    result = runner.invoke(
-        app, ["harden", "LT-AI-999", "--out", str(tmp_path)]
-    )
+    result = runner.invoke(app, ["harden", "LT-AI-999", "--out", str(tmp_path)])
 
     assert result.exit_code == 2
     assert "finding not found" in result.output

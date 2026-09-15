@@ -12,9 +12,7 @@ def test_provider_enable_and_list_json(tmp_path: Path) -> None:
     enabled = runner.invoke(
         app, ["provider", "enable", "garak", "--out", str(tmp_path), "--json"]
     )
-    listed = runner.invoke(
-        app, ["provider", "list", "--out", str(tmp_path), "--json"]
-    )
+    listed = runner.invoke(app, ["provider", "list", "--out", str(tmp_path), "--json"])
 
     assert enabled.exit_code == 0, enabled.output
     assert json.loads(enabled.stdout)["enabled"] is True

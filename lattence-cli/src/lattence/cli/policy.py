@@ -47,8 +47,10 @@ def _url_matches(actual: str, declared: str) -> bool:
         return False
     declared_path = declared_parts.path.rstrip("/")
     actual_path = actual_parts.path.rstrip("/")
-    return not declared_path or actual_path == declared_path or actual_path.startswith(
-        f"{declared_path}/"
+    return (
+        not declared_path
+        or actual_path == declared_path
+        or actual_path.startswith(f"{declared_path}/")
     )
 
 

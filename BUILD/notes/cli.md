@@ -168,3 +168,7 @@ installed wheel lists and enables the optional adapter, merges its normalized
 findings into an attack report, renders read-only hardening guidance, and passes
 declared-scope policy validation. The acceptance path uses no external engine
 package or network service.
+
+T-062 applied the repository formatter to six v0.3 Python files identified by
+the milestone gate. The CLI tests, lint, format check, build, and package checks
+pass after the mechanical changes.

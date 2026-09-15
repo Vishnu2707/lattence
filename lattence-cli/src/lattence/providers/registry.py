@@ -79,8 +79,7 @@ def enable_provider(name: str, directory: Path) -> ProviderState:
     path = directory / _STATE_FILE
     temporary = path.with_suffix(".json.tmp")
     temporary.write_text(
-        json.dumps({"enabled": sorted(enabled), "version": "1"}, indent=2)
-        + "\n",
+        json.dumps({"enabled": sorted(enabled), "version": "1"}, indent=2) + "\n",
         encoding="utf-8",
     )
     temporary.replace(path)
