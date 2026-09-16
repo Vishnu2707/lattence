@@ -5,6 +5,32 @@ Versions before 1.0 may include breaking changes in a minor release.
 
 ## [Unreleased]
 
+## [0.4.1] - 2026-09-16
+
+### Fixed
+
+- Crypto discovery no longer scans Lattence's own JSON, HTML, graph, or
+  provider artifacts, including every file below a configured output path.
+  Consecutive assessments therefore produce identical inventory counts.
+- Quantum-vulnerable singleton nodes are reported as isolated assets instead
+  of zero-edge paths. Traversable paths now require at least two nodes and one
+  relationship in terminal, structured JSON, and HTML output.
+- Applications, agents, tools, and MCP servers now connect to algorithms and
+  certificates through evidence-backed `key_exchange` and `protected_by`
+  relationships. Dependency imports and configuration references are retained
+  as traversal evidence.
+- The shared crypto presentation identifies the command that ran, so
+  `pqc assess` is no longer mislabeled as `crypto`.
+
+### Compatibility
+
+- Report schema v1 adds optional `quantum_vulnerable_assets` and
+  `quantum_vulnerable_paths` summary fields. Existing v1 reports remain valid
+  and default both fields to zero.
+- v0.4.0 was tagged with output self-contamination, mislabeled singleton
+  exposure records, and incomplete trust-graph wiring. v0.4.1 supersedes that
+  release without changing the frozen graph or report schema versions.
+
 ## [0.4.0] - 2026-09-15
 
 ### Added

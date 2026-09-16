@@ -118,6 +118,10 @@ Then run:
 lattence crypto chaos . --offline
 ```
 
+Rollback covers only the explicitly declared target files. JSON and HTML files
+written beneath `--out` intentionally survive as the audit record of the
+experiment; discovery excludes them from later assessments.
+
 The current experiments replace a discovered ML-KEM or hybrid key-exchange
 value with X25519 and replace a discovered ML-DSA or hybrid signature value with
 ECDSA. A configuration can express an independent no-fallback control with

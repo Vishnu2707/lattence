@@ -208,23 +208,23 @@ lattence pqc assess examples/vulnerable-agent --offline
 LATTENCE  pqc assess  examples/vulnerable-agent
 
 CRYPTO GRAPH
-  Nodes                   5
-  Relationships           3
-  Isolated vulnerable assets  2
-  Traversable paths       2
+  Nodes                         17
+  Relationships                 86
+  Isolated vulnerable assets    0
+  Traversable paths             140
 
 MIGRATION TESTS
-  ML-KEM                  BLOCKED
-  ML-DSA                  BLOCKED
+  ML-KEM                        ALREADY_MIGRATED
+  ML-DSA                        ALREADY_MIGRATED
 
 HYBRID TLS
-  Validation              PARTIAL
+  Validation                    PARTIAL
 
 CRYPTO AGILITY
-  Score                   25%
+  Score                         53%
 
 DOWNGRADE VALIDATION
-  Status                  BLOCKED
+  Status                        BLOCKED
 ```
 
 `crypto chaos` runs bounded key-exchange and signature downgrade experiments
