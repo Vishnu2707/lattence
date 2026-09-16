@@ -81,3 +81,7 @@ Rationale: v0.4.0 incorrectly labeled singleton zero-edge records as paths; opti
 2026-09-16 D-019
 Decision: Crypto ownership uses existing `key_exchange` and `protected_by` edges, selecting exact source, application entrypoint, explicit source/config reference, or same-module evidence in that order; dependency imports remain explicit library `implements` edges in the crypto projection.
 Rationale: These bounded signals connect applications, agents, tools, and MCP servers to crypto assets without changing the frozen graph vocabulary or creating name-based and project-wide Cartesian links.
+
+2026-09-16 D-020
+Decision: v0.5 adds deterministic cross-layer AI-to-crypto topology chains plus a TUI and dashboard with one shared presentation contract; the model-backed planner remains deferred.
+Rationale: The vulnerable fixture has genuine connecting edges but requires mixed-orientation traversal from an affected dataset through its accessing tool to crypto protection, so every hop must retain stored and traversal direction instead of being mislabeled as an all-forward path.

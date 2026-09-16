@@ -229,3 +229,54 @@ After T-088, run the full suite, create and push annotated tag `v0.4.1` on
 twice and require identical node, relationship, isolated-asset, and path counts;
 also run `attack` and `crypto chaos` against the bundled examples. Hold for
 review before proposing v0.5 scope.
+
+# v0.5 task ledger
+
+v0.5 adds deterministic cross-layer AI-to-crypto analysis and two presentation
+surfaces over one shared information architecture. It uses only real security
+graph edges, records the stored direction and traversal direction of every hop,
+and exposes evidence without introducing a model-backed planner.
+
+[T-089] [v0.5] [ORCH] define cross-layer chain semantics and the shared TUI and dashboard data contract | deps: T-088 | status: todo | commit: self
+[T-090] [v0.5] [GRAPH] implement deterministic orientation-aware cross-layer topology traversal | deps: T-089 | status: todo | commit: self
+[T-091] [v0.5] [EVID] target crypto findings at the concrete algorithm certificate or TLS nodes that support them | deps: T-084,T-090 | status: todo | commit: self
+[T-092] [v0.5] [AISEC] correlate AI findings to crypto findings through genuine graph paths with stable explanations | deps: T-090,T-091 | status: todo | commit: self
+[T-093] [v0.5] [EVID] serialize cross-layer chains and evidence drill-down into a strict presentation data model | deps: T-092 | status: todo | commit: self
+[T-094] [v0.5] [UX] implement shared visual tokens navigation labels tables and detail-panel grammar | deps: T-089,T-093 | status: todo | commit: self
+[T-095] [v0.5] [UX] implement the keyboard-driven TUI shell with the fixed twelve-section navigation | deps: T-094 | status: todo | commit: self
+[T-096] [v0.5] [UX] implement the dashboard shell with fixed rail dense tables filters and side-panel details | deps: T-094 | status: todo | commit: self
+[T-097] [v0.5] [UX] implement interactive attack-graph path selection and cross-layer evidence drill-down | deps: T-095,T-096 | status: todo | commit: self
+[T-098] [v0.5] [SHIP] wire lattence tui and dashboard data export to the shared cross-layer workflow | deps: T-093,T-097 | status: todo | commit: self
+[T-099] [v0.5] [UX] add the cross-layer chain diagram and deterministic TUI demonstration assets | deps: T-097,T-098 | status: todo | commit: self
+[T-100] [v0.5] [SHIP] document cross-layer analysis TUI dashboard traversal and evidence workflows | deps: T-098,T-099 | status: todo | commit: self
+[T-101] [v0.5] [SHIP] verify vulnerable-agent exposes LT-AI-002 through real edges to a concrete crypto weakness | deps: T-091,T-092,T-098 | status: todo | commit: self
+[T-102] [v0.5] [SHIP] pass clean-wheel and fresh-clone TUI dashboard and cross-layer acceptance | deps: T-100,T-101 | status: todo | commit: self
+[T-103] [v0.5] [ORCH] record the v0.5 release gate changelog and annotated tag | deps: T-102 | status: todo | commit: self
+
+## v0.5 cross-layer semantics
+
+- A cross-layer chain starts at an AI, agent, or MCP finding target and ends at
+  a concrete crypto finding target. Every hop must be an existing graph edge.
+- Traversal may follow an edge forward or backward to move from an affected
+  resource to its owning or accessing component. Output records both the edge's
+  stored direction and the traversal direction. It never calls a mixed-
+  orientation topology chain an all-forward directed path.
+- The acceptance fixture must expose `LT-AI-002` at
+  `dataset:rag-pipeline:app.py:15` through genuine edges to a vulnerable crypto
+  node that explains TLS 1.2 or partial hybrid TLS. The current graph already
+  contains the two-edge topology chain from that dataset through
+  `tool:app.py:delete_customer_record` to vulnerable X25519.
+- The TUI and dashboard use the fixed twelve-entry navigation from
+  `BUILD/DESIGN.md`. Dense tables, keyboard navigation, filters, side-panel
+  details, path highlighting, JSON copy, and export share one data contract and
+  visual grammar.
+- `--planner llm` remains recognized and not implemented. Cross-layer analysis
+  is deterministic graph traversal.
+
+## v0.5 milestone gate
+
+After T-103, run the full suite, create and push annotated tag `v0.5.0` on
+`dev`, then run acceptance from a fresh clone of the tag. Acceptance must print
+one real end-to-end `LT-AI-002` cross-layer chain with every stored graph edge,
+orientation, crypto endpoint, and evidence reference. Hold for review before
+v1.0.

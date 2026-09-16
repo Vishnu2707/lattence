@@ -1,8 +1,8 @@
 # Current state
 
-- Milestone: v0.4.1 complete; hold for review before v0.5
-- Last completed: T-088, record the v0.4.1 release gate and changelog
-- Next task: none until v0.4.1 review confirms v0.5 scoping may begin
+- Milestone: v0.5 scoped; v0.4.1 confirmed
+- Last completed: v0.5 scope approved and recorded
+- Next task: T-089, define cross-layer and shared presentation contracts
 - Blockers: none
 - Manual steps: branch protection and tag protection commands from the
   v0.1.0 release are still printed for review only, not run
@@ -10,8 +10,8 @@
 ## Repository state
 
 - Branch: `dev`, `main` merged at the v0.1.0 release commit
-- Remote: `origin/dev` up to date through T-087
-- Tags: `v0.1.0`, `v0.2.0`, `v0.3.0`, and `v0.4.0`, annotated and pushed
+- Remote: `origin/dev` up to date through T-088
+- Tags: `v0.1.0`, `v0.2.0`, `v0.3.0`, `v0.4.0`, and `v0.4.1`, annotated and pushed
 - Contracts: frozen at version 1.0
 - Design: frozen at version 1.0
 - v0.1 tasks: 45 done
@@ -19,6 +19,7 @@
 - v0.3 tasks: 16 done (T-049 through T-064), 0 todo
 - v0.4 tasks: 17 done (T-065 through T-081), 0 todo
 - v0.4.1 tasks: 7 done (T-082 through T-088), 0 todo
+- v0.5 tasks: 0 done, 15 todo (T-089 through T-103)
 
 ## v0.4 release gate
 
