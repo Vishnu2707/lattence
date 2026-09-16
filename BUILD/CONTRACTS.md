@@ -171,3 +171,16 @@ JSON reports validate against `docs/schemas/report.v1.json`. The top-level
 fields are `schema_version`, `tool`, `project`, `graph`, `findings`,
 `generated_at`, and `summary`. Writers emit stable key order. Unknown fields
 are rejected. Report schema version changes require a migration note.
+
+The version 1 summary may include `quantum_vulnerable_assets` and
+`quantum_vulnerable_paths`, both non-negative integers defaulting to zero when
+absent. A quantum-vulnerable asset is isolated only when it has no incoming
+relationship in the crypto dependency projection. A quantum-vulnerable path
+contains at least two nodes and at least one relationship, ends at a
+quantum-vulnerable crypto asset, and preserves its ordered relationship and
+source evidence. A one-node, zero-relationship record is never a path.
+
+Migration note: v0.4.1 adds the two optional summary fields without changing
+`schema_version`. Reports written before v0.4.1 remain valid and deserialize
+both counts as zero. v0.4.1 writers emit both fields. Consumers must not derive
+path counts from isolated asset counts or from the number of vulnerable nodes.

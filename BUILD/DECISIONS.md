@@ -73,3 +73,7 @@ Rationale: The project uses a namespace package in source and a combined wheel a
 2026-09-15 D-017
 Decision: v0.4 is the flagship cryptography release: crypto graph projections, direct and transitive quantum-vulnerable dependency detection, separate ML-KEM and ML-DSA migration tests, hybrid TLS validation, deterministic crypto agility scoring, consent-gated reversible crypto chaos, downgrade validation, and a complete documentation section with diagrams.
 Rationale: This preserves the frozen graph and report contracts while connecting the existing cryptographic inventory to actionable migration and safely contained resilience testing; the model-backed LLM planner remains deferred.
+
+2026-09-16 D-018
+Decision: Report schema v1 gains optional `quantum_vulnerable_assets` and `quantum_vulnerable_paths` summary counts, and a path requires at least one relationship while an isolated vulnerable node is reported only as an asset.
+Rationale: v0.4.0 incorrectly labeled singleton zero-edge records as paths; optional defaulted fields preserve validation and deserialization of existing v1 reports while making the distinction explicit for every output format.
