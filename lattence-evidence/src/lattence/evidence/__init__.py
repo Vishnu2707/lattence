@@ -16,6 +16,14 @@ from .models import (
     TranscriptEntry,
 )
 from .normalization import normalize_rule_finding
+from .presentation import (
+    CrossLayerChain,
+    CrossLayerHop,
+    SecurityPresentation,
+    build_cross_layer_chain,
+    build_security_presentation,
+    presentation_json,
+)
 from .remediation import RemediationError, RemediationPlan, remediation_plans
 from .reporting import (
     Report,
@@ -34,6 +42,8 @@ __all__ = [
     "EvidenceInput",
     "Finding",
     "CryptoFindingTargets",
+    "CrossLayerChain",
+    "CrossLayerHop",
     "FindingId",
     "FindingStatus",
     "PolicyDecision",
@@ -44,12 +54,16 @@ __all__ = [
     "RemediationPlan",
     "ReproductionRecipe",
     "Severity",
+    "SecurityPresentation",
     "TelemetrySpan",
     "ToolInfo",
     "TranscriptEntry",
     "build_report",
+    "build_cross_layer_chain",
+    "build_security_presentation",
     "normalize_rule_finding",
     "normalize_crypto_findings",
+    "presentation_json",
     "remediation_plans",
     "render_html_report",
     "report_json",

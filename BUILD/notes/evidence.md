@@ -38,3 +38,10 @@ prefer their affected algorithms, partial hybrid TLS agility prefers the
 concrete non-TLS-1.3 transport node, and downgrade findings prefer the mutated
 source. The vulnerable example now targets both `LT-PQC-203` and `LT-PQC-205`
 at its discovered TLS 1.2 node.
+
+T-093 adds strict version 1 presentation models shared by TUI and dashboard.
+Cross-layer chains copy every graph edge's stored endpoints and type, retain
+traversal orientation and evidence, and receive a stable content-derived
+identifier. Presentation validation rejects unknown finding targets, synthetic
+or altered edges, broken orientation, cycles, missing crypto relationships,
+and endpoint mismatches. Stable JSON serialization ends with one newline.
