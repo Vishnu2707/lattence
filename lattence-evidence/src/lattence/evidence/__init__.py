@@ -1,4 +1,4 @@
-from .crypto_normalization import normalize_crypto_findings
+from .crypto_normalization import CryptoFindingTargets, normalize_crypto_findings
 from .models import (
     Confidence,
     Digest,
@@ -33,6 +33,7 @@ __all__ = [
     "EvidenceBundle",
     "EvidenceInput",
     "Finding",
+    "CryptoFindingTargets",
     "FindingId",
     "FindingStatus",
     "PolicyDecision",

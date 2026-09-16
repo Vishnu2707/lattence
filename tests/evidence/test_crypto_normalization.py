@@ -1,6 +1,6 @@
 from datetime import UTC, datetime
 
-from lattence.evidence import normalize_crypto_findings
+from lattence.evidence import CryptoFindingTargets, normalize_crypto_findings
 from lattence_crypto.agility import AgilityComponent, CryptoAgilityScore
 from lattence_crypto.chaos import DowngradeEvidence, DowngradeValidation
 from lattence_crypto.pqc import MLDSAMigration, MLKEMMigration
@@ -47,9 +47,18 @@ def _downgrade(status: str) -> DowngradeValidation:
     )
 
 
+def _targets() -> CryptoFindingTargets:
+    return CryptoFindingTargets(
+        ml_kem="crypto_algorithm:kem",
+        ml_dsa="crypto_algorithm:dsa",
+        agility="crypto_algorithm:tls12",
+        downgrade="crypto_algorithm:downgrade",
+    )
+
+
 def test_normalizes_failed_crypto_results_into_frozen_finding_schema() -> None:
     findings = normalize_crypto_findings(
-        "application:demo",
+        _targets(),
         datetime(2026, 1, 1, tzinfo=UTC),
         ml_kem=_migration("kem", False),
         ml_dsa=_migration("dsa", False),
@@ -67,11 +76,17 @@ def test_normalizes_failed_crypto_results_into_frozen_finding_schema() -> None:
     assert all(finding.evidence.inputs for finding in findings)
     assert all(finding.reproduction.offline for finding in findings)
     assert findings[-1].severity == "critical"
+    assert {finding.id: finding.target_node_id for finding in findings} == {
+        "LT-PQC-201": "crypto_algorithm:kem",
+        "LT-PQC-202": "crypto_algorithm:dsa",
+        "LT-PQC-203": "crypto_algorithm:tls12",
+        "LT-PQC-204": "crypto_algorithm:downgrade",
+    }
 
 
 def test_returns_no_findings_when_migration_agility_and_downgrade_pass() -> None:
     findings = normalize_crypto_findings(
-        "application:demo",
+        _targets(),
         datetime(2026, 1, 1, tzinfo=UTC),
         ml_kem=_migration("kem", True),
         ml_dsa=_migration("dsa", True),
@@ -84,7 +99,7 @@ def test_returns_no_findings_when_migration_agility_and_downgrade_pass() -> None
 
 def test_records_blocked_downgrade_validation_separately() -> None:
     findings = normalize_crypto_findings(
-        "application:demo",
+        _targets(),
         datetime(2026, 1, 1, tzinfo=UTC),
         ml_kem=_migration("kem", True),
         ml_dsa=_migration("dsa", True),
@@ -94,3 +109,4 @@ def test_records_blocked_downgrade_validation_separately() -> None:
 
     assert [finding.id for finding in findings] == ["LT-PQC-205"]
     assert findings[0].severity == "low"
+    assert findings[0].target_node_id == "crypto_algorithm:downgrade"

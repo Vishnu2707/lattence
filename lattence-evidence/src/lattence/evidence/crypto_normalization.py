@@ -1,5 +1,6 @@
 import hashlib
 import json
+from dataclasses import dataclass
 from datetime import datetime
 
 from lattence.graph import JsonValue, NodeId
@@ -16,6 +17,14 @@ from .models import (
     ReproductionRecipe,
     Severity,
 )
+
+
+@dataclass(frozen=True)
+class CryptoFindingTargets:
+    ml_kem: NodeId
+    ml_dsa: NodeId
+    agility: NodeId
+    downgrade: NodeId
 
 
 def _digest(value: object) -> str:
@@ -84,7 +93,7 @@ def _finding(
 
 
 def normalize_crypto_findings(
-    target_node_id: NodeId,
+    targets: CryptoFindingTargets,
     observed_at: datetime,
     *,
     ml_kem: MLKEMMigration,
@@ -101,7 +110,7 @@ def normalize_crypto_findings(
                 finding_id="LT-PQC-201",
                 title="ML-KEM migration is blocked",
                 severity="high",
-                target_node_id=target_node_id,
+                target_node_id=targets.ml_kem,
                 summary={
                     "target": ml_kem.target,
                     "status": ml_kem.status,
@@ -119,7 +128,7 @@ def normalize_crypto_findings(
                 finding_id="LT-PQC-202",
                 title="ML-DSA migration is blocked",
                 severity="high",
-                target_node_id=target_node_id,
+                target_node_id=targets.ml_dsa,
                 summary={
                     "target": ml_dsa.target,
                     "status": ml_dsa.status,
@@ -137,7 +146,7 @@ def normalize_crypto_findings(
                 finding_id="LT-PQC-203",
                 title="Cryptographic agility is limited",
                 severity="medium",
-                target_node_id=target_node_id,
+                target_node_id=targets.agility,
                 summary={
                     "percentage": agility.percentage,
                     "limiting_factors": list(agility.limiting_factors),
@@ -154,7 +163,7 @@ def normalize_crypto_findings(
                 finding_id="LT-PQC-204",
                 title="A cryptographic downgrade was accepted",
                 severity="critical",
-                target_node_id=target_node_id,
+                target_node_id=targets.downgrade,
                 summary={
                     "status": downgrade.status,
                     "outcomes": [item.outcome for item in downgrade.evidence],
@@ -171,7 +180,7 @@ def normalize_crypto_findings(
                 finding_id="LT-PQC-205",
                 title="Cryptographic downgrade validation is incomplete",
                 severity="low",
-                target_node_id=target_node_id,
+                target_node_id=targets.downgrade,
                 summary={
                     "status": downgrade.status,
                     "blocking_reasons": list(downgrade.blocking_reasons),

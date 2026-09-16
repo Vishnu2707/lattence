@@ -56,6 +56,10 @@ def test_pqc_assess_emits_full_crypto_assessment(tmp_path: Path) -> None:
     assert "isolated_assets" in payload["quantum_exposure"]
     assert "paths" in payload["quantum_exposure"]
     assert "vulnerable_paths" not in payload
+    targets = {
+        finding["id"]: finding["target_node_id"] for finding in payload["findings"]
+    }
+    assert targets["LT-PQC-203"].startswith("crypto_algorithm:")
     assert (tmp_path / "lattence-report.json").is_file()
 
 

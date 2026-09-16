@@ -31,3 +31,10 @@ never mutated file content.
 T-084 adds optional v1 summary counts for isolated quantum-vulnerable assets
 and traversable quantum-vulnerable paths. Older v1 documents remain valid and
 default both counts to zero; JSON and HTML writers emit and label both counts.
+
+T-091 replaces the single fallback target used by every crypto finding with
+explicit ML-KEM, ML-DSA, agility, and downgrade targets. Migration findings
+prefer their affected algorithms, partial hybrid TLS agility prefers the
+concrete non-TLS-1.3 transport node, and downgrade findings prefer the mutated
+source. The vulnerable example now targets both `LT-PQC-203` and `LT-PQC-205`
+at its discovered TLS 1.2 node.

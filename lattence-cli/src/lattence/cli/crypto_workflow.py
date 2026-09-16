@@ -5,7 +5,12 @@ from importlib.metadata import version
 from pathlib import Path
 
 from lattence.discovery import discover_dependency_manifests, inventory_project
-from lattence.evidence import Report, build_report, normalize_crypto_findings
+from lattence.evidence import (
+    CryptoFindingTargets,
+    Report,
+    build_report,
+    normalize_crypto_findings,
+)
 from lattence_crypto import crypto_discovery_files, discover_crypto
 from lattence_crypto.agility import CryptoAgilityScore, score_crypto_agility
 from lattence_crypto.chaos import (
@@ -49,7 +54,7 @@ class CryptoAssessment:
     downgrade: DowngradeValidation
 
 
-def _target_node_id(report: Report, graph: CryptoDependencyGraph) -> str:
+def _fallback_target(report: Report, graph: CryptoDependencyGraph) -> str:
     report_ids = {node.id for node in report.graph.nodes}
     for node in graph.nodes:
         if node.id in report_ids and node.kind in {"algorithm", "certificate"}:
@@ -57,6 +62,50 @@ def _target_node_id(report: Report, graph: CryptoDependencyGraph) -> str:
     if report.graph.nodes:
         return report.graph.nodes[0].id
     raise CryptoWorkflowError("no graph target is available for crypto assessment")
+
+
+def _finding_targets(
+    report: Report,
+    graph: CryptoDependencyGraph,
+    ml_kem: MLKEMMigration,
+    ml_dsa: MLDSAMigration,
+    hybrid_tls: HybridTLSValidation,
+    downgrade: DowngradeValidation,
+) -> CryptoFindingTargets:
+    fallback = _fallback_target(report, graph)
+    by_id = {node.id: node for node in graph.nodes}
+
+    def first_existing(node_ids: tuple[str, ...]) -> str:
+        return next((node_id for node_id in node_ids if node_id in by_id), fallback)
+
+    agility_target = next(
+        (
+            node.id
+            for node in graph.nodes
+            if hybrid_tls.status != "valid"
+            and node.kind == "tls_configuration"
+            and "tls 1.3" not in node.name.lower()
+        ),
+        next(
+            (node.id for node in graph.nodes if node.quantum_status == "vulnerable"),
+            fallback,
+        ),
+    )
+    downgrade_paths = tuple(item.target_path for item in downgrade.evidence)
+    downgrade_target = next(
+        (
+            node.id
+            for node in graph.nodes
+            if node.source_path is not None and node.source_path in downgrade_paths
+        ),
+        agility_target,
+    )
+    return CryptoFindingTargets(
+        ml_kem=first_existing(ml_kem.affected_node_ids),
+        ml_dsa=first_existing(ml_dsa.affected_node_ids),
+        agility=agility_target,
+        downgrade=downgrade_target,
+    )
 
 
 def create_crypto_assessment(
@@ -97,7 +146,14 @@ def create_crypto_assessment(
         downgrade_resistant=downgrade_result.resistant,
     )
     findings = normalize_crypto_findings(
-        _target_node_id(report, crypto_graph),
+        _finding_targets(
+            report,
+            crypto_graph,
+            ml_kem,
+            ml_dsa,
+            hybrid_tls,
+            downgrade_result,
+        ),
         report.generated_at,
         ml_kem=ml_kem,
         ml_dsa=ml_dsa,
