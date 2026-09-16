@@ -1,8 +1,8 @@
 # Current state
 
-- Milestone: v0.4.0 complete and tagged
-- Last completed: T-081, v0.4 release gate
-- Next task: hold for review before v0.5
+- Milestone: v0.4.1 repair scoped; v0.4.0 confirmation withdrawn
+- Last completed: v0.4.1 repair planning
+- Next task: T-082, exclude generated and configured output artifacts from crypto discovery
 - Blockers: none
 - Manual steps: branch protection and tag protection commands from the
   v0.1.0 release are still printed for review only, not run
@@ -18,6 +18,7 @@
 - v0.2 tasks: 3 done (T-046, T-047, T-048), 0 todo
 - v0.3 tasks: 16 done (T-049 through T-064), 0 todo
 - v0.4 tasks: 17 done (T-065 through T-081), 0 todo
+- v0.4.1 tasks: 0 done, 7 todo (T-082 through T-088)
 
 ## v0.4 release gate
 

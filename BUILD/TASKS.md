@@ -191,3 +191,41 @@ After T-081, run the full suite, create and push the annotated `v0.4.0` tag on
 `dev`, then run crypto assessment, consent-gated chaos, downgrade validation,
 and documentation acceptance from a fresh clean clone. Hold at the tag for
 review before opening a milestone pull request or starting v0.5.
+
+# v0.4.1 repair task ledger
+
+v0.4.1 corrects the v0.4 crypto assessment before any v0.5 work begins. The
+repair prevents generated-output self-ingestion, separates isolated vulnerable
+assets from traversable paths, connects crypto assets to the main trust graph
+using evidence-backed ownership and reference relationships, and corrects the
+PQC command heading.
+
+[T-082] [v0.4.1] [CRYPTO] exclude generated and configured output artifacts from crypto discovery | deps: T-081 | status: todo | commit: self
+[T-083] [v0.4.1] [ORCH] define isolated crypto asset and traversable path report semantics | deps: T-082 | status: todo | commit: self
+[T-084] [v0.4.1] [EVID] report isolated vulnerable assets separately from traversable paths in JSON HTML and terminal output | deps: T-083 | status: todo | commit: self
+[T-085] [v0.4.1] [GRAPH] wire crypto assets into the trust graph through ownership proximity dependency and config-reference evidence | deps: T-084 | status: todo | commit: self
+[T-086] [v0.4.1] [UX] render command-specific PQC assessment and crypto chaos headings | deps: T-085 | status: todo | commit: self
+[T-087] [v0.4.1] [SHIP] pass repeated-assessment attack and crypto-chaos clean-clone acceptance | deps: T-086 | status: todo | commit: self
+[T-088] [v0.4.1] [ORCH] record the v0.4.1 release gate changelog and tag | deps: T-087 | status: todo | commit: self
+
+## v0.4.1 relationship design
+
+- Keep the frozen `key_exchange` and `protected_by` relationship types.
+  `key_exchange` connects an owning component to transport or key-exchange
+  configuration. `protected_by` connects an owning component to encryption,
+  signature, hash, certificate, and other cryptographic protection assets.
+- Resolve ownership by strongest available evidence in order: exact source,
+  explicit application entrypoint, a source/config file reference from a
+  component source, then the nearest common project module directory. Do not
+  create a project-wide Cartesian product or infer relationships from an
+  algorithm name alone.
+- Preserve evidence paths and record the binding reason in edge metadata so a
+  cross-layer traversal is explainable and deterministic.
+
+## v0.4.1 milestone gate
+
+After T-088, run the full suite, create and push annotated tag `v0.4.1` on
+`dev`, then perform acceptance from a fresh clone of that tag. Run `pqc assess`
+twice and require identical node, relationship, isolated-asset, and path counts;
+also run `attack` and `crypto chaos` against the bundled examples. Hold for
+review before proposing v0.5 scope.
