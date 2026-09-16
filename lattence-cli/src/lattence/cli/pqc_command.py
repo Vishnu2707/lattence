@@ -42,6 +42,7 @@ def pqc_assess(
             render_crypto_assessment(
                 assessment,
                 path,
+                command_name="pqc assess",
                 color=not no_color and sys.stdout.isatty(),
             ),
             nl=False,

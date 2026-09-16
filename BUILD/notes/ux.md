@@ -57,3 +57,7 @@ shapes, embedded titles and descriptions, and no generator metadata.
 T-084 replaces the ambiguous crypto terminal metric with separate isolated
 vulnerable asset and traversable path counts. The HTML report exposes the same
 two metrics.
+
+T-086 makes the shared crypto renderer require its invoking command name.
+`pqc assess` and `crypto chaos` now retain their distinct identities in the
+terminal heading instead of both being labeled `crypto`.

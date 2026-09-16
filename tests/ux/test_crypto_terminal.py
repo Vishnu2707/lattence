@@ -17,8 +17,9 @@ def test_crypto_terminal_renders_all_flagship_sections(tmp_path: Path) -> None:
     _project(tmp_path)
     assessment = create_crypto_assessment(tmp_path)
 
-    rendered = render_crypto_assessment(assessment, tmp_path)
+    rendered = render_crypto_assessment(assessment, tmp_path, command_name="pqc assess")
 
+    assert f"LATTENCE  pqc assess  {tmp_path}" in rendered
     assert "CRYPTO GRAPH" in rendered
     assert "MIGRATION TESTS" in rendered
     assert "HYBRID TLS" in rendered
@@ -36,8 +37,11 @@ def test_crypto_terminal_color_mode_preserves_text_signals(tmp_path: Path) -> No
     _project(tmp_path)
     assessment = create_crypto_assessment(tmp_path)
 
-    rendered = render_crypto_assessment(assessment, tmp_path, color=True)
+    rendered = render_crypto_assessment(
+        assessment, tmp_path, command_name="crypto chaos", color=True
+    )
 
     assert "\x1b[" in rendered
+    assert "LATTENCE  crypto chaos" in rendered
     assert "CRYPTO GRAPH" in rendered
     assert assessment.hybrid_tls.status.upper() in rendered

@@ -61,6 +61,7 @@ def crypto_chaos(
             render_crypto_assessment(
                 assessment,
                 path,
+                command_name="crypto chaos",
                 color=not no_color and sys.stdout.isatty(),
             ),
             nl=False,

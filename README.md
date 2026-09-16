@@ -205,7 +205,7 @@ lattence pqc assess examples/vulnerable-agent --offline
 ```
 
 ```
-LATTENCE  crypto  examples/vulnerable-agent
+LATTENCE  pqc assess  examples/vulnerable-agent
 
 CRYPTO GRAPH
   Nodes                   5

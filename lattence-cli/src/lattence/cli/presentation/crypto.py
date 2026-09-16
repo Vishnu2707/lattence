@@ -26,11 +26,11 @@ _STATUS_STYLE = {
 
 
 def _row(label: str, value: object) -> str:
-    return f"  {label:<24}{value}"
+    return f"  {label:<30}{value}"
 
 
-def _plain_crypto(assessment: CryptoAssessment, target: Path) -> str:
-    lines = [f"LATTENCE  crypto  {target}", "", "CRYPTO GRAPH"]
+def _plain_crypto(assessment: CryptoAssessment, target: Path, command_name: str) -> str:
+    lines = [f"LATTENCE  {command_name}  {target}", "", "CRYPTO GRAPH"]
     lines.extend(
         (
             _row("Nodes", len(assessment.crypto_graph.nodes)),
@@ -81,9 +81,10 @@ def render_crypto_assessment(
     assessment: CryptoAssessment,
     target: Path,
     *,
+    command_name: str,
     color: bool = False,
 ) -> str:
-    plain = _plain_crypto(assessment, target)
+    plain = _plain_crypto(assessment, target, command_name)
     if not color:
         return plain
     console = Console(
