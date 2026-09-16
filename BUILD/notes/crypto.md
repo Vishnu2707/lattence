@@ -68,3 +68,8 @@ vulnerable, and blocked outcomes.
 T-076 extends source discovery to ML-KEM-512/768/1024 and ML-DSA-44/65/87 so
 the wired assessment can validate real declared configuration rather than
 requiring synthetic graph input.
+
+T-082 excludes Lattence report, graph, and provider state artifacts by name
+and excludes every file below a configured output directory. Repeated crypto
+discovery in the same directory is now idempotent instead of ingesting its own
+JSON and HTML output.

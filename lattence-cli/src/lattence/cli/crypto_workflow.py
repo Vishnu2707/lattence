@@ -6,7 +6,7 @@ from pathlib import Path
 
 from lattence.discovery import discover_dependency_manifests, inventory_project
 from lattence.evidence import Report, build_report, normalize_crypto_findings
-from lattence_crypto import discover_crypto
+from lattence_crypto import crypto_discovery_files, discover_crypto
 from lattence_crypto.agility import CryptoAgilityScore, score_crypto_agility
 from lattence_crypto.chaos import (
     CryptoChaosObservation,
@@ -28,7 +28,7 @@ from lattence_crypto.pqc import (
 )
 from lattence_crypto.tls import HybridTLSValidation, validate_hybrid_tls
 
-from .workflow import create_report
+from .workflow import _crypto_output_exclusions, create_report
 
 
 class CryptoWorkflowError(ValueError):
@@ -60,12 +60,16 @@ def _target_node_id(report: Report, graph: CryptoDependencyGraph) -> str:
 def create_crypto_assessment(
     root: Path,
     downgrade: DowngradeValidation | None = None,
+    output: Path | None = None,
 ) -> CryptoAssessment:
-    report = create_report(root)
+    report = create_report(root, output)
     inventory = inventory_project(root.resolve(strict=True))
     dependencies = discover_dependency_manifests(inventory.root, inventory.files)
+    crypto_files = crypto_discovery_files(
+        inventory.files, _crypto_output_exclusions(root, output)
+    )
     discovery = discover_crypto(
-        dependencies.dependencies, inventory.root, inventory.files
+        dependencies.dependencies, inventory.root, crypto_files
     )
     crypto_graph = build_crypto_graph(report.graph, discovery.libraries)
     vulnerable_paths = find_quantum_vulnerable_paths(crypto_graph)
@@ -154,6 +158,7 @@ def _first_fragment(content: str, candidates: tuple[str, ...]) -> str | None:
 def run_crypto_chaos(
     root: Path,
     declared_paths: tuple[str, ...],
+    output: Path | None = None,
 ) -> CryptoAssessment:
     observations: list[CryptoChaosObservation] = []
     for target_path in sorted(set(declared_paths)):
@@ -209,5 +214,5 @@ def run_crypto_chaos(
             "declared files contain no supported PQC key exchange or signature"
         )
     return create_crypto_assessment(
-        root, validate_downgrade_resistance(tuple(observations))
+        root, validate_downgrade_resistance(tuple(observations)), output
     )

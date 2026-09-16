@@ -42,6 +42,7 @@ from lattence_ai.attacks import (
 from lattence_crypto import (
     assess_readiness,
     classify_graph,
+    crypto_discovery_files,
     discover_crypto,
     discover_tls,
 )
@@ -93,11 +94,39 @@ def _schema_path() -> Path:
     raise RuntimeError("cannot locate bundled report schema")
 
 
-def _extra_nodes(root: Path) -> tuple[Node, ...]:
+def _crypto_output_exclusions(root: Path, output: Path | None) -> tuple[str, ...]:
+    if output is None:
+        return ()
+    resolved_root = root.resolve()
+    resolved_output = output.resolve()
+    try:
+        relative = resolved_output.relative_to(resolved_root).as_posix()
+    except ValueError:
+        return ()
+    if relative == ".":
+        return ()
+    if output.suffix.lower() in {".html", ".json"}:
+        paths = artifact_paths(output)
+        return tuple(
+            sorted(
+                path.resolve().relative_to(resolved_root).as_posix()
+                for path in (paths.html, paths.json)
+            )
+        )
+    return (f"{relative.rstrip('/')}/",)
+
+
+def _extra_nodes(root: Path, output: Path | None = None) -> tuple[Node, ...]:
     inventory = inventory_project(root)
     dependencies = discover_dependency_manifests(inventory.root, inventory.files)
-    tls = discover_tls(inventory.root, inventory.files)
-    crypto = discover_crypto(dependencies.dependencies, inventory.root, inventory.files)
+    excluded_paths = _crypto_output_exclusions(root, output)
+    crypto_files = crypto_discovery_files(inventory.files, excluded_paths)
+    tls = discover_tls(inventory.root, crypto_files)
+    crypto = discover_crypto(
+        dependencies.dependencies,
+        inventory.root,
+        crypto_files,
+    )
     mcp = discover_mcp_configs(inventory.root, inventory.files)
     return (
         *tls.certificates,
@@ -108,11 +137,11 @@ def _extra_nodes(root: Path) -> tuple[Node, ...]:
     )
 
 
-def create_report(root: Path) -> Report:
+def create_report(root: Path, output: Path | None = None) -> Report:
     resolved = root.resolve(strict=True)
     data_root = _data_root()
     discovery = discover_project(
-        resolved, data_root / "discovery", _extra_nodes(resolved)
+        resolved, data_root / "discovery", _extra_nodes(resolved, output)
     )
     graph = classify_graph(build_security_graph(discovery.project))
     project = discovery.project.model_copy(update={"nodes": graph.nodes})
@@ -180,8 +209,10 @@ def run_external_providers(
     )
 
 
-def create_attack_report(root: Path, provider_directory: Path, offline: bool) -> Report:
-    report = create_report(root)
+def create_attack_report(
+    root: Path, provider_directory: Path, offline: bool, output: Path | None = None
+) -> Report:
+    report = create_report(root, output)
     if offline:
         return report
     return run_external_providers(report, enabled_providers(provider_directory))

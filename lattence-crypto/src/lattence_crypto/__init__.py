@@ -1,4 +1,9 @@
-from .discovery import CryptoDiscovery, CryptoLibrary, discover_crypto
+from .discovery import (
+    CryptoDiscovery,
+    CryptoLibrary,
+    crypto_discovery_files,
+    discover_crypto,
+)
 from .pqc import PQCReadiness, assess_readiness, classify_algorithm, classify_graph
 from .tls import TLSDiscovery, discover_tls
 
@@ -7,6 +12,7 @@ __all__ = [
     "CryptoLibrary",
     "PQCReadiness",
     "TLSDiscovery",
+    "crypto_discovery_files",
     "discover_crypto",
     "discover_tls",
     "classify_algorithm",

@@ -56,3 +56,40 @@ def test_discovers_ml_kem_and_ml_dsa_parameter_sets(tmp_path: Path) -> None:
     assert algorithms["ML-KEM-768"].key_size_bits == 768
     assert algorithms["ML-DSA-65"].purpose == "signature"
     assert algorithms["ML-DSA-65"].key_size_bits == 65
+
+
+def test_generated_reports_do_not_contaminate_repeated_discovery(
+    tmp_path: Path,
+) -> None:
+    (tmp_path / "tls.py").write_text("signature = ECDSA.generate()\n")
+    first_inventory = inventory_project(tmp_path)
+    first = discover_crypto((), tmp_path, first_inventory.files)
+    (tmp_path / "lattence-report.json").write_text(
+        '{"generated": "RSA ML-KEM-768 ECDSA"}\n', encoding="utf-8"
+    )
+    (tmp_path / "lattence-report.html").write_text(
+        "<p>RSA ML-DSA-65 ECDSA</p>\n", encoding="utf-8"
+    )
+
+    second_inventory = inventory_project(tmp_path)
+    second = discover_crypto((), tmp_path, second_inventory.files)
+
+    assert second == first
+
+
+def test_configured_output_directory_is_excluded_from_discovery(
+    tmp_path: Path,
+) -> None:
+    (tmp_path / "tls.py").write_text("signature = ECDSA.generate()\n")
+    output = tmp_path / "artifacts"
+    output.mkdir()
+    (output / "custom-audit.json").write_text(
+        '{"generated": "RSA ML-KEM-768 ECDSA"}\n', encoding="utf-8"
+    )
+
+    inventory = inventory_project(tmp_path)
+    result = discover_crypto(
+        (), tmp_path, inventory.files, excluded_paths=("artifacts/",)
+    )
+
+    assert [item.algorithm for item in result.algorithms] == ["ECDSA"]

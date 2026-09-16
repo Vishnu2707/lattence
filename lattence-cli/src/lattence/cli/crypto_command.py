@@ -50,7 +50,7 @@ def crypto_chaos(
             raise CryptoWorkflowError(
                 "crypto chaos requires an explicitly declared configuration file"
             )
-        assessment = run_crypto_chaos(path, declared_paths)
+        assessment = run_crypto_chaos(path, declared_paths, out)
     except (CryptoWorkflowError, TargetDeclarationError, UnsafeCryptoMutation) as error:
         raise typer.BadParameter(str(error)) from error
     write_report_artifacts(assessment.report, out)

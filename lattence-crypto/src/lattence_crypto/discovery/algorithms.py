@@ -33,6 +33,14 @@ _LIBRARIES = frozenset(
         "tweetnacl",
     }
 )
+_GENERATED_ARTIFACT_NAMES = frozenset(
+    {
+        "lattence-graph.json",
+        "lattence-report.html",
+        "lattence-report.json",
+        "providers.json",
+    }
+)
 _ALGORITHM_PATTERNS = (
     (
         re.compile(r"\bAES(?:[-_ ]?(128|192|256))?[-_ ]?GCM\b", re.I),
@@ -103,10 +111,35 @@ def _source_algorithms(path: str, source: str) -> list[CryptoAlgorithm]:
     return algorithms
 
 
+def _is_excluded(path: str, excluded_paths: tuple[str, ...]) -> bool:
+    normalized = path.replace("\\", "/").lstrip("./")
+    if normalized.rsplit("/", 1)[-1] in _GENERATED_ARTIFACT_NAMES:
+        return True
+    for excluded in excluded_paths:
+        normalized_excluded = excluded.replace("\\", "/").lstrip("./")
+        if normalized_excluded.endswith("/"):
+            if normalized.startswith(normalized_excluded):
+                return True
+        elif normalized == normalized_excluded:
+            return True
+    return False
+
+
+def crypto_discovery_files(
+    files: tuple[ProjectFile, ...], excluded_paths: tuple[str, ...] = ()
+) -> tuple[ProjectFile, ...]:
+    return tuple(
+        project_file
+        for project_file in files
+        if not _is_excluded(project_file.path, excluded_paths)
+    )
+
+
 def discover_crypto(
     dependencies: tuple[Dependency, ...],
     root: Path | None = None,
     files: tuple[ProjectFile, ...] = (),
+    excluded_paths: tuple[str, ...] = (),
 ) -> CryptoDiscovery:
     libraries = {
         CryptoLibrary(item.name, item.ecosystem, item.source_path)
@@ -115,7 +148,7 @@ def discover_crypto(
     }
     algorithms: list[CryptoAlgorithm] = []
     if root is not None:
-        for project_file in files:
+        for project_file in crypto_discovery_files(files, excluded_paths):
             try:
                 source = (root / project_file.path).read_text(encoding="utf-8")
             except (OSError, UnicodeError):

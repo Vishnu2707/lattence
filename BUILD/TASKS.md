@@ -200,7 +200,7 @@ assets from traversable paths, connects crypto assets to the main trust graph
 using evidence-backed ownership and reference relationships, and corrects the
 PQC command heading.
 
-[T-082] [v0.4.1] [CRYPTO] exclude generated and configured output artifacts from crypto discovery | deps: T-081 | status: todo | commit: self
+[T-082] [v0.4.1] [CRYPTO] exclude generated and configured output artifacts from crypto discovery | deps: T-081 | status: done | commit: self
 [T-083] [v0.4.1] [ORCH] define isolated crypto asset and traversable path report semantics | deps: T-082 | status: todo | commit: self
 [T-084] [v0.4.1] [EVID] report isolated vulnerable assets separately from traversable paths in JSON HTML and terminal output | deps: T-083 | status: todo | commit: self
 [T-085] [v0.4.1] [GRAPH] wire crypto assets into the trust graph through ownership proximity dependency and config-reference evidence | deps: T-084 | status: todo | commit: self

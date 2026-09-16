@@ -33,7 +33,7 @@ def pqc_assess(
     fail_on: FailOnOption = SeverityGate.HIGH,
 ) -> None:
     del offline, planner
-    assessment = create_crypto_assessment(path)
+    assessment = create_crypto_assessment(path, output=out)
     write_report_artifacts(assessment.report, out)
     if json_output:
         typer.echo(crypto_assessment_json(assessment), nl=False)

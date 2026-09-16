@@ -77,7 +77,7 @@ def scan(
     fail_on: FailOnOption = SeverityGate.HIGH,
 ) -> None:
     del offline, planner
-    result = create_report(path)
+    result = create_report(path, out)
     artifacts = write_report_artifacts(result, out)
     if json_output:
         typer.echo(machine_report(result), nl=False)
@@ -113,7 +113,7 @@ def attack(
     except TargetDeclarationError as error:
         raise typer.BadParameter(str(error)) from error
     provider_directory = out.parent if out.suffix else out
-    result = create_attack_report(path, provider_directory, offline)
+    result = create_attack_report(path, provider_directory, offline, out)
     write_report_artifacts(result, out)
     if json_output:
         typer.echo(machine_report(result), nl=False)
@@ -203,7 +203,7 @@ def graph_export(
     fail_on: FailOnOption = SeverityGate.HIGH,
 ) -> None:
     del offline, no_color, planner, fail_on
-    result = create_report(input_path)
+    result = create_report(input_path, out)
     if json_output:
         from lattence.graph import security_graph_json
 

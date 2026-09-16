@@ -56,6 +56,37 @@ def test_pqc_assess_emits_full_crypto_assessment(tmp_path: Path) -> None:
     assert (tmp_path / "lattence-report.json").is_file()
 
 
+def test_repeated_pqc_assessment_has_identical_crypto_counts(tmp_path: Path) -> None:
+    _crypto_project(tmp_path)
+    command = [
+        "pqc",
+        "assess",
+        str(tmp_path),
+        "--json",
+        "--out",
+        str(tmp_path),
+        "--fail-on",
+        "none",
+    ]
+
+    first = runner.invoke(app, command)
+    second = runner.invoke(app, command)
+
+    assert first.exit_code == 0, first.output
+    assert second.exit_code == 0, second.output
+    first_payload = json.loads(first.stdout)
+    second_payload = json.loads(second.stdout)
+    assert len(first_payload["crypto_graph"]["nodes"]) == len(
+        second_payload["crypto_graph"]["nodes"]
+    )
+    assert len(first_payload["crypto_graph"]["edges"]) == len(
+        second_payload["crypto_graph"]["edges"]
+    )
+    assert len(first_payload["vulnerable_paths"]) == len(
+        second_payload["vulnerable_paths"]
+    )
+
+
 def test_crypto_chaos_requires_consent_and_restores_target(tmp_path: Path) -> None:
     (tmp_path / "tls.conf").write_text("ML-KEM-768\n", encoding="utf-8")
     refused = runner.invoke(app, ["crypto", "chaos", str(tmp_path)])
