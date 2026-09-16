@@ -237,7 +237,7 @@ surfaces over one shared information architecture. It uses only real security
 graph edges, records the stored direction and traversal direction of every hop,
 and exposes evidence without introducing a model-backed planner.
 
-[T-089] [v0.5] [ORCH] define cross-layer chain semantics and the shared TUI and dashboard data contract | deps: T-088 | status: todo | commit: self
+[T-089] [v0.5] [ORCH] define cross-layer chain semantics and the shared TUI and dashboard data contract | deps: T-088 | status: done | commit: self
 [T-090] [v0.5] [GRAPH] implement deterministic orientation-aware cross-layer topology traversal | deps: T-089 | status: todo | commit: self
 [T-091] [v0.5] [EVID] target crypto findings at the concrete algorithm certificate or TLS nodes that support them | deps: T-084,T-090 | status: todo | commit: self
 [T-092] [v0.5] [AISEC] correlate AI findings to crypto findings through genuine graph paths with stable explanations | deps: T-090,T-091 | status: todo | commit: self

@@ -85,3 +85,7 @@ Rationale: These bounded signals connect applications, agents, tools, and MCP se
 2026-09-16 D-020
 Decision: v0.5 adds deterministic cross-layer AI-to-crypto topology chains plus a TUI and dashboard with one shared presentation contract; the model-backed planner remains deferred.
 Rationale: The vulnerable fixture has genuine connecting edges but requires mixed-orientation traversal from an affected dataset through its accessing tool to crypto protection, so every hop must retain stored and traversal direction instead of being mislabeled as an all-forward path.
+
+2026-09-16 D-021
+Decision: Cross-layer chains use bounded shortest topology walks over existing edges, retain stored and traversal direction per hop, and live in a separate version 1 presentation model consumed by both TUI and dashboard.
+Rationale: This permits honest resource-to-owner traversal and shared interaction data without mutating the directed graph or changing backward-compatible report schema v1.

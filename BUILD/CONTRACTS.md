@@ -81,6 +81,41 @@ edges are allowed when distinct evidence supports the same relationship.
 `SecurityGraph` fields: `version: Literal["1"]`, `project_id: str`,
 `nodes: list[Node]`, `edges: list[Edge]`, `generated_at: datetime`.
 
+## Cross-layer chain schema
+
+Cross-layer analysis is deterministic topology traversal over existing
+`SecurityGraph` edges. It does not add edges to the graph. A traversal may use
+an edge in its stored direction or in reverse to move from an affected resource
+to the component that accesses, contains, or owns it. Reverse traversal does
+not reverse or rewrite the stored edge.
+
+`CrossLayerHop` fields: `edge_id: str`, `source_id: NodeId`,
+`target_id: NodeId`, `edge_type: EdgeType`,
+`traversal: Literal["forward", "reverse"]`,
+`from_node_id: NodeId`, `to_node_id: NodeId`, and
+`evidence_refs: list[str] = []`.
+
+`CrossLayerChain` fields: `id: str`, `source_finding_id: str`,
+`crypto_finding_id: str`, `start_node_id: NodeId`, `end_node_id: NodeId`,
+`hops: list[CrossLayerHop]`, `explanation: str`, and
+`evidence_refs: list[str] = []`.
+
+A valid chain starts at the target of an `AI`, `AGENT`, or `MCP` finding and
+ends at the target of a `CRYPTO` or `PQC` finding. It contains at least one
+hop, no repeated node, and at least one `protected_by` or `key_exchange` edge.
+Every hop names an edge in the same graph, copies its stored endpoints and
+type, and makes traversal orientation explicit. Chain order is shortest hop
+count, source finding identifier, crypto finding identifier, then edge and
+traversal order. Search is cycle-safe and bounded to eight hops.
+
+The presentation contract is `SecurityPresentation` version 1. Its fields are
+`version: Literal["1"]`, `project: Project`, `graph: SecurityGraph`,
+`findings: list[Finding]`, `cross_layer_chains: list[CrossLayerChain]`, and
+`generated_at: datetime`. TUI and dashboard views consume this same model.
+Unknown fields are rejected. Findings, nodes, edges, chains, hops, and evidence
+references retain deterministic order. This presentation model is separate
+from report schema v1 and does not change persisted report compatibility.
+
 ## Finding schema
 
 Finding identifiers match `^LT-[A-Z][A-Z0-9]*-[0-9]{3}$`. Domains include
@@ -155,6 +190,13 @@ Machine output goes to stdout. Logs go to stderr. Exit codes are 0 for clean,
 1 for findings at or above the gate, 2 for usage errors, and 3 for internal
 errors. Non-interactive output contains no terminal escape sequences.
 `attack` requires `lattence.targets.yaml` and refuses execution without it.
+
+`tui [INPUT]` loads a report when `INPUT` names a report file or directory. A
+project path runs the deterministic local workflow and constructs a
+`SecurityPresentation`. `--json` writes that presentation document instead of
+starting the full-screen interface. `--out` remains the report and export
+destination. The reserved `--planner llm` mode continues to exit 2 as not
+implemented.
 
 ## Rule pack format
 
