@@ -40,6 +40,7 @@ from lattence_ai.attacks import (
     verify_finding,
 )
 from lattence_crypto import (
+    annotate_crypto_references,
     assess_readiness,
     classify_graph,
     crypto_discovery_files,
@@ -128,10 +129,13 @@ def _extra_nodes(root: Path, output: Path | None = None) -> tuple[Node, ...]:
         crypto_files,
     )
     mcp = discover_mcp_configs(inventory.root, inventory.files)
+    crypto_assets = annotate_crypto_references(
+        inventory.root,
+        crypto_files,
+        (*tls.certificates, *tls.algorithms, *crypto.algorithms),
+    )
     return (
-        *tls.certificates,
-        *tls.algorithms,
-        *crypto.algorithms,
+        *crypto_assets,
         *mcp.servers,
         *mcp.tools,
     )

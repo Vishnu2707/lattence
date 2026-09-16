@@ -1,6 +1,7 @@
 from .discovery import (
     CryptoDiscovery,
     CryptoLibrary,
+    annotate_crypto_references,
     crypto_discovery_files,
     discover_crypto,
 )
@@ -12,6 +13,7 @@ __all__ = [
     "CryptoLibrary",
     "PQCReadiness",
     "TLSDiscovery",
+    "annotate_crypto_references",
     "crypto_discovery_files",
     "discover_crypto",
     "discover_tls",

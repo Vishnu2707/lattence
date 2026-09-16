@@ -77,3 +77,7 @@ Rationale: This preserves the frozen graph and report contracts while connecting
 2026-09-16 D-018
 Decision: Report schema v1 gains optional `quantum_vulnerable_assets` and `quantum_vulnerable_paths` summary counts, and a path requires at least one relationship while an isolated vulnerable node is reported only as an asset.
 Rationale: v0.4.0 incorrectly labeled singleton zero-edge records as paths; optional defaulted fields preserve validation and deserialization of existing v1 reports while making the distinction explicit for every output format.
+
+2026-09-16 D-019
+Decision: Crypto ownership uses existing `key_exchange` and `protected_by` edges, selecting exact source, application entrypoint, explicit source/config reference, or same-module evidence in that order; dependency imports remain explicit library `implements` edges in the crypto projection.
+Rationale: These bounded signals connect applications, agents, tools, and MCP servers to crypto assets without changing the frozen graph vocabulary or creating name-based and project-wide Cartesian links.

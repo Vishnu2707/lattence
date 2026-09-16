@@ -49,7 +49,7 @@ def test_projects_crypto_assets_libraries_and_transitive_ancestors() -> None:
         ],
         generated_at=datetime(2026, 1, 1, tzinfo=UTC),
     )
-    library = CryptoLibrary("cryptography", "python", "tls.py")
+    library = CryptoLibrary("cryptography", "python", "pyproject.toml", ("tls.py",))
 
     projection = build_crypto_graph(graph, (library,))
 
@@ -58,7 +58,7 @@ def test_projects_crypto_assets_libraries_and_transitive_ancestors() -> None:
             application.id,
             certificate.id,
             algorithm.id,
-            "crypto_library:python:cryptography:tls.py",
+            "crypto_library:python:cryptography:pyproject.toml",
         ]
     )
     relationships = {
@@ -67,7 +67,7 @@ def test_projects_crypto_assets_libraries_and_transitive_ancestors() -> None:
     assert (application.id, "protected_by", certificate.id) in relationships
     assert (certificate.id, "protected_by", algorithm.id) in relationships
     assert (
-        "crypto_library:python:cryptography:tls.py",
+        "crypto_library:python:cryptography:pyproject.toml",
         "implements",
         algorithm.id,
     ) in relationships

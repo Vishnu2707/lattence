@@ -78,3 +78,9 @@ T-084 separates quantum exposure into isolated vulnerable assets and genuine
 traversable paths. A path always has at least two nodes and one relationship;
 singleton, zero-edge records are assets. Agility exposure still counts every
 unique vulnerable target across both collections.
+
+T-085 records code files that explicitly reference crypto configuration and
+the source files that import discovered crypto dependencies. The main graph
+uses those references for component ownership; the crypto projection links an
+imported library to the algorithms in each importing source with an
+evidence-backed `implements` relationship.

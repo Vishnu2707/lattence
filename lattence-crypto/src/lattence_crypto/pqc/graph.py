@@ -125,13 +125,24 @@ def build_crypto_graph(
         library_node = _library_node(library)
         projected_nodes.append(library_node)
         for algorithm in algorithms:
-            if algorithm.implementation == library.source_path:
+            algorithm_path = algorithm.source.path if algorithm.source else None
+            if algorithm.implementation == library.source_path or (
+                algorithm_path is not None and algorithm_path in library.referenced_by
+            ):
+                evidence_refs = tuple(
+                    sorted(
+                        {
+                            library.source_path,
+                            *(path for path in (algorithm_path,) if path is not None),
+                        }
+                    )
+                )
                 projected_edges.append(
                     CryptoGraphEdge(
                         source_id=library_node.id,
                         target_id=algorithm.id,
                         relationship="implements",
-                        evidence_refs=(library.source_path,),
+                        evidence_refs=evidence_refs,
                     )
                 )
 

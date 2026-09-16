@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from lattence.discovery import Dependency, inventory_project
-from lattence_crypto.discovery import discover_crypto
+from lattence_crypto.discovery import annotate_crypto_references, discover_crypto
 
 
 def test_discovers_crypto_libraries_and_algorithms(tmp_path: Path) -> None:
@@ -93,3 +93,38 @@ def test_configured_output_directory_is_excluded_from_discovery(
     )
 
     assert [item.algorithm for item in result.algorithms] == ["ECDSA"]
+
+
+def test_annotates_explicit_source_and_config_references(tmp_path: Path) -> None:
+    (tmp_path / "config").mkdir()
+    (tmp_path / "src").mkdir()
+    (tmp_path / "config" / "tls.yaml").write_text("signature: ECDSA\n")
+    (tmp_path / "src" / "app.py").write_text(
+        'TLS_CONFIG = "config/tls.yaml"\n', encoding="utf-8"
+    )
+    inventory = inventory_project(tmp_path)
+    discovery = discover_crypto((), tmp_path, inventory.files)
+
+    annotated = annotate_crypto_references(
+        tmp_path, inventory.files, discovery.algorithms
+    )
+
+    ecdsa = next(item for item in annotated if item.algorithm == "ECDSA")
+    assert ecdsa.metadata["referenced_by"] == ["src/app.py"]
+
+
+def test_records_source_files_that_import_crypto_dependencies(tmp_path: Path) -> None:
+    (tmp_path / "tls.py").write_text(
+        "from cryptography.hazmat.primitives.asymmetric import rsa\n"
+        "key = RSA.generate(key_size=2048)\n",
+        encoding="utf-8",
+    )
+    dependency = Dependency(
+        "python", "cryptography", ">=45", "runtime", "pyproject.toml"
+    )
+
+    discovery = discover_crypto(
+        (dependency,), tmp_path, inventory_project(tmp_path).files
+    )
+
+    assert discovery.libraries[0].referenced_by == ("tls.py",)

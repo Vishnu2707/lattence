@@ -11,6 +11,7 @@ class CryptoLibrary:
     name: str
     ecosystem: str
     source_path: str
+    referenced_by: tuple[str, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -65,6 +66,16 @@ _ALGORITHM_PATTERNS = (
     (re.compile(r"\bSHA[-_ ]?1\b", re.I), "SHA-1", "hash"),
     (re.compile(r"\bMD5\b", re.I), "MD5", "hash"),
 )
+_LIBRARY_IMPORT_NAMES = {
+    "cryptography": ("cryptography",),
+    "jose": ("jose",),
+    "libsodium-wrappers": ("libsodium-wrappers",),
+    "node-forge": ("node-forge", "forge"),
+    "pycryptodome": ("Crypto",),
+    "pyjwt": ("jwt",),
+    "pynacl": ("nacl",),
+    "tweetnacl": ("tweetnacl",),
+}
 
 
 def _slug(value: str) -> str:
@@ -141,19 +152,40 @@ def discover_crypto(
     files: tuple[ProjectFile, ...] = (),
     excluded_paths: tuple[str, ...] = (),
 ) -> CryptoDiscovery:
-    libraries = {
-        CryptoLibrary(item.name, item.ecosystem, item.source_path)
+    discovered_libraries = {
+        (item.name, item.ecosystem, item.source_path)
         for item in dependencies
         if item.name.lower() in _LIBRARIES
     }
     algorithms: list[CryptoAlgorithm] = []
+    sources: dict[str, str] = {}
     if root is not None:
         for project_file in crypto_discovery_files(files, excluded_paths):
             try:
                 source = (root / project_file.path).read_text(encoding="utf-8")
             except (OSError, UnicodeError):
                 continue
+            sources[project_file.path] = source
             algorithms.extend(_source_algorithms(project_file.path, source))
+
+    libraries = {
+        CryptoLibrary(
+            name,
+            ecosystem,
+            source_path,
+            tuple(
+                sorted(
+                    path
+                    for path, source in sources.items()
+                    if any(
+                        re.search(rf"(?<![\w-]){re.escape(alias)}(?![\w-])", source)
+                        for alias in _LIBRARY_IMPORT_NAMES.get(name.lower(), (name,))
+                    )
+                )
+            ),
+        )
+        for name, ecosystem, source_path in discovered_libraries
+    }
 
     unique_algorithms = {item.id: item for item in algorithms}
     return CryptoDiscovery(

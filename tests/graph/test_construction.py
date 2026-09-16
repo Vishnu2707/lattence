@@ -3,6 +3,7 @@ from datetime import UTC, datetime
 from lattence.graph import (
     Agent,
     Application,
+    CryptoAlgorithm,
     MCPServer,
     Project,
     SourceRef,
@@ -75,3 +76,90 @@ def test_deduplicates_edges_supported_by_repeated_references() -> None:
     graph = build_security_graph(project)
 
     assert len(graph.edges) == 1
+
+
+def test_wires_crypto_to_ai_components_by_bounded_module_proximity() -> None:
+    application = Application(
+        id="application:fixture",
+        name="fixture",
+        source=SourceRef(path="src/app.py"),
+        entrypoints=["src/app.py"],
+    )
+    agent = Agent(id="agent:fixture", name="agent", source=application.source)
+    tool = Tool(id="tool:fixture", name="tool", source=application.source)
+    server = MCPServer(
+        id="mcp_server:fixture",
+        name="server",
+        source=SourceRef(path="src/mcp.json"),
+        transport="stdio",
+    )
+    algorithm = CryptoAlgorithm(
+        id="crypto_algorithm:src/crypto.py:1:x25519",
+        name="X25519",
+        source=SourceRef(path="src/crypto.py", line=1),
+        algorithm="X25519",
+        purpose="key exchange",
+        quantum_status="vulnerable",
+    )
+    project = Project(
+        id="fixture",
+        name="fixture",
+        root=".",
+        scanned_at=datetime(2026, 1, 1, tzinfo=UTC),
+        nodes=[application, agent, tool, server, algorithm],
+    )
+
+    graph = build_security_graph(project)
+    crypto_edges = [edge for edge in graph.edges if edge.target_id == algorithm.id]
+
+    assert {edge.source_id for edge in crypto_edges} == {
+        application.id,
+        agent.id,
+        tool.id,
+        server.id,
+    }
+    assert {edge.type for edge in crypto_edges} == {"key_exchange"}
+    assert {edge.metadata["binding_reason"] for edge in crypto_edges} == {
+        "module-proximity"
+    }
+    assert all("src/crypto.py" in edge.evidence_refs for edge in crypto_edges)
+
+
+def test_prefers_explicit_config_reference_and_does_not_link_unrelated_modules() -> (
+    None
+):
+    application = Application(
+        id="application:fixture",
+        name="fixture",
+        source=SourceRef(path="src/app.py"),
+    )
+    unrelated = Tool(
+        id="tool:unrelated",
+        name="unrelated",
+        source=SourceRef(path="other/tool.py"),
+    )
+    algorithm = CryptoAlgorithm(
+        id="crypto_algorithm:config/tls.yaml:1:ecdsa",
+        name="ECDSA",
+        source=SourceRef(path="config/tls.yaml", line=1),
+        algorithm="ECDSA",
+        purpose="signature",
+        quantum_status="vulnerable",
+        metadata={"referenced_by": ["src/app.py"]},
+    )
+    project = Project(
+        id="fixture",
+        name="fixture",
+        root=".",
+        scanned_at=datetime(2026, 1, 1, tzinfo=UTC),
+        nodes=[application, unrelated, algorithm],
+    )
+
+    graph = build_security_graph(project)
+    crypto_edges = [edge for edge in graph.edges if edge.target_id == algorithm.id]
+
+    assert len(crypto_edges) == 1
+    assert crypto_edges[0].source_id == application.id
+    assert crypto_edges[0].type == "protected_by"
+    assert crypto_edges[0].metadata == {"binding_reason": "config-reference"}
+    assert crypto_edges[0].evidence_refs == ["config/tls.yaml", "src/app.py"]
