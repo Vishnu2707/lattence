@@ -1,8 +1,8 @@
 # Current state
 
 - Milestone: v0.5 scoped; v0.4.1 confirmed
-- Last completed: T-091, target crypto findings at concrete supporting nodes
-- Next task: T-092, correlate AI and crypto findings through genuine paths
+- Last completed: T-092, correlate AI and crypto findings through genuine paths
+- Next task: T-093, serialize shared cross-layer presentation data
 - Blockers: none
 - Manual steps: branch protection and tag protection commands from the
   v0.1.0 release are still printed for review only, not run
@@ -19,7 +19,7 @@
 - v0.3 tasks: 16 done (T-049 through T-064), 0 todo
 - v0.4 tasks: 17 done (T-065 through T-081), 0 todo
 - v0.4.1 tasks: 7 done (T-082 through T-088), 0 todo
-- v0.5 tasks: 3 done, 12 todo (T-092 through T-103)
+- v0.5 tasks: 4 done, 11 todo (T-093 through T-103)
 
 ## v0.4 release gate
 

@@ -43,3 +43,10 @@ it against that report's own embedded `SecurityGraph`, and returns
 path and does not rescan: verification is a property of the report you
 already have, not a fresh scan. This is what T-048's `verify` command
 wires up.
+
+T-092 correlates AI, agent, and MCP findings with PQC and crypto findings over
+the bounded topology traversal. A correlation requires a genuine
+`key_exchange` or `protected_by` edge, retains every hop and its orientation,
+and combines both finding evidence identifiers with graph evidence paths.
+Unknown finding targets fail explicitly, and unrelated finding domains or
+paths without a cryptographic relationship produce no correlation.
