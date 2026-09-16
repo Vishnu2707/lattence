@@ -68,3 +68,9 @@ scales, 32-pixel row geometry, valid state words, dense table capabilities,
 and right-side detail behavior. The dashboard CSS maps every token without
 gradients or shadows. Python and dependency-free JavaScript tests enforce the
 same canonical JSON manifest.
+
+T-095 implements the TUI presentation shell with Rich layouts driven by the
+shared grammar manifest. The fixed twelve-section rail, dense tables, selected
+row state, right-side detail panel, and help footer render without escape
+sequences in plain mode. Tab or arrow navigation, j/k row movement, Enter,
+Escape, help, and quit actions reduce through a deterministic state model.

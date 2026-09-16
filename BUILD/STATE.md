@@ -1,8 +1,8 @@
 # Current state
 
 - Milestone: v0.5 scoped; v0.4.1 confirmed
-- Last completed: T-094, implement shared TUI and dashboard visual grammar
-- Next task: T-095, implement the keyboard-driven TUI shell
+- Last completed: T-095, implement the keyboard-driven TUI shell
+- Next task: T-096, implement the dashboard shell
 - Blockers: none
 - Manual steps: branch protection and tag protection commands from the
   v0.1.0 release are still printed for review only, not run
@@ -19,7 +19,7 @@
 - v0.3 tasks: 16 done (T-049 through T-064), 0 todo
 - v0.4 tasks: 17 done (T-065 through T-081), 0 todo
 - v0.4.1 tasks: 7 done (T-082 through T-088), 0 todo
-- v0.5 tasks: 6 done, 9 todo (T-095 through T-103)
+- v0.5 tasks: 7 done, 8 todo (T-096 through T-103)
 
 ## v0.4 release gate
 
