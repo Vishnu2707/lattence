@@ -203,3 +203,10 @@ T-081 recorded the v0.4 release gate. The full suite passes 260 tests at 90.59
 percent coverage, lint, formatting, seven strict type targets, package build
 and validation, provenance, prose, and fresh-clone crypto acceptance with
 byte-for-byte rollback verification.
+
+T-087 makes the bundled vulnerable-agent fixture a direct acceptance target
+for every repaired v0.4 workflow. It retains classical RSA, X25519, TLS 1.2,
+and ECDSA exposure while adding enforced hybrid ML-KEM and ML-DSA configuration
+for reversible chaos probes. Its declaration explicitly authorizes only that
+configuration file, and tests require stable repeated assessment plus
+byte-for-byte rollback.

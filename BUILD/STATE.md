@@ -1,8 +1,8 @@
 # Current state
 
 - Milestone: v0.4.1 repair scoped; v0.4.0 confirmation withdrawn
-- Last completed: T-086, render command-specific crypto headings
-- Next task: T-087, run clean-clone v0.4.1 acceptance
+- Last completed: T-087, run clean-clone v0.4.1 acceptance
+- Next task: T-088, run release gate, record changelog, and tag v0.4.1
 - Blockers: none
 - Manual steps: branch protection and tag protection commands from the
   v0.1.0 release are still printed for review only, not run
@@ -18,7 +18,7 @@
 - v0.2 tasks: 3 done (T-046, T-047, T-048), 0 todo
 - v0.3 tasks: 16 done (T-049 through T-064), 0 todo
 - v0.4 tasks: 17 done (T-065 through T-081), 0 todo
-- v0.4.1 tasks: 5 done, 2 todo (T-087 through T-088)
+- v0.4.1 tasks: 6 done, 1 todo (T-088)
 
 ## v0.4 release gate
 
