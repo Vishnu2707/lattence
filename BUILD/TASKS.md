@@ -242,7 +242,7 @@ and exposes evidence without introducing a model-backed planner.
 [T-091] [v0.5] [EVID] target crypto findings at the concrete algorithm certificate or TLS nodes that support them | deps: T-084,T-090 | status: done | commit: self
 [T-092] [v0.5] [AISEC] correlate AI findings to crypto findings through genuine graph paths with stable explanations | deps: T-090,T-091 | status: done | commit: self
 [T-093] [v0.5] [EVID] serialize cross-layer chains and evidence drill-down into a strict presentation data model | deps: T-092 | status: done | commit: self
-[T-094] [v0.5] [UX] implement shared visual tokens navigation labels tables and detail-panel grammar | deps: T-089,T-093 | status: todo | commit: self
+[T-094] [v0.5] [UX] implement shared visual tokens navigation labels tables and detail-panel grammar | deps: T-089,T-093 | status: done | commit: self
 [T-095] [v0.5] [UX] implement the keyboard-driven TUI shell with the fixed twelve-section navigation | deps: T-094 | status: todo | commit: self
 [T-096] [v0.5] [UX] implement the dashboard shell with fixed rail dense tables filters and side-panel details | deps: T-094 | status: todo | commit: self
 [T-097] [v0.5] [UX] implement interactive attack-graph path selection and cross-layer evidence drill-down | deps: T-095,T-096 | status: todo | commit: self

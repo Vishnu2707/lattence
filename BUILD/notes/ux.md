@@ -61,3 +61,10 @@ two metrics.
 T-086 makes the shared crypto renderer require its invoking command name.
 `pqc assess` and `crypto chaos` now retain their distinct identities in the
 terminal heading instead of both being labeled `crypto`.
+
+T-094 establishes the version 1 visual grammar consumed by both v0.5 surfaces.
+It contains the frozen palette, twelve navigation labels, spacing and type
+scales, 32-pixel row geometry, valid state words, dense table capabilities,
+and right-side detail behavior. The dashboard CSS maps every token without
+gradients or shadows. Python and dependency-free JavaScript tests enforce the
+same canonical JSON manifest.

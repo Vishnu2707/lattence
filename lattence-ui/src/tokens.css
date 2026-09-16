@@ -1,0 +1,38 @@
+:root {
+  color-scheme: dark;
+  --surface-0: #0B0D10;
+  --surface-1: #12151A;
+  --surface-2: #1A1F26;
+  --border: #262C35;
+  --text-primary: #E6E9EE;
+  --text-muted: #8A94A6;
+  --accent: #4C8DFF;
+  --sev-critical: #E5484D;
+  --sev-high: #F76808;
+  --sev-medium: #E2A336;
+  --sev-low: #3E9B4F;
+  --sev-info: #6E7A8A;
+  --pass: #3E9B4F;
+  --fail: #E5484D;
+  --space-1: 4px;
+  --row-height: 32px;
+  --control-height: 28px;
+  --radius: 2px;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-sans: Inter, system-ui, sans-serif;
+}
+
+*:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+.dense-table-row {
+  height: var(--row-height);
+}
+
+.panel {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-1);
+}

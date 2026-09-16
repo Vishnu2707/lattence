@@ -1,0 +1,58 @@
+{
+  "version": "1",
+  "colors": {
+    "surface.0": "#0B0D10",
+    "surface.1": "#12151A",
+    "surface.2": "#1A1F26",
+    "border": "#262C35",
+    "text.primary": "#E6E9EE",
+    "text.muted": "#8A94A6",
+    "accent": "#4C8DFF",
+    "sev.critical": "#E5484D",
+    "sev.high": "#F76808",
+    "sev.medium": "#E2A336",
+    "sev.low": "#3E9B4F",
+    "sev.info": "#6E7A8A",
+    "pass": "#3E9B4F",
+    "fail": "#E5484D"
+  },
+  "navigation": [
+    "Overview",
+    "Applications",
+    "Attack Surface",
+    "AI Security",
+    "Agent Security",
+    "MCP",
+    "Cryptography",
+    "PQC Readiness",
+    "Attack Graph",
+    "Findings",
+    "Verification",
+    "Reports"
+  ],
+  "geometry": {
+    "spacing": [4, 8, 12, 16, 20, 24, 32],
+    "rowHeight": 32,
+    "controlHeights": [28, 32],
+    "borderWidth": 1,
+    "cornerRadius": 2,
+    "focusWidth": 2,
+    "focusOffset": 1
+  },
+  "typeSizes": [11, 12, 13, 14, 16, 20, 28],
+  "states": ["PASS", "FAIL", "WARN", "SKIP", "BLOCKED", "VULNERABLE"],
+  "table": {
+    "stickyHeader": true,
+    "sortable": true,
+    "filterable": true,
+    "savedViews": true,
+    "keyboardNavigation": true,
+    "virtualized": true
+  },
+  "detail": {
+    "placement": "right-side-panel",
+    "modal": false,
+    "copyJson": true,
+    "export": true
+  }
+}
