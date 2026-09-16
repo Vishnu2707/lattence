@@ -35,7 +35,11 @@ def _plain_crypto(assessment: CryptoAssessment, target: Path) -> str:
         (
             _row("Nodes", len(assessment.crypto_graph.nodes)),
             _row("Relationships", len(assessment.crypto_graph.edges)),
-            _row("Vulnerable paths", len(assessment.vulnerable_paths)),
+            _row(
+                "Isolated vulnerable assets",
+                len(assessment.quantum_exposure.isolated_assets),
+            ),
+            _row("Traversable paths", len(assessment.quantum_exposure.paths)),
         )
     )
     for node in assessment.crypto_graph.nodes[:8]:

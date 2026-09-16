@@ -5,7 +5,8 @@ from lattence_crypto.pqc import (
     CryptoGraphNode,
     MLDSAMigration,
     MLKEMMigration,
-    QuantumVulnerablePath,
+    QuantumExposure,
+    QuantumVulnerableAsset,
 )
 from lattence_crypto.tls import HybridTLSValidation
 
@@ -57,7 +58,7 @@ def test_scores_complete_crypto_agility_at_one_hundred() -> None:
 
     score = score_crypto_agility(
         graph,
-        vulnerable_paths=(),
+        quantum_exposure=QuantumExposure(isolated_assets=(), paths=()),
         ml_kem=_migration("kem"),
         ml_dsa=_migration("dsa"),
         hybrid_tls=_hybrid(),
@@ -81,17 +82,14 @@ def test_scores_and_names_every_limiting_factor() -> None:
         ),
         edges=(),
     )
-    path = QuantumVulnerablePath(
+    asset = QuantumVulnerableAsset(
         target_id="algorithm:rsa",
-        node_ids=("algorithm:rsa",),
-        relationships=(),
         source_paths=(),
-        transitive=False,
     )
 
     score = score_crypto_agility(
         graph,
-        vulnerable_paths=(path,),
+        quantum_exposure=QuantumExposure(isolated_assets=(asset,), paths=()),
         ml_kem=_migration("kem", False),
         ml_dsa=_migration("dsa", False),
         hybrid_tls=_hybrid("invalid"),

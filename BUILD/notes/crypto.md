@@ -73,3 +73,8 @@ T-082 excludes Lattence report, graph, and provider state artifacts by name
 and excludes every file below a configured output directory. Repeated crypto
 discovery in the same directory is now idempotent instead of ingesting its own
 JSON and HTML output.
+
+T-084 separates quantum exposure into isolated vulnerable assets and genuine
+traversable paths. A path always has at least two nodes and one relationship;
+singleton, zero-edge records are assets. Agility exposure still counts every
+unique vulnerable target across both collections.

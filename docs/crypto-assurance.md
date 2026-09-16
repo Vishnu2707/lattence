@@ -17,8 +17,9 @@ lattence pqc assess . --offline
 
 The command writes `lattence-report.json` and `lattence-report.html` unless
 `--out` selects another location. `--json` prints the structured assessment,
-including the crypto graph, vulnerable paths, both migration tests, hybrid TLS
-validation, the agility score, downgrade state, and normalized findings.
+including the crypto graph, isolated vulnerable assets, traversable paths,
+both migration tests, hybrid TLS validation, the agility score, downgrade
+state, and normalized findings.
 
 ### Crypto dependency graph
 
@@ -30,9 +31,18 @@ The crypto graph is a deterministic projection of the security graph. It keeps:
 - components that can reach a cryptographic asset; and
 - source locations and relationship evidence.
 
-Quantum-vulnerable paths are reported both for direct dependencies and for
-transitive paths through applications, certificates, libraries, or other graph
-components. Cycles are bounded and output order is stable.
+An algorithm or certificate with no incoming crypto relationship is reported
+as an isolated vulnerable asset. It is never called a path. A traversable path
+contains at least two nodes and one relationship; direct and transitive paths
+through applications, certificates, libraries, or other graph components are
+reported separately. Cycles are bounded and output order is stable.
+
+The report v1 schema remains version 1. Starting with v0.4.1, writers add the
+optional summary fields `quantum_vulnerable_assets` and
+`quantum_vulnerable_paths`; readers of older v1 documents default both to
+zero. Structured assessment JSON replaces the ambiguous top-level
+`vulnerable_paths` list with `quantum_exposure.isolated_assets` and
+`quantum_exposure.paths`.
 
 ### Quantum-vulnerable dependencies
 

@@ -26,6 +26,8 @@ class ReportSummary(ReportModel):
     low: int = Field(ge=0)
     info: int = Field(ge=0)
     pqc_readiness: float = Field(ge=0, le=100)
+    quantum_vulnerable_assets: int = Field(default=0, ge=0)
+    quantum_vulnerable_paths: int = Field(default=0, ge=0)
 
 
 class Report(ReportModel):
@@ -44,6 +46,9 @@ def build_report(
     findings: list[Finding],
     tool_version: str,
     pqc_readiness: float,
+    *,
+    quantum_vulnerable_assets: int = 0,
+    quantum_vulnerable_paths: int = 0,
 ) -> Report:
     ordered = sorted(findings, key=lambda item: item.id)
     counts = {
@@ -64,6 +69,8 @@ def build_report(
             low=counts["low"],
             info=counts["info"],
             pqc_readiness=pqc_readiness,
+            quantum_vulnerable_assets=quantum_vulnerable_assets,
+            quantum_vulnerable_paths=quantum_vulnerable_paths,
         ),
     )
 

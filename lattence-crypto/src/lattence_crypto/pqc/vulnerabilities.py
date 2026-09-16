@@ -12,6 +12,18 @@ class QuantumVulnerablePath:
     transitive: bool
 
 
+@dataclass(frozen=True, order=True)
+class QuantumVulnerableAsset:
+    target_id: str
+    source_paths: tuple[str, ...]
+
+
+@dataclass(frozen=True)
+class QuantumExposure:
+    isolated_assets: tuple[QuantumVulnerableAsset, ...]
+    paths: tuple[QuantumVulnerablePath, ...]
+
+
 def _path_evidence(
     nodes: tuple[CryptoGraphNode, ...], edges: tuple[CryptoGraphEdge, ...]
 ) -> tuple[str, ...]:
@@ -25,10 +37,10 @@ def _path_evidence(
     )
 
 
-def find_quantum_vulnerable_paths(
+def assess_quantum_exposure(
     graph: CryptoDependencyGraph,
-) -> tuple[QuantumVulnerablePath, ...]:
-    """Return every direct and transitive path into vulnerable crypto assets."""
+) -> QuantumExposure:
+    """Separate isolated vulnerable assets from traversable vulnerable paths."""
     by_id = {node.id: node for node in graph.nodes}
     incoming: dict[str, list[CryptoGraphEdge]] = {}
     for edge in graph.edges:
@@ -37,6 +49,7 @@ def find_quantum_vulnerable_paths(
         edges.sort()
 
     findings: set[QuantumVulnerablePath] = set()
+    isolated_assets: set[QuantumVulnerableAsset] = set()
     vulnerable_nodes = sorted(
         (node for node in graph.nodes if node.quantum_status == "vulnerable"),
         key=lambda node: node.id,
@@ -44,13 +57,10 @@ def find_quantum_vulnerable_paths(
     for target in vulnerable_nodes:
         target_incoming = incoming.get(target.id, [])
         if not target_incoming:
-            findings.add(
-                QuantumVulnerablePath(
+            isolated_assets.add(
+                QuantumVulnerableAsset(
                     target_id=target.id,
-                    node_ids=(target.id,),
-                    relationships=(),
                     source_paths=_path_evidence((target,), ()),
-                    transitive=False,
                 )
             )
             continue
@@ -81,4 +91,14 @@ def find_quantum_vulnerable_paths(
                         (edge, *path_edges),
                     )
                 )
-    return tuple(sorted(findings))
+    return QuantumExposure(
+        isolated_assets=tuple(sorted(isolated_assets)),
+        paths=tuple(sorted(findings)),
+    )
+
+
+def find_quantum_vulnerable_paths(
+    graph: CryptoDependencyGraph,
+) -> tuple[QuantumVulnerablePath, ...]:
+    """Return only multi-node, traversable paths into vulnerable crypto assets."""
+    return assess_quantum_exposure(graph).paths

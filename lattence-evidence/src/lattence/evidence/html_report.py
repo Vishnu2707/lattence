@@ -11,7 +11,7 @@ _STYLE = """
 font:13px Inter,system-ui,sans-serif}main{max-width:1200px;margin:0 auto;padding:24px}
 h1,h2{margin:0 0 12px}h1{font:20px ui-monospace,monospace;letter-spacing:.08em}
 h2{font-size:14px}.muted{color:var(--muted)}.grid{display:grid;
-grid-template-columns:repeat(4,1fr);gap:8px;margin:16px 0}.metric,.panel{
+grid-template-columns:repeat(3,1fr);gap:8px;margin:16px 0}.metric,.panel{
 border:1px solid var(--border);border-radius:2px;background:var(--s1)}
 .metric{padding:12px}.metric b{display:block;font:20px ui-monospace,monospace}
 .panel{margin-top:12px;padding:12px;overflow:auto}table{border-collapse:collapse;
@@ -64,6 +64,14 @@ def _node_rows(report: Report) -> str:
 def render_html_report(report: Report) -> str:
     summary = report.summary
     embedded = html.escape(report_json(report), quote=False)
+    asset_metric = (
+        f'<div class="metric"><b>{summary.quantum_vulnerable_assets}</b>'
+        "Isolated vulnerable assets</div>"
+    )
+    path_metric = (
+        f'<div class="metric"><b>{summary.quantum_vulnerable_paths}</b>'
+        "Traversable vulnerable paths</div>"
+    )
     return f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -74,7 +82,9 @@ def render_html_report(report: Report) -> str:
 <section class="grid"><div class="metric"><b>{summary.total}</b>Findings</div>
 <div class="metric"><b>{summary.critical + summary.high}</b>Critical + high</div>
 <div class="metric"><b>{len(report.graph.nodes)}</b>Graph nodes</div>
-<div class="metric"><b>{summary.pqc_readiness:g}%</b>PQC readiness</div></section>
+<div class="metric"><b>{summary.pqc_readiness:g}%</b>PQC readiness</div>
+{asset_metric}
+{path_metric}</section>
 <section class="panel"><h2>Findings</h2><table><thead><tr>
 <th>ID</th><th>Finding</th><th>Severity</th><th>Target</th>
 <th>Mappings</th><th>Remediation</th></tr></thead>

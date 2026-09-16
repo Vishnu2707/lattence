@@ -53,6 +53,9 @@ def test_pqc_assess_emits_full_crypto_assessment(tmp_path: Path) -> None:
     assert payload["ml_dsa"]["status"] == "already_migrated"
     assert payload["hybrid_tls"]["status"] == "valid"
     assert "components" in payload["agility"]
+    assert "isolated_assets" in payload["quantum_exposure"]
+    assert "paths" in payload["quantum_exposure"]
+    assert "vulnerable_paths" not in payload
     assert (tmp_path / "lattence-report.json").is_file()
 
 
@@ -82,9 +85,7 @@ def test_repeated_pqc_assessment_has_identical_crypto_counts(tmp_path: Path) -> 
     assert len(first_payload["crypto_graph"]["edges"]) == len(
         second_payload["crypto_graph"]["edges"]
     )
-    assert len(first_payload["vulnerable_paths"]) == len(
-        second_payload["vulnerable_paths"]
-    )
+    assert first_payload["quantum_exposure"] == second_payload["quantum_exposure"]
 
 
 def test_crypto_chaos_requires_consent_and_restores_target(tmp_path: Path) -> None:

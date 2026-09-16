@@ -2,6 +2,7 @@ from lattence_crypto.pqc import (
     CryptoDependencyGraph,
     CryptoGraphEdge,
     CryptoGraphNode,
+    assess_quantum_exposure,
     find_quantum_vulnerable_paths,
 )
 
@@ -55,4 +56,7 @@ def test_reports_isolated_vulnerable_assets_and_ignores_cycles() -> None:
         ),
     )
 
-    assert find_quantum_vulnerable_paths(graph)[0].node_ids == ("rsa",)
+    exposure = assess_quantum_exposure(graph)
+
+    assert exposure.paths == ()
+    assert exposure.isolated_assets[0].target_id == "rsa"

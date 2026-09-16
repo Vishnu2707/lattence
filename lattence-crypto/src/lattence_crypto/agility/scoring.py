@@ -4,7 +4,7 @@ from lattence_crypto.pqc import (
     CryptoDependencyGraph,
     MLDSAMigration,
     MLKEMMigration,
-    QuantumVulnerablePath,
+    QuantumExposure,
 )
 from lattence_crypto.tls import HybridTLSValidation
 
@@ -57,8 +57,11 @@ def _configurability(graph: CryptoDependencyGraph) -> AgilityComponent:
     return AgilityComponent("configurability", score, factor)
 
 
-def _exposure(paths: tuple[QuantumVulnerablePath, ...]) -> AgilityComponent:
-    vulnerable_targets = {path.target_id for path in paths}
+def _exposure(exposure: QuantumExposure) -> AgilityComponent:
+    vulnerable_targets = {
+        *(asset.target_id for asset in exposure.isolated_assets),
+        *(path.target_id for path in exposure.paths),
+    }
     score = max(0, 100 - (25 * len(vulnerable_targets)))
     factor = (
         None
@@ -94,7 +97,7 @@ def _downgrade(resistant: bool | None) -> AgilityComponent:
 def score_crypto_agility(
     graph: CryptoDependencyGraph,
     *,
-    vulnerable_paths: tuple[QuantumVulnerablePath, ...],
+    quantum_exposure: QuantumExposure,
     ml_kem: MLKEMMigration,
     ml_dsa: MLDSAMigration,
     hybrid_tls: HybridTLSValidation,
@@ -105,7 +108,7 @@ def score_crypto_agility(
             (
                 _replaceability(graph),
                 _configurability(graph),
-                _exposure(vulnerable_paths),
+                _exposure(quantum_exposure),
                 _migration(ml_kem, ml_dsa, hybrid_tls),
                 _downgrade(downgrade_resistant),
             )

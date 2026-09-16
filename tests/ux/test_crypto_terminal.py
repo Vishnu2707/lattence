@@ -26,6 +26,9 @@ def test_crypto_terminal_renders_all_flagship_sections(tmp_path: Path) -> None:
     assert "DOWNGRADE VALIDATION" in rendered
     assert "ML-KEM" in rendered
     assert "ML-DSA" in rendered
+    assert "Isolated vulnerable assets" in rendered
+    assert "Traversable paths" in rendered
+    assert "Vulnerable paths" not in rendered
     assert "\x1b[" not in rendered
 
 

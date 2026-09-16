@@ -53,3 +53,7 @@ T-078 added two accessible 1200 by 680 SVG diagrams under
 `docs/architecture/`: the offline crypto assurance pipeline and the bounded
 crypto chaos safety boundary. Both use the frozen palette, plain geometric
 shapes, embedded titles and descriptions, and no generator metadata.
+
+T-084 replaces the ambiguous crypto terminal metric with separate isolated
+vulnerable asset and traversable path counts. The HTML report exposes the same
+two metrics.

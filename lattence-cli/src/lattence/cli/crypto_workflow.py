@@ -20,11 +20,12 @@ from lattence_crypto.pqc import (
     CryptoDependencyGraph,
     MLDSAMigration,
     MLKEMMigration,
+    QuantumExposure,
     QuantumVulnerablePath,
     assess_ml_dsa_migration,
     assess_ml_kem_migration,
+    assess_quantum_exposure,
     build_crypto_graph,
-    find_quantum_vulnerable_paths,
 )
 from lattence_crypto.tls import HybridTLSValidation, validate_hybrid_tls
 
@@ -39,6 +40,7 @@ class CryptoWorkflowError(ValueError):
 class CryptoAssessment:
     report: Report
     crypto_graph: CryptoDependencyGraph
+    quantum_exposure: QuantumExposure
     vulnerable_paths: tuple[QuantumVulnerablePath, ...]
     ml_kem: MLKEMMigration
     ml_dsa: MLDSAMigration
@@ -68,11 +70,10 @@ def create_crypto_assessment(
     crypto_files = crypto_discovery_files(
         inventory.files, _crypto_output_exclusions(root, output)
     )
-    discovery = discover_crypto(
-        dependencies.dependencies, inventory.root, crypto_files
-    )
+    discovery = discover_crypto(dependencies.dependencies, inventory.root, crypto_files)
     crypto_graph = build_crypto_graph(report.graph, discovery.libraries)
-    vulnerable_paths = find_quantum_vulnerable_paths(crypto_graph)
+    quantum_exposure = assess_quantum_exposure(crypto_graph)
+    vulnerable_paths = quantum_exposure.paths
     names = tuple(node.name for node in crypto_graph.nodes if node.kind == "algorithm")
     hybrid_supported = any("hybrid" in name.lower() for name in names)
     ml_kem = assess_ml_kem_migration(
@@ -89,7 +90,7 @@ def create_crypto_assessment(
     downgrade_result = downgrade or validate_downgrade_resistance(())
     agility = score_crypto_agility(
         crypto_graph,
-        vulnerable_paths=vulnerable_paths,
+        quantum_exposure=quantum_exposure,
         ml_kem=ml_kem,
         ml_dsa=ml_dsa,
         hybrid_tls=hybrid_tls,
@@ -110,10 +111,13 @@ def create_crypto_assessment(
         list(findings),
         report.tool.version,
         report.summary.pqc_readiness,
+        quantum_vulnerable_assets=len(quantum_exposure.isolated_assets),
+        quantum_vulnerable_paths=len(quantum_exposure.paths),
     )
     return CryptoAssessment(
         report=crypto_report,
         crypto_graph=crypto_graph,
+        quantum_exposure=quantum_exposure,
         vulnerable_paths=vulnerable_paths,
         ml_kem=ml_kem,
         ml_dsa=ml_dsa,
@@ -135,7 +139,7 @@ def crypto_assessment_json(assessment: CryptoAssessment) -> str:
         "ml_dsa": asdict(assessment.ml_dsa),
         "ml_kem": asdict(assessment.ml_kem),
         "pqc_readiness": assessment.report.summary.pqc_readiness,
-        "vulnerable_paths": [asdict(path) for path in assessment.vulnerable_paths],
+        "quantum_exposure": asdict(assessment.quantum_exposure),
     }
     return json.dumps(payload, indent=2, sort_keys=True) + "\n"
 

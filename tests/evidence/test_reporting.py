@@ -16,7 +16,7 @@ from lattence.graph import Agent, Project, SecurityGraph
 SCHEMA = Path(__file__).parents[2] / "docs" / "schemas" / "report.v1.json"
 
 
-def _report() -> Report:
+def _report(*, assets: int = 0, paths: int = 0) -> Report:
     timestamp = datetime(2026, 1, 1, tzinfo=UTC)
     agent = Agent(id="agent:one", name="one")
     project = Project(
@@ -47,7 +47,15 @@ def _report() -> Report:
         ),
     )
     finding = normalize_rule_finding(rule, agent.id, timestamp, 42)
-    return build_report(project, graph, [finding], "0.0.0", 25)
+    return build_report(
+        project,
+        graph,
+        [finding],
+        "0.0.0",
+        25,
+        quantum_vulnerable_assets=assets,
+        quantum_vulnerable_paths=paths,
+    )
 
 
 def test_report_json_validates_and_is_stable() -> None:
@@ -61,6 +69,17 @@ def test_report_json_validates_and_is_stable() -> None:
     assert report.summary.high == 1
 
 
+def test_report_v1_defaults_new_crypto_exposure_counts_for_old_documents() -> None:
+    document = _report().model_dump(mode="json")
+    del document["summary"]["quantum_vulnerable_assets"]
+    del document["summary"]["quantum_vulnerable_paths"]
+
+    restored = Report.model_validate(document)
+
+    assert restored.summary.quantum_vulnerable_assets == 0
+    assert restored.summary.quantum_vulnerable_paths == 0
+
+
 def test_writes_valid_json_report(tmp_path: Path) -> None:
     destination = tmp_path / "reports" / "report.json"
 
@@ -70,7 +89,7 @@ def test_writes_valid_json_report(tmp_path: Path) -> None:
 
 
 def test_html_report_is_self_contained_and_escapes_content(tmp_path: Path) -> None:
-    report = _report().model_copy(
+    report = _report(assets=3, paths=2).model_copy(
         update={"project": _report().project.model_copy(update={"name": "<script>"})}
     )
     destination = tmp_path / "report.html"
@@ -82,4 +101,6 @@ def test_html_report_is_self_contained_and_escapes_content(tmp_path: Path) -> No
     assert "<script>" not in rendered
     assert "&lt;script&gt;" in rendered
     assert "https://" not in rendered
+    assert "<b>3</b>Isolated vulnerable assets" in rendered
+    assert "<b>2</b>Traversable vulnerable paths" in rendered
     assert destination.read_text(encoding="utf-8") == rendered

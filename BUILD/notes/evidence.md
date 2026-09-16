@@ -27,3 +27,7 @@ T-075 normalizes blocked ML-KEM and ML-DSA migrations, limited agility,
 accepted downgrades, and incomplete downgrade validation into stable
 `LT-PQC-2xx` findings. Evidence contains deterministic summaries and hashes,
 never mutated file content.
+
+T-084 adds optional v1 summary counts for isolated quantum-vulnerable assets
+and traversable quantum-vulnerable paths. Older v1 documents remain valid and
+default both counts to zero; JSON and HTML writers emit and label both counts.

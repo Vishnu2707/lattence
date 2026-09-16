@@ -195,8 +195,9 @@ schema-valid JSON report and a self-contained HTML report.
 
 ## PQC and crypto assurance
 
-Lattence builds a cryptographic dependency graph, reports direct and transitive
-quantum-vulnerable paths, tests ML-KEM-768 and ML-DSA-65 migration readiness,
+Lattence builds a cryptographic dependency graph, reports isolated
+quantum-vulnerable assets separately from traversable paths, tests ML-KEM-768
+and ML-DSA-65 migration readiness,
 validates hybrid TLS, and calculates a five-component crypto agility score.
 
 ```bash
@@ -209,7 +210,8 @@ LATTENCE  crypto  examples/vulnerable-agent
 CRYPTO GRAPH
   Nodes                   5
   Relationships           3
-  Vulnerable paths        4
+  Isolated vulnerable assets  2
+  Traversable paths       2
 
 MIGRATION TESTS
   ML-KEM                  BLOCKED

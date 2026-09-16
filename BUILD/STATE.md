@@ -1,8 +1,8 @@
 # Current state
 
 - Milestone: v0.4.1 repair scoped; v0.4.0 confirmation withdrawn
-- Last completed: T-083, define isolated crypto asset and traversable path report semantics
-- Next task: T-084, report isolated vulnerable assets separately from traversable paths
+- Last completed: T-084, report isolated vulnerable assets separately from traversable paths
+- Next task: T-085, wire crypto assets into the trust graph with evidence
 - Blockers: none
 - Manual steps: branch protection and tag protection commands from the
   v0.1.0 release are still printed for review only, not run
@@ -18,7 +18,7 @@
 - v0.2 tasks: 3 done (T-046, T-047, T-048), 0 todo
 - v0.3 tasks: 16 done (T-049 through T-064), 0 todo
 - v0.4 tasks: 17 done (T-065 through T-081), 0 todo
-- v0.4.1 tasks: 2 done, 5 todo (T-084 through T-088)
+- v0.4.1 tasks: 3 done, 4 todo (T-085 through T-088)
 
 ## v0.4 release gate
 
