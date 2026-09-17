@@ -91,10 +91,7 @@ def test_tui_keyboard_navigation_opens_chain_detail_and_help() -> None:
     assert "app.py:15" in rendered
     next_hop = handle_tui_key(state, "]", row_count=1, hop_count=2)
     assert next_hop.path_hop_index == 1
-    assert (
-        handle_tui_key(next_hop, "[", row_count=1, hop_count=2).path_hop_index
-        == 0
-    )
+    assert handle_tui_key(next_hop, "[", row_count=1, hop_count=2).path_hop_index == 0
     help_state = handle_tui_key(state, "?", row_count=1)
     assert "HELP" in render_tui(_presentation(), help_state, width=160)
     assert handle_tui_key(help_state, "q", row_count=1).quit_requested is True

@@ -89,3 +89,7 @@ Rationale: The vulnerable fixture has genuine connecting edges but requires mixe
 2026-09-16 D-021
 Decision: Cross-layer chains use bounded shortest topology walks over existing edges, retain stored and traversal direction per hop, and live in a separate version 1 presentation model consumed by both TUI and dashboard.
 Rationale: This permits honest resource-to-owner traversal and shared interaction data without mutating the directed graph or changing backward-compatible report schema v1.
+
+2026-09-17 D-022
+Decision: Shared presentation generation limits cross-layer correlation to four graph hops.
+Rationale: The accepted fixture needs two hops, while an eight-hop all-path search expands excessively on the current graph before shortest-path filtering.

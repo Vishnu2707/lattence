@@ -246,7 +246,7 @@ and exposes evidence without introducing a model-backed planner.
 [T-095] [v0.5] [UX] implement the keyboard-driven TUI shell with the fixed twelve-section navigation | deps: T-094 | status: done | commit: self
 [T-096] [v0.5] [UX] implement the dashboard shell with fixed rail dense tables filters and side-panel details | deps: T-094 | status: done | commit: self
 [T-097] [v0.5] [UX] implement interactive attack-graph path selection and cross-layer evidence drill-down | deps: T-095,T-096 | status: done | commit: self
-[T-098] [v0.5] [SHIP] wire lattence tui and dashboard data export to the shared cross-layer workflow | deps: T-093,T-097 | status: todo | commit: self
+[T-098] [v0.5] [SHIP] wire lattence tui and dashboard data export to the shared cross-layer workflow | deps: T-093,T-097 | status: done | commit: self
 [T-099] [v0.5] [UX] add the cross-layer chain diagram and deterministic TUI demonstration assets | deps: T-097,T-098 | status: todo | commit: self
 [T-100] [v0.5] [SHIP] document cross-layer analysis TUI dashboard traversal and evidence workflows | deps: T-098,T-099 | status: todo | commit: self
 [T-101] [v0.5] [SHIP] verify vulnerable-agent exposes LT-AI-002 through real edges to a concrete crypto weakness | deps: T-091,T-092,T-098 | status: todo | commit: self

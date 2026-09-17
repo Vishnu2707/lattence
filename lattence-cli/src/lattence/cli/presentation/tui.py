@@ -47,13 +47,9 @@ def handle_tui_key(
     if key in {"escape", "esc"}:
         return replace(state, help_open=False, detail_open=False)
     if key == "[" and hop_count:
-        return replace(
-            state, path_hop_index=(state.path_hop_index - 1) % hop_count
-        )
+        return replace(state, path_hop_index=(state.path_hop_index - 1) % hop_count)
     if key == "]" and hop_count:
-        return replace(
-            state, path_hop_index=(state.path_hop_index + 1) % hop_count
-        )
+        return replace(state, path_hop_index=(state.path_hop_index + 1) % hop_count)
     if key in {"left", "h", "shift+tab"}:
         return replace(
             state,

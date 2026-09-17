@@ -21,9 +21,17 @@ from .options import (
 )
 from .policy_command import policy_app
 from .pqc_command import pqc_assess
-from .presentation import render_attack_summary, render_banner, render_scan_summary
+from .presentation import (
+    render_attack_summary,
+    render_banner,
+    render_scan_summary,
+    render_tui,
+)
+from .presentation_workflow import (
+    create_security_presentation,
+    write_dashboard_data,
+)
 from .provider_commands import provider_app
-from .scaffold import common_options, pending
 from .targets import TargetDeclarationError, load_target_declaration
 from .workflow import (
     attack_text,
@@ -185,10 +193,21 @@ def tui(
     planner: PlannerOption = Planner.RULES,
     fail_on: FailOnOption = SeverityGate.HIGH,
 ) -> None:
-    common_options(json_output, out, offline, no_color, quiet, planner, fail_on)
-    if not quiet and not json_output:
-        typer.echo(render_banner())
-    pending(f"tui {input_path}")
+    del offline, planner, fail_on
+    presentation = create_security_presentation(input_path, out)
+    write_dashboard_data(presentation, out)
+    if json_output:
+        from lattence.evidence import presentation_json
+
+        typer.echo(presentation_json(presentation), nl=False)
+    elif not quiet:
+        typer.echo(
+            render_tui(
+                presentation,
+                color=not no_color and sys.stdout.isatty(),
+            ),
+            nl=False,
+        )
 
 
 @graph_app.command("export")

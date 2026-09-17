@@ -210,3 +210,9 @@ and ECDSA exposure while adding enforced hybrid ML-KEM and ML-DSA configuration
 for reversible chaos probes. Its declaration explicitly authorizes only that
 configuration file, and tests require stable repeated assessment plus
 byte-for-byte rollback.
+
+T-098 wires `lattence tui PATH` to the shared version 1 presentation workflow.
+The command combines native AI findings with crypto assessment findings,
+correlates them over real graph edges, renders the TUI, and writes the same
+payload to `presentation.json` for the dashboard. `--json` writes that exact
+payload to standard output. The wheel now carries the shared visual grammar.

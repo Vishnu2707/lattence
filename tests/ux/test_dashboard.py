@@ -34,4 +34,4 @@ def test_dashboard_implements_keyboard_filter_sort_virtualization_and_export() -
     assert "renderPath(" in source
     assert 'event.key === "ArrowRight"' in source
     assert 'event.key === "ArrowLeft"' in source
-    assert 'dataset.selected = String(index === state.selectedHop)' in source
+    assert "dataset.selected = String(index === state.selectedHop)" in source

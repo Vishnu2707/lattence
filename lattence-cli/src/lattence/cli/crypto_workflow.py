@@ -112,8 +112,9 @@ def create_crypto_assessment(
     root: Path,
     downgrade: DowngradeValidation | None = None,
     output: Path | None = None,
+    base_report: Report | None = None,
 ) -> CryptoAssessment:
-    report = create_report(root, output)
+    report = base_report or create_report(root, output)
     inventory = inventory_project(root.resolve(strict=True))
     dependencies = discover_dependency_manifests(inventory.root, inventory.files)
     crypto_files = crypto_discovery_files(
