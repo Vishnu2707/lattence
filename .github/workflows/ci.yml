@@ -78,6 +78,11 @@ jobs:
           /tmp/lattence-acceptance/bin/lattence harden lattence-report.json --fail-on none
           /tmp/lattence-acceptance/bin/lattence policy check lattence-report.json
           test -f lattence-report.html
+          /tmp/lattence-acceptance/bin/lattence tui . --offline --no-color --out "$GITHUB_WORKSPACE/lattence-ui" --fail-on none > /tmp/lattence-tui.txt
+          /tmp/lattence-acceptance/bin/lattence tui . --offline --json --out "$GITHUB_WORKSPACE/lattence-ui" --fail-on none > /tmp/lattence-presentation.json
+          cmp "$GITHUB_WORKSPACE/lattence-ui/presentation.json" /tmp/lattence-presentation.json
+          grep -q "Attack Graph" /tmp/lattence-tui.txt
+          python "$GITHUB_WORKSPACE/tests/acceptance/check_presentation.py" "$GITHUB_WORKSPACE/lattence-ui/presentation.json" "$GITHUB_WORKSPACE/lattence-ui"
           cd ../crypto-migration
           cp tls.conf /tmp/lattence-tls-original.conf
           /tmp/lattence-acceptance/bin/lattence pqc assess . --offline --json --out /tmp/lattence-crypto-report --fail-on none > /tmp/lattence-pqc.json

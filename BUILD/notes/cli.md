@@ -228,3 +228,9 @@ requires a reverse traversal over the stored tool-to-dataset `accesses` edge,
 then a forward traversal over the tool-to-TLS-1.2 `key_exchange` edge targeted
 by `LT-PQC-203`. Every hop must match an existing graph edge, and the chain
 must retain both source files as evidence.
+
+T-102 extends clean-wheel acceptance with plain and JSON TUI runs. It requires
+the JSON stream and dashboard file to match byte-for-byte, checks the exact
+oriented example chain against stored graph edges, and verifies the complete
+static dashboard asset set in a fresh checkout. The same checks passed locally
+with packaged modules from a newly built wheel.
