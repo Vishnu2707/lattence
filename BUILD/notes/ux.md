@@ -87,3 +87,11 @@ panel shows every edge type, stored direction, traversal direction, node pair,
 and evidence reference, with bracket keys selecting a hop. The dashboard path
 panel exposes the same hop sequence, supports pointer selection and horizontal
 arrow selection, and places the selected hop beside the full chain evidence.
+
+T-099 adds the cross-layer chain source and rendered SVG. The diagram labels
+the AI finding, affected dataset, tool, concrete X25519 asset, stored edge
+directions, traversal directions, and evidence files. It uses only frozen
+colors and plain geometry. The new `tui.tape` and sub-2 MB GIF record the real
+offline example, and `make demos` renders all three committed demonstrations.
+TUI rendering now writes once to standard output and fits its default shell in
+the fixed recording viewport.

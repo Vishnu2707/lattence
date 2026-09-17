@@ -3,7 +3,7 @@ from pathlib import Path
 import pytest
 
 DEMO = Path(__file__).parents[2] / "assets" / "demo"
-TAPES = ["scan", "attack"]
+TAPES = ["scan", "attack", "tui"]
 
 
 @pytest.mark.parametrize("name", TAPES)

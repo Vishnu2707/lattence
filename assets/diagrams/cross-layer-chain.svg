@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="680" viewBox="0 0 1200 680" role="img" aria-labelledby="title description">
+  <title id="title">Cross-layer AI to cryptography attack chain</title>
+  <desc id="description">LT-AI-002 targets an untrusted retrieval dataset. Reverse traversal follows the stored tool-to-dataset access edge to the destructive tool. Forward traversal then follows the tool-to-X25519 key-exchange edge to a quantum-vulnerable cryptographic asset and its PQC finding.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 Z" fill="#4C8DFF"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="680" fill="#0B0D10"/>
+  <g font-family="Courier" fill="#E6E9EE">
+    <text x="48" y="66" font-size="28">CROSS-LAYER ATTACK CHAIN</text>
+    <text x="48" y="98" font-size="14" fill="#8A94A6">Every hop is a stored graph edge. Traversal direction is explicit.</text>
+
+    <g font-size="13">
+      <rect x="40" y="250" width="176" height="104" rx="2" fill="#1A1F26" stroke="#E5484D" stroke-width="2"/>
+      <text x="56" y="278" fill="#E5484D">AI FINDING</text>
+      <text x="56" y="310" font-size="18">LT-AI-002</text>
+      <text x="56" y="334" fill="#8A94A6">prompt injection</text>
+
+      <rect x="270" y="250" width="182" height="104" rx="2" fill="#12151A" stroke="#4C8DFF" stroke-width="2"/>
+      <text x="286" y="278" fill="#4C8DFF">DATASET</text>
+      <text x="286" y="310">rag-pipeline</text>
+      <text x="286" y="334" fill="#8A94A6">untrusted retrieval</text>
+
+      <rect x="510" y="250" width="202" height="104" rx="2" fill="#12151A" stroke="#4C8DFF" stroke-width="2"/>
+      <text x="526" y="278" fill="#4C8DFF">TOOL</text>
+      <text x="526" y="310">delete_customer_</text>
+      <text x="526" y="332">record</text>
+
+      <rect x="770" y="250" width="182" height="104" rx="2" fill="#12151A" stroke="#E2A336" stroke-width="2"/>
+      <text x="786" y="278" fill="#E2A336">CRYPTO ASSET</text>
+      <text x="786" y="310" font-size="18">X25519</text>
+      <text x="786" y="334" fill="#E5484D">VULNERABLE</text>
+
+      <rect x="1010" y="250" width="150" height="104" rx="2" fill="#1A1F26" stroke="#E5484D" stroke-width="2"/>
+      <text x="1026" y="278" fill="#E5484D">PQC FINDING</text>
+      <text x="1026" y="310">concrete</text>
+      <text x="1026" y="332">endpoint</text>
+    </g>
+
+    <g fill="none" stroke="#4C8DFF" stroke-width="2" marker-end="url(#arrow)">
+      <path d="M 216 302 L 270 302" stroke-dasharray="5 5"/>
+      <path d="M 452 302 L 510 302"/>
+      <path d="M 712 302 L 770 302"/>
+      <path d="M 952 302 L 1010 302" stroke-dasharray="5 5"/>
+    </g>
+
+    <g font-size="12" text-anchor="middle">
+      <text x="243" y="284" fill="#8A94A6">TARGETS</text>
+      <text x="481" y="214" fill="#4C8DFF">TRAVERSE REVERSE</text>
+      <text x="481" y="382" fill="#8A94A6">STORED tool to dataset</text>
+      <text x="741" y="214" fill="#4C8DFF">TRAVERSE FORWARD</text>
+      <text x="741" y="382" fill="#8A94A6">STORED tool to X25519</text>
+      <text x="981" y="284" fill="#8A94A6">TARGETS</text>
+    </g>
+
+    <line x1="48" y1="466" x2="1152" y2="466" stroke="#262C35"/>
+    <text x="48" y="510" font-size="14" fill="#8A94A6">EVIDENCE</text>
+    <text x="48" y="544" font-size="13">app.py:15  retrieval reaches tool</text>
+    <text x="48" y="572" font-size="13">crypto_config.py:4  tool uses X25519 key exchange</text>
+    <text x="48" y="616" font-size="12" fill="#8A94A6">Solid edge: security relationship   Dotted edge: finding target</text>
+  </g>
+</svg>

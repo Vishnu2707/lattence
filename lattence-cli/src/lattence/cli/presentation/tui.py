@@ -1,5 +1,6 @@
 import json
 from dataclasses import dataclass, replace
+from io import StringIO
 from pathlib import Path
 from typing import Any, cast
 
@@ -175,8 +176,8 @@ def render_tui(
     presentation: SecurityPresentation,
     state: TuiState | None = None,
     *,
-    width: int = 120,
-    height: int = 34,
+    width: int = 100,
+    height: int = 16,
     color: bool = False,
 ) -> str:
     state = state or TuiState()
@@ -215,6 +216,7 @@ def render_tui(
 
     console = Console(
         record=True,
+        file=StringIO(),
         width=width,
         height=height,
         force_terminal=color,
