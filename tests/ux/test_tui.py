@@ -28,7 +28,18 @@ def _presentation() -> SecurityPresentation:
         crypto_finding_id="LT-PQC-203",
         start_node_id=dataset.id,
         end_node_id=tool.id,
-        hops=[CrossLayerHop.model_construct(edge_id="edge:fixture")],
+        hops=[
+            CrossLayerHop.model_construct(
+                edge_id="edge:fixture",
+                source_id=tool.id,
+                target_id=dataset.id,
+                edge_type="reads_from",
+                traversal="reverse",
+                from_node_id=dataset.id,
+                to_node_id=tool.id,
+                evidence_refs=["app.py:15"],
+            )
+        ],
         explanation="LT-AI-002 reaches TLS 1.2 through real graph edges.",
         evidence_refs=["app.py", "crypto_config.py"],
     )
@@ -75,6 +86,15 @@ def test_tui_keyboard_navigation_opens_chain_detail_and_help() -> None:
     assert state.detail_open is True
     assert "LT-AI-002 reaches TLS 1.2" in rendered
     assert "DETAIL" in rendered
+    assert "REVERSE" in rendered
+    assert "dataset:rag -> tool:retrieval" in rendered
+    assert "app.py:15" in rendered
+    next_hop = handle_tui_key(state, "]", row_count=1, hop_count=2)
+    assert next_hop.path_hop_index == 1
+    assert (
+        handle_tui_key(next_hop, "[", row_count=1, hop_count=2).path_hop_index
+        == 0
+    )
     help_state = handle_tui_key(state, "?", row_count=1)
     assert "HELP" in render_tui(_presentation(), help_state, width=160)
     assert handle_tui_key(help_state, "q", row_count=1).quit_requested is True

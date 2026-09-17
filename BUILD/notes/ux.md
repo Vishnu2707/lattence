@@ -81,3 +81,9 @@ filtering, saved view state, keyboard row movement, virtual row selection, JSON
 copy and export actions, and a right-side detail panel. The shell loads a
 `presentation.json` document and renders an explicit empty state when none is
 available.
+
+T-097 makes cross-layer chains interactive in both surfaces. The TUI detail
+panel shows every edge type, stored direction, traversal direction, node pair,
+and evidence reference, with bracket keys selecting a hop. The dashboard path
+panel exposes the same hop sequence, supports pointer selection and horizontal
+arrow selection, and places the selected hop beside the full chain evidence.

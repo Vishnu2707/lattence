@@ -41,6 +41,16 @@ export function moveSelection(index, movement, rowCount) {
   return (index + movement + rowCount) % rowCount;
 }
 
+export function hopRows(chain) {
+  return (chain?.hops ?? []).map((hop) => ({
+    id: hop.edge_id,
+    relationship: hop.edge_type,
+    traversal: hop.traversal,
+    path: `${hop.from_node_id} -> ${hop.to_node_id}`,
+    evidence: hop.evidence_refs ?? [],
+  }));
+}
+
 export function visibleRows(rows, scrollTop, viewportHeight, rowHeight = 32) {
   const start = Math.max(0, Math.floor(scrollTop / rowHeight) - 2);
   const count = Math.ceil(viewportHeight / rowHeight) + 4;

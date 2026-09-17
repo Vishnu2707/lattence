@@ -1,6 +1,7 @@
 import { visualGrammar } from "./grammar.mjs";
 import {
   filterRows,
+  hopRows,
   moveSelection,
   rowsForSection,
   sortRows,
@@ -14,6 +15,7 @@ const elements = {
   body: document.querySelector("#table-body"),
   viewport: document.querySelector(".table-viewport"),
   detail: document.querySelector("#detail-content"),
+  path: document.querySelector("#path-view"),
   save: document.querySelector("#save-view"),
   copy: document.querySelector("#copy-json"),
   export: document.querySelector("#export-json"),
@@ -26,6 +28,7 @@ const state = {
   sortField: "id",
   direction: "ascending",
   selected: 0,
+  selectedHop: 0,
 };
 
 function currentRows() {
@@ -50,6 +53,7 @@ function renderNavigation() {
       button.addEventListener("click", () => {
         state.section = label;
         state.selected = 0;
+        state.selectedHop = 0;
         render();
       });
       return button;
@@ -98,14 +102,46 @@ function renderRows() {
       }
       tableRow.addEventListener("click", () => {
         state.selected = index;
+        state.selectedHop = 0;
         renderRows();
       });
       return tableRow;
     }),
   );
-  elements.detail.textContent = rows[state.selected]
-    ? JSON.stringify(rows[state.selected], null, 2)
-    : "No data. Run lattence scan .";
+  renderDetail(rows[state.selected]);
+}
+
+function renderPath(chain) {
+  const hops = hopRows(chain);
+  elements.path.replaceChildren(
+    ...hops.map((hop, index) => {
+      const item = document.createElement("li");
+      const button = document.createElement("button");
+      button.dataset.selected = String(index === state.selectedHop);
+      button.textContent = `${hop.relationship} ${hop.traversal}: ${hop.path}`;
+      button.addEventListener("click", () => {
+        state.selectedHop = index;
+        renderDetail(chain);
+      });
+      item.append(button);
+      return item;
+    }),
+  );
+}
+
+function renderDetail(row) {
+  const chain = state.section === "Attack Graph" ? row : undefined;
+  renderPath(chain);
+  if (!row) {
+    elements.detail.textContent = "No data. Run lattence scan .";
+    return;
+  }
+  const selectedHop = chain ? chain.hops?.[state.selectedHop] : undefined;
+  elements.detail.textContent = JSON.stringify(
+    chain ? { chain, selected_hop: selectedHop } : row,
+    null,
+    2,
+  );
 }
 
 function render() {
@@ -117,14 +153,30 @@ function render() {
 elements.filter.addEventListener("input", (event) => {
   state.query = event.target.value;
   state.selected = 0;
+  state.selectedHop = 0;
   renderRows();
 });
 elements.viewport.addEventListener("scroll", renderRows);
 document.addEventListener("keydown", (event) => {
+  const chain =
+    state.section === "Attack Graph" ? currentRows()[state.selected] : undefined;
+  const hopMovement =
+    event.key === "ArrowRight" ? 1 : event.key === "ArrowLeft" ? -1 : 0;
+  if (hopMovement && chain?.hops?.length) {
+    event.preventDefault();
+    state.selectedHop = moveSelection(
+      state.selectedHop,
+      hopMovement,
+      chain.hops.length,
+    );
+    renderDetail(chain);
+    return;
+  }
   const movement = event.key === "ArrowDown" ? 1 : event.key === "ArrowUp" ? -1 : 0;
   if (!movement) return;
   event.preventDefault();
   state.selected = moveSelection(state.selected, movement, currentRows().length);
+  state.selectedHop = 0;
   renderRows();
 });
 elements.save.addEventListener("click", () => {

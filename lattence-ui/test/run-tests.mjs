@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import { visualGrammar } from "../src/grammar.mjs";
 import {
   filterRows,
+  hopRows,
   moveSelection,
   rowsForSection,
   sortRows,
@@ -42,7 +43,21 @@ const presentation = {
     { id: "LT-AI-002", severity: "high" },
     { id: "LT-PQC-203", severity: "medium" },
   ],
-  cross_layer_chains: [{ id: "cross-layer:one", hops: [1, 2] }],
+  cross_layer_chains: [
+    {
+      id: "cross-layer:one",
+      hops: [
+        {
+          edge_id: "edge:one",
+          edge_type: "reads_from",
+          traversal: "reverse",
+          from_node_id: "dataset:rag",
+          to_node_id: "tool:retrieval",
+          evidence_refs: ["app.py:15"],
+        },
+      ],
+    },
+  ],
 };
 assert.equal(rowsForSection(presentation, "Applications").length, 1);
 assert.equal(rowsForSection(presentation, "AI Security").length, 1);
@@ -50,6 +65,13 @@ assert.equal(rowsForSection(presentation, "Attack Graph").length, 1);
 assert.equal(filterRows(presentation.findings, "pqc").length, 1);
 assert.equal(sortRows(presentation.findings, "id")[0].id, "LT-AI-002");
 assert.equal(moveSelection(0, -1, 2), 1);
+assert.deepEqual(hopRows(presentation.cross_layer_chains[0])[0], {
+  id: "edge:one",
+  relationship: "reads_from",
+  traversal: "reverse",
+  path: "dataset:rag -> tool:retrieval",
+  evidence: ["app.py:15"],
+});
 assert.deepEqual(visibleRows([1, 2, 3, 4], 32, 32), {
   start: 0,
   rows: [1, 2, 3, 4],

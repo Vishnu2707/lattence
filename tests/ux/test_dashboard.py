@@ -13,6 +13,7 @@ def test_dashboard_shell_has_fixed_rail_table_toolbar_and_side_panel() -> None:
     assert 'id="copy-json"' in html
     assert 'id="export-json"' in html
     assert 'id="detail-panel"' in html
+    assert 'id="path-view"' in html
     assert "position: sticky" in css
     assert "height: 32px" in css
     assert "grid-template-columns: 208px minmax(480px, 1fr) 360px" in css
@@ -30,3 +31,7 @@ def test_dashboard_implements_keyboard_filter_sort_virtualization_and_export() -
     assert 'localStorage.setItem("lattence.saved-view"' in source
     assert "navigator.clipboard.writeText" in source
     assert 'link.download = "lattence-presentation.json"' in source
+    assert "renderPath(" in source
+    assert 'event.key === "ArrowRight"' in source
+    assert 'event.key === "ArrowLeft"' in source
+    assert 'dataset.selected = String(index === state.selectedHop)' in source
