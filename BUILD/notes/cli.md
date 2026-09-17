@@ -222,3 +222,9 @@ the accepted example chain, terminal and dashboard navigation, local dashboard
 serving, and the six-step evidence review. README links the TUI recording,
 diagram, and guide. The changelog records the v0.5 surface, and the roadmap no
 longer lists the implemented terminal view as a scaffold.
+
+T-101 pins the vulnerable example's real `LT-AI-002` correlation. The test
+requires a reverse traversal over the stored tool-to-dataset `accesses` edge,
+then a forward traversal over the tool-to-TLS-1.2 `key_exchange` edge targeted
+by `LT-PQC-203`. Every hop must match an existing graph edge, and the chain
+must retain both source files as evidence.
