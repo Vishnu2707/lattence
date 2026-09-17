@@ -5,6 +5,8 @@ Versions before 1.0 may include breaking changes in a minor release.
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-09-17
+
 ### Added
 
 - Deterministic cross-layer correlation from AI, agent, and MCP findings to
@@ -14,6 +16,13 @@ Versions before 1.0 may include breaking changes in a minor release.
 - A fixed-navigation terminal view and browser dashboard with dense tables,
   filtering, sorting, selected-path details, and JSON copy and export.
 - A cross-layer architecture diagram and deterministic terminal demonstration.
+
+### Changed
+
+- `lattence tui PATH` now renders the shared terminal view and writes the same
+  version 1 data to `presentation.json` for the static dashboard.
+- Clean-wheel acceptance now validates the terminal output, byte-identical
+  dashboard data, dashboard assets, real edge orientation, and evidence.
 
 ## [0.4.1] - 2026-09-16
 

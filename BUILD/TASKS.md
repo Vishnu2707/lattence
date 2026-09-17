@@ -251,7 +251,7 @@ and exposes evidence without introducing a model-backed planner.
 [T-100] [v0.5] [SHIP] document cross-layer analysis TUI dashboard traversal and evidence workflows | deps: T-098,T-099 | status: done | commit: self
 [T-101] [v0.5] [SHIP] verify vulnerable-agent exposes LT-AI-002 through real edges to a concrete crypto weakness | deps: T-091,T-092,T-098 | status: done | commit: self
 [T-102] [v0.5] [SHIP] pass clean-wheel and fresh-clone TUI dashboard and cross-layer acceptance | deps: T-100,T-101 | status: done | commit: self
-[T-103] [v0.5] [ORCH] record the v0.5 release gate changelog and annotated tag | deps: T-102 | status: todo | commit: self
+[T-103] [v0.5] [ORCH] record the v0.5 release gate changelog and annotated tag | deps: T-102 | status: done | commit: self
 
 ## v0.5 cross-layer semantics
 

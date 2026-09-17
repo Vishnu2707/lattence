@@ -234,3 +234,8 @@ the JSON stream and dashboard file to match byte-for-byte, checks the exact
 oriented example chain against stored graph edges, and verifies the complete
 static dashboard asset set in a fresh checkout. The same checks passed locally
 with packaged modules from a newly built wheel.
+
+T-103 closes v0.5 at 293 tests and 91.14 percent coverage. Lint, formatting,
+seven strict type targets, package validation, dashboard tests, provenance,
+prose, and clean-wheel acceptance all pass. The annotated `v0.5.0` tag is the
+review boundary before any v1.0 scope.
