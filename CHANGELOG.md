@@ -5,6 +5,16 @@ Versions before 1.0 may include breaking changes in a minor release.
 
 ## [Unreleased]
 
+### Added
+
+- Deterministic cross-layer correlation from AI, agent, and MCP findings to
+  concrete cryptographic findings over genuine graph edges.
+- A shared version 1 presentation document that preserves stored and traversal
+  direction for every hop and carries evidence references into both views.
+- A fixed-navigation terminal view and browser dashboard with dense tables,
+  filtering, sorting, selected-path details, and JSON copy and export.
+- A cross-layer architecture diagram and deterministic terminal demonstration.
+
 ## [0.4.1] - 2026-09-16
 
 ### Fixed

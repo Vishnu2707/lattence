@@ -216,3 +216,9 @@ The command combines native AI findings with crypto assessment findings,
 correlates them over real graph edges, renders the TUI, and writes the same
 payload to `presentation.json` for the dashboard. `--json` writes that exact
 payload to standard output. The wheel now carries the shared visual grammar.
+
+T-100 documents cross-layer orientation, the version 1 presentation fields,
+the accepted example chain, terminal and dashboard navigation, local dashboard
+serving, and the six-step evidence review. README links the TUI recording,
+diagram, and guide. The changelog records the v0.5 surface, and the roadmap no
+longer lists the implemented terminal view as a scaffold.

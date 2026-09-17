@@ -1,10 +1,10 @@
 # Current state
 
 - Milestone: v0.5 scoped; v0.4.1 confirmed
-- Last completed: T-099, add the cross-layer chain diagram and deterministic
-  TUI demonstration assets
-- Next task: T-100, document cross-layer analysis, TUI, dashboard traversal,
-  and evidence workflows
+- Last completed: T-100, document cross-layer analysis, TUI, dashboard
+  traversal, and evidence workflows
+- Next task: T-101, verify the vulnerable example exposes LT-AI-002 through
+  real edges to a concrete crypto weakness
 - Blockers: none
 - Manual steps: branch protection and tag protection commands from the
   v0.1.0 release are still printed for review only, not run
@@ -12,7 +12,7 @@
 ## Repository state
 
 - Branch: `dev`, `main` merged at the v0.1.0 release commit
-- Remote: `origin/dev` up to date through T-099 after the task push
+- Remote: `origin/dev` up to date through T-100 after the task push
 - Tags: `v0.1.0`, `v0.2.0`, `v0.3.0`, `v0.4.0`, and `v0.4.1`, annotated and pushed
 - Contracts: frozen at version 1.0
 - Design: frozen at version 1.0
@@ -21,7 +21,7 @@
 - v0.3 tasks: 16 done (T-049 through T-064), 0 todo
 - v0.4 tasks: 17 done (T-065 through T-081), 0 todo
 - v0.4.1 tasks: 7 done (T-082 through T-088), 0 todo
-- v0.5 tasks: 11 done, 4 todo (T-100 through T-103)
+- v0.5 tasks: 12 done, 3 todo (T-101 through T-103)
 
 ## v0.4 release gate
 

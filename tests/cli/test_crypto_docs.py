@@ -22,8 +22,8 @@ def test_crypto_guide_covers_flagship_scope_and_links_existing_diagrams() -> Non
         assert (ROOT / "docs" / "architecture" / name).is_file()
 
 
-def test_roadmap_no_longer_lists_crypto_chaos_as_scaffolded() -> None:
+def test_roadmap_no_longer_lists_completed_commands_as_scaffolded() -> None:
     roadmap = (ROOT / "ROADMAP.md").read_text(encoding="utf-8")
 
     assert "crypto chaos` remains scheduled" not in roadmap
-    assert "The `tui` command exists" in roadmap
+    assert "The `tui` command exists" not in roadmap

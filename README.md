@@ -25,6 +25,8 @@ engine.
 
 ![Lattence attacking the vulnerable-agent fixture](assets/demo/attack.gif)
 
+![Lattence terminal security view](assets/demo/tui.gif)
+
 ## Install
 
 Lattence is not yet published to PyPI. Install it from source.
@@ -192,6 +194,36 @@ identifiers, so the same project produces the same graph. The attack runner
 walks the graph and evaluates the rule pack catalog against it, producing
 findings with replayable evidence, then evidence rendering writes a
 schema-valid JSON report and a self-contained HTML report.
+
+## Cross-layer analysis
+
+Lattence correlates AI, agent, and MCP findings with concrete cryptographic
+findings over existing security graph edges. A chain records the stored source
+and target of every edge separately from the direction used to traverse it.
+This supports an honest resource-to-owner step without calling a
+mixed-orientation chain a directed attack path.
+
+![Cross-layer chain from LT-AI-002 to X25519](assets/diagrams/cross-layer-chain.svg)
+
+Generate the shared terminal and dashboard data from a project checkout:
+
+```bash
+lattence tui examples/vulnerable-agent --offline --no-color --out lattence-ui
+python -m http.server --directory lattence-ui 8000
+```
+
+The first command renders the fixed twelve-section terminal view and writes
+`lattence-ui/presentation.json`. The dashboard reads that same version 1
+document. Its fixed rail selects a section, vertical arrows select table rows,
+horizontal arrows select attack-path hops, and the right panel shows the full
+chain and selected-hop evidence. Filter, sort, save-view, copy, and JSON export
+controls operate on the same data.
+
+Use `--json` to write the exact presentation document to standard output. Each
+cross-layer hop includes the edge identifier and type, stored source and
+target, traversal direction, traversed node pair, and evidence references. See
+the [cross-layer analysis guide](docs/cross-layer-analysis.md) for the data
+contract and evidence review workflow.
 
 ## PQC and crypto assurance
 
