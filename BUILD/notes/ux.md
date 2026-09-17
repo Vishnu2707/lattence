@@ -74,3 +74,10 @@ shared grammar manifest. The fixed twelve-section rail, dense tables, selected
 row state, right-side detail panel, and help footer render without escape
 sequences in plain mode. Tab or arrow navigation, j/k row movement, Enter,
 Escape, help, and quit actions reduce through a deterministic state model.
+
+T-096 implements the browser dashboard shell over the same grammar. It has the
+fixed twelve-section rail, 32-pixel table rows, a sticky sortable header,
+filtering, saved view state, keyboard row movement, virtual row selection, JSON
+copy and export actions, and a right-side detail panel. The shell loads a
+`presentation.json` document and renders an explicit empty state when none is
+available.

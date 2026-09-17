@@ -1,6 +1,13 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { visualGrammar } from "../src/grammar.mjs";
+import {
+  filterRows,
+  moveSelection,
+  rowsForSection,
+  sortRows,
+  visibleRows,
+} from "../src/dashboard-model.mjs";
 
 const expectedNavigation = [
   "Overview",
@@ -28,5 +35,25 @@ const css = readFileSync(new URL("../src/tokens.css", import.meta.url), "utf8");
 for (const value of Object.values(visualGrammar.colors)) {
   assert.ok(css.includes(value), `missing color token ${value}`);
 }
+
+const presentation = {
+  graph: { nodes: [{ id: "application:z", type: "application" }] },
+  findings: [
+    { id: "LT-AI-002", severity: "high" },
+    { id: "LT-PQC-203", severity: "medium" },
+  ],
+  cross_layer_chains: [{ id: "cross-layer:one", hops: [1, 2] }],
+};
+assert.equal(rowsForSection(presentation, "Applications").length, 1);
+assert.equal(rowsForSection(presentation, "AI Security").length, 1);
+assert.equal(rowsForSection(presentation, "Attack Graph").length, 1);
+assert.equal(filterRows(presentation.findings, "pqc").length, 1);
+assert.equal(sortRows(presentation.findings, "id")[0].id, "LT-AI-002");
+assert.equal(moveSelection(0, -1, 2), 1);
+assert.deepEqual(visibleRows([1, 2, 3, 4], 32, 32), {
+  start: 0,
+  rows: [1, 2, 3, 4],
+  total: 4,
+});
 
 process.stdout.write("visual grammar tests passed\n");
