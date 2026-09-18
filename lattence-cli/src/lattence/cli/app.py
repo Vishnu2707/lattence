@@ -27,6 +27,7 @@ from .presentation import (
     render_banner,
     render_scan_summary,
     render_tui,
+    run_tui,
 )
 from .presentation_workflow import (
     create_security_presentation,
@@ -202,13 +203,11 @@ def tui(
 
         typer.echo(presentation_json(presentation), nl=False)
     elif not quiet:
-        typer.echo(
-            render_tui(
-                presentation,
-                color=not no_color and sys.stdout.isatty(),
-            ),
-            nl=False,
-        )
+        interactive = sys.stdin.isatty() and sys.stdout.isatty()
+        if interactive:
+            run_tui(presentation, color=not no_color)
+        else:
+            typer.echo(render_tui(presentation, color=False), nl=False)
 
 
 @graph_app.command("export")

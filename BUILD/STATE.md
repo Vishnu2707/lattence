@@ -1,10 +1,10 @@
 # Current state
 
 - Milestone: v0.5.1 repair in progress
-- Last completed: T-106, expose real cross-layer findings through the graph
-  chain command
-- Next task: T-107, wire TUI finding detail and hop navigation to real
+- Last completed: T-107, wire TUI finding detail and hop navigation to real
   cross-layer correlations
+- Next task: T-108, correct release documentation and pass fresh chain
+  acceptance
 - Blockers: none
 - Manual steps: branch protection and tag protection commands from the
   v0.1.0 release are still printed for review only, not run
@@ -23,7 +23,7 @@
 - v0.4 tasks: 17 done (T-065 through T-081), 0 todo
 - v0.4.1 tasks: 7 done (T-082 through T-088), 0 todo
 - v0.5 tasks: 15 done, 0 todo
-- v0.5.1 tasks: 3 done, 3 todo
+- v0.5.1 tasks: 4 done, 2 todo
 
 ## v0.5 acceptance before release gate
 

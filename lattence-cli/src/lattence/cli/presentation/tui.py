@@ -4,7 +4,7 @@ from io import StringIO
 from pathlib import Path
 from typing import Any, cast
 
-from lattence.evidence import SecurityPresentation
+from lattence.evidence import CrossLayerChain, SecurityPresentation
 from rich.console import Console, Group
 from rich.layout import Layout
 from rich.panel import Panel
@@ -131,6 +131,50 @@ def _rows(presentation: SecurityPresentation, section: str) -> list[dict[str, st
     ]
 
 
+def _selected_chain(
+    presentation: SecurityPresentation,
+    section: str,
+    row_id: str,
+) -> CrossLayerChain | None:
+    if section == "Attack Graph":
+        return next(
+            (chain for chain in presentation.cross_layer_chains if chain.id == row_id),
+            None,
+        )
+    if section not in {"Findings", "AI Security", "Agent Security", "MCP"}:
+        return None
+    return next(
+        (
+            chain
+            for chain in presentation.cross_layer_chains
+            if row_id in {chain.source_finding_id, chain.crypto_finding_id}
+        ),
+        None,
+    )
+
+
+def handle_presentation_key(
+    presentation: SecurityPresentation,
+    state: TuiState,
+    key: str,
+) -> TuiState:
+    navigation = list(load_visual_grammar()["navigation"])
+    section = navigation[state.section_index]
+    rows = _rows(presentation, section)
+    selected_index = min(state.row_index, max(0, len(rows) - 1))
+    chain = (
+        _selected_chain(presentation, section, rows[selected_index]["id"])
+        if rows
+        else None
+    )
+    return handle_tui_key(
+        state,
+        key,
+        len(rows),
+        hop_count=len(chain.hops) if chain is not None else 0,
+    )
+
+
 def _navigation(state: TuiState, navigation: list[str]) -> Panel:
     lines = []
     for index, label in enumerate(navigation):
@@ -195,10 +239,15 @@ def render_tui(
     )
     if state.detail_open and rows:
         detail_content: Any = rows[selected_index]["detail"]
-        if section == "Attack Graph":
-            chain = presentation.cross_layer_chains[selected_index]
+        chain = _selected_chain(presentation, section, rows[selected_index]["id"])
+        if chain is not None:
             hop_index = min(state.path_hop_index, len(chain.hops) - 1)
-            detail_content = _chain_detail(chain, hop_index)
+            chain_detail = _chain_detail(chain, hop_index)
+            detail_content = (
+                chain_detail
+                if section == "Attack Graph"
+                else Group(chain_detail, Text(""), Text(detail_content))
+            )
         detail = Panel(
             detail_content,
             title="DETAIL",

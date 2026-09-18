@@ -95,3 +95,9 @@ colors and plain geometry. The new `tui.tape` and sub-2 MB GIF record the real
 offline example, and `make demos` renders all three committed demonstrations.
 TUI rendering now writes once to standard output and fits its default shell in
 the fixed recording viewport.
+
+T-107 makes `lattence tui` interactive on a terminal while retaining its plain
+snapshot for non-interactive streams. The shared presentation workflow invokes
+the cross-layer correlator against the discovered graph before the key loop.
+Enter on an AI, agent, MCP, or general finding row opens its matching real
+chain, and the bracket keys select the chain's real hops and evidence.

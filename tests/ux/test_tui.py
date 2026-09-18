@@ -1,8 +1,17 @@
 from datetime import UTC, datetime
+from pathlib import Path
 
-from lattence.cli.presentation import TuiState, handle_tui_key, render_tui
+from lattence.cli.presentation import (
+    TuiState,
+    handle_presentation_key,
+    handle_tui_key,
+    render_tui,
+)
+from lattence.cli.presentation_workflow import create_security_presentation
 from lattence.evidence import CrossLayerChain, CrossLayerHop, SecurityPresentation
 from lattence.graph import Dataset, Project, SecurityGraph, Tool
+
+EXAMPLE = Path(__file__).parents[2] / "examples" / "vulnerable-agent"
 
 
 def _presentation() -> SecurityPresentation:
@@ -95,3 +104,32 @@ def test_tui_keyboard_navigation_opens_chain_detail_and_help() -> None:
     help_state = handle_tui_key(state, "?", row_count=1)
     assert "HELP" in render_tui(_presentation(), help_state, width=160)
     assert handle_tui_key(help_state, "q", row_count=1).quit_requested is True
+
+
+def test_real_finding_row_opens_correlation_and_navigates_hops() -> None:
+    presentation = create_security_presentation(EXAMPLE)
+    ai_finding_ids = [
+        finding.id
+        for finding in presentation.findings
+        if finding.id.startswith("LT-AI-")
+    ]
+    state = TuiState(
+        section_index=3,
+        row_index=ai_finding_ids.index("LT-AI-002"),
+    )
+
+    state = handle_presentation_key(presentation, state, "enter")
+    first_hop = render_tui(presentation, state, width=240, height=40)
+
+    assert state.detail_open is True
+    assert "LT-AI-002" in first_hop
+    assert "LT-PQC-203" in first_hop
+    assert "HOP 1  ACCESSES  REVERSE" in first_hop
+    assert "app.py" in first_hop
+
+    state = handle_presentation_key(presentation, state, "]")
+    second_hop = render_tui(presentation, state, width=240, height=40)
+
+    assert state.path_hop_index == 1
+    assert "HOP 2  KEY_EXCHANGE  FORWARD" in second_hop
+    assert "crypto_config.py" in second_hop
