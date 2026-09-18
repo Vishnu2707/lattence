@@ -5,6 +5,8 @@ Versions before 1.0 may include breaking changes in a minor release.
 
 ## [Unreleased]
 
+## [0.5.1] - 2026-09-18
+
 ### Fixed
 
 - `lattence graph chain PATH` now prints every discovered cross-layer

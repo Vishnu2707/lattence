@@ -251,3 +251,9 @@ data from the missing dedicated command and interactive terminal loop. CI now
 runs `graph chain` from the clean wheel and checks the accepted finding pair,
 both edge types and orientations, and evidence. A new local environment passed
 the same offline command against a copied vulnerable-agent checkout.
+
+T-109 closes v0.5.1 at 299 tests and 90.60 percent coverage. Lint, formatting,
+seven strict type targets, package validation, UX tests, provenance, prose, and
+fresh-wheel chain acceptance pass. The chain acceptance uses a separate output
+directory so its new timestamp does not overwrite the dashboard document being
+compared. The annotated `v0.5.1` tag is the review boundary before v1.0.

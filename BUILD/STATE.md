@@ -1,9 +1,8 @@
 # Current state
 
-- Milestone: v0.5.1 repair in progress
-- Last completed: T-108, correct release documentation and pass fresh chain
-  acceptance
-- Next task: T-109, record the v0.5.1 release gate and annotated tag
+- Milestone: v0.5.1 complete
+- Last completed: T-109, record the v0.5.1 release gate and annotated tag
+- Next task: none; hold for review before v1.0
 - Blockers: none
 - Manual steps: branch protection and tag protection commands from the
   v0.1.0 release are still printed for review only, not run
@@ -12,8 +11,8 @@
 
 - Branch: `dev`, `main` merged at the v0.1.0 release commit
 - Remote: `origin/dev` up to date through T-103 after the task push
-- Tags: `v0.1.0`, `v0.2.0`, `v0.3.0`, `v0.4.0`, `v0.4.1`, and `v0.5.0`,
-  annotated and pushed
+- Tags: `v0.1.0`, `v0.2.0`, `v0.3.0`, `v0.4.0`, `v0.4.1`, `v0.5.0`, and
+  `v0.5.1`, annotated and pushed
 - Contracts: frozen at version 1.0
 - Design: frozen at version 1.0
 - v0.1 tasks: 45 done
@@ -22,7 +21,7 @@
 - v0.4 tasks: 17 done (T-065 through T-081), 0 todo
 - v0.4.1 tasks: 7 done (T-082 through T-088), 0 todo
 - v0.5 tasks: 15 done, 0 todo
-- v0.5.1 tasks: 5 done, 1 todo
+- v0.5.1 tasks: 6 done, 0 todo
 
 ## v0.5.1 acceptance before release gate
 
@@ -32,6 +31,17 @@
 - The accepted `LT-AI-002` to `LT-PQC-203` chain printed the reverse `accesses`
   hop, forward `key_exchange` hop, stored endpoints, and evidence from
   `app.py` and `crypto_config.py`.
+
+## v0.5.1 release gate
+
+- Full suite: 299 passed, 90.60 percent coverage.
+- Lint and formatting: passed across 222 files.
+- Strict typing: passed for all seven package targets.
+- Package build and validation: source archive and wheel passed.
+- Terminal and dashboard checks: all 26 UX tests passed.
+- Provenance and prose: full tracked tree and commit history passed.
+- Clean-wheel acceptance prints and checks the real `LT-AI-002` to
+  `LT-PQC-203` chain without overwriting dashboard acceptance data.
 
 ## v0.5 acceptance before release gate
 
