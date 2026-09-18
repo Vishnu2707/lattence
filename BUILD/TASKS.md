@@ -280,3 +280,23 @@ After T-103, run the full suite, create and push annotated tag `v0.5.0` on
 one real end-to-end `LT-AI-002` cross-layer chain with every stored graph edge,
 orientation, crypto endpoint, and evidence reference. Hold for review before
 v1.0.
+
+# v0.5.1 repair task ledger
+
+v0.5.1 closes the validation and human-surfacing gaps in v0.5 without changing
+the real graph data or cross-layer correlation semantics.
+
+[T-104] [v0.5.1] [ORCH] scope the real-graph validation and chain-surfacing repair | deps: T-103 | status: done | commit: self
+[T-105] [v0.5.1] [AISEC] test cross-layer correlation directly against the discovered vulnerable-agent graph | deps: T-104 | status: todo | commit: self
+[T-106] [v0.5.1] [SHIP] expose real cross-layer findings through the graph chain command | deps: T-105 | status: todo | commit: self
+[T-107] [v0.5.1] [UX] wire TUI finding detail and hop navigation to real cross-layer correlations | deps: T-106 | status: todo | commit: self
+[T-108] [v0.5.1] [SHIP] correct release documentation and pass fresh chain acceptance | deps: T-107 | status: todo | commit: self
+[T-109] [v0.5.1] [ORCH] record the v0.5.1 release gate and annotated tag | deps: T-108 | status: todo | commit: self
+
+## v0.5.1 milestone gate
+
+After T-109, run the full suite, create and push annotated tag `v0.5.1` on
+`dev`, then run `graph chain` against `examples/vulnerable-agent` from a fresh
+checkout. The literal command output must show both finding identifiers, both
+real edge types, their orientation, and every evidence reference. Hold at the
+tag for review. Do not start v1.0.

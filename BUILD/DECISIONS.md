@@ -93,3 +93,7 @@ Rationale: This permits honest resource-to-owner traversal and shared interactio
 2026-09-17 D-022
 Decision: Shared presentation generation limits cross-layer correlation to four graph hops.
 Rationale: The accepted fixture needs two hops, while an eight-hop all-path search expands excessively on the current graph before shortest-path filtering.
+
+2026-09-18 D-023
+Decision: v0.5.1 validates correlation directly against a discovered project graph and adds dedicated CLI and TUI chain access before any v1.0 work.
+Rationale: v0.5 contained real chain data, but its direct correlator coverage used a synthetic graph and no dedicated command printed the chain for a human.

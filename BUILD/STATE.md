@@ -1,9 +1,10 @@
 # Current state
 
-- Milestone: v0.5 complete
-- Last completed: T-103, record the v0.5 release gate, changelog, and annotated
-  tag
-- Next task: none; hold for review before proposing v1.0
+- Milestone: v0.5.1 repair in progress
+- Last completed: T-104, scope the real-graph validation and chain-surfacing
+  repair
+- Next task: T-105, test cross-layer correlation directly against the
+  discovered vulnerable-agent graph
 - Blockers: none
 - Manual steps: branch protection and tag protection commands from the
   v0.1.0 release are still printed for review only, not run
@@ -22,6 +23,7 @@
 - v0.4 tasks: 17 done (T-065 through T-081), 0 todo
 - v0.4.1 tasks: 7 done (T-082 through T-088), 0 todo
 - v0.5 tasks: 15 done, 0 todo
+- v0.5.1 tasks: 1 done, 5 todo
 
 ## v0.5 acceptance before release gate
 
