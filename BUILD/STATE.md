@@ -1,10 +1,9 @@
 # Current state
 
 - Milestone: v0.5.1 repair in progress
-- Last completed: T-107, wire TUI finding detail and hop navigation to real
-  cross-layer correlations
-- Next task: T-108, correct release documentation and pass fresh chain
+- Last completed: T-108, correct release documentation and pass fresh chain
   acceptance
+- Next task: T-109, record the v0.5.1 release gate and annotated tag
 - Blockers: none
 - Manual steps: branch protection and tag protection commands from the
   v0.1.0 release are still printed for review only, not run
@@ -23,7 +22,16 @@
 - v0.4 tasks: 17 done (T-065 through T-081), 0 todo
 - v0.4.1 tasks: 7 done (T-082 through T-088), 0 todo
 - v0.5 tasks: 15 done, 0 todo
-- v0.5.1 tasks: 4 done, 2 todo
+- v0.5.1 tasks: 5 done, 1 todo
+
+## v0.5.1 acceptance before release gate
+
+- A new Python 3.12 environment installed only the built wheel and its declared
+  dependencies, then analyzed a copied vulnerable-agent checkout.
+- `graph chain` ran offline and printed 32 real correlations.
+- The accepted `LT-AI-002` to `LT-PQC-203` chain printed the reverse `accesses`
+  hop, forward `key_exchange` hop, stored endpoints, and evidence from
+  `app.py` and `crypto_config.py`.
 
 ## v0.5 acceptance before release gate
 

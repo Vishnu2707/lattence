@@ -245,3 +245,9 @@ fresh project discovery and crypto assessment, then prints every correlation
 with both finding identifiers, each stored and traversed edge, its type and
 orientation, and edge and aggregate evidence references. JSON mode emits the
 same presentation document written for the dashboard.
+
+T-108 corrects the v0.5.0 notes to distinguish genuine graph and presentation
+data from the missing dedicated command and interactive terminal loop. CI now
+runs `graph chain` from the clean wheel and checks the accepted finding pair,
+both edge types and orientations, and evidence. A new local environment passed
+the same offline command against a copied vulnerable-agent checkout.

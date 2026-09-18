@@ -208,16 +208,18 @@ mixed-orientation chain a directed attack path.
 Generate the shared terminal and dashboard data from a project checkout:
 
 ```bash
+lattence graph chain examples/vulnerable-agent --offline --no-color
 lattence tui examples/vulnerable-agent --offline --no-color --out lattence-ui
 python -m http.server --directory lattence-ui 8000
 ```
 
-The first command renders the fixed twelve-section terminal view and writes
-`lattence-ui/presentation.json`. The dashboard reads that same version 1
-document. Its fixed rail selects a section, vertical arrows select table rows,
-horizontal arrows select attack-path hops, and the right panel shows the full
-chain and selected-hop evidence. Filter, sort, save-view, copy, and JSON export
-controls operate on the same data.
+The graph command prints every real correlation, including both finding
+identifiers, every edge and orientation, and its evidence references. The TUI
+opens the fixed twelve-section terminal view and writes
+`lattence-ui/presentation.json`. Enter opens the selected finding or path, and
+`[` and `]` select correlated graph hops. The dashboard reads that same version
+1 document. Filter, sort, save-view, copy, and JSON export controls operate on
+the same data.
 
 Use `--json` to write the exact presentation document to standard output. Each
 cross-layer hop includes the edge identifier and type, stored source and

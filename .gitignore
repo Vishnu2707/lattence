@@ -13,3 +13,6 @@ coverage.xml
 dist/
 htmlcov/
 node_modules/
+/presentation.json
+/examples/vulnerable-agent/lattence-report.html
+/examples/vulnerable-agent/lattence-report.json

@@ -14,6 +14,7 @@ def test_cross_layer_guide_covers_orientation_views_and_evidence() -> None:
         "Attack Graph",
         "presentation.json",
         "Evidence review",
+        "lattence graph chain",
     ):
         assert term in guide
     assert "cross-layer-chain.svg" in guide
@@ -26,3 +27,4 @@ def test_readme_links_shared_presentation_guide_and_demo() -> None:
     assert "docs/cross-layer-analysis.md" in readme
     assert "assets/demo/tui.gif" in readme
     assert "assets/diagrams/cross-layer-chain.svg" in readme
+    assert "lattence graph chain" in readme

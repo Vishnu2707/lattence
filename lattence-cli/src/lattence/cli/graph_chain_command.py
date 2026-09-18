@@ -49,8 +49,7 @@ def _chain_lines(presentation: SecurityPresentation, project: Path) -> list[Text
         for hop_index, hop in enumerate(chain.hops, start=1):
             lines.append(
                 Text(
-                    f"  EDGE {hop_index:<2}     {hop.edge_type}  "
-                    f"{hop.traversal}",
+                    f"  EDGE {hop_index:<2}     {hop.edge_type}  {hop.traversal}",
                     style="bold #4C8DFF",
                 )
             )

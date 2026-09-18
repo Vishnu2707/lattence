@@ -80,8 +80,13 @@ jobs:
           test -f lattence-report.html
           /tmp/lattence-acceptance/bin/lattence tui . --offline --no-color --out "$GITHUB_WORKSPACE/lattence-ui" --fail-on none > /tmp/lattence-tui.txt
           /tmp/lattence-acceptance/bin/lattence tui . --offline --json --out "$GITHUB_WORKSPACE/lattence-ui" --fail-on none > /tmp/lattence-presentation.json
+          /tmp/lattence-acceptance/bin/lattence graph chain . --offline --no-color --out "$GITHUB_WORKSPACE/lattence-ui" > /tmp/lattence-chain.txt
           cmp "$GITHUB_WORKSPACE/lattence-ui/presentation.json" /tmp/lattence-presentation.json
           grep -q "Attack Graph" /tmp/lattence-tui.txt
+          grep -q "LT-AI-002 -> LT-PQC-203" /tmp/lattence-chain.txt
+          grep -q "EDGE 1      accesses  reverse" /tmp/lattence-chain.txt
+          grep -q "EDGE 2      key_exchange  forward" /tmp/lattence-chain.txt
+          grep -q "EVIDENCE  app.py, crypto_config.py" /tmp/lattence-chain.txt
           python "$GITHUB_WORKSPACE/tests/acceptance/check_presentation.py" "$GITHUB_WORKSPACE/lattence-ui/presentation.json" "$GITHUB_WORKSPACE/lattence-ui"
           cd ../crypto-migration
           cp tls.conf /tmp/lattence-tls-original.conf

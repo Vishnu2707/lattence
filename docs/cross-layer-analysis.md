@@ -68,11 +68,23 @@ stored and traversal direction separately.
 
 ## Terminal workflow
 
+Print every correlation directly from a project checkout:
+
+```bash
+lattence graph chain examples/vulnerable-agent --offline --no-color
+```
+
+The command runs discovery, native finding generation, crypto assessment, and
+the shared cross-layer correlator. Each printed chain contains both finding
+identifiers, every edge type, stored and traversal endpoints, orientation, and
+edge and aggregate evidence references.
+
 The terminal view uses the fixed twelve-section rail. `Attack Graph` lists one
 row per cross-layer chain. Opening a row exposes the explanation, each oriented
-hop, stored endpoints, traversed endpoints, and evidence references. The
-footer documents section, row, detail, hop, help, and quit keys used by the
-shared state model. Plain output contains no color escape sequences.
+hop, stored endpoints, traversed endpoints, and evidence references. Enter on
+a correlated finding row opens that same chain. `[` and `]` select its hops.
+The footer documents section, row, detail, hop, help, and quit keys. Plain
+output contains no color escape sequences.
 
 Non-interactive output renders the initial Overview state and remains suitable
 for logs and deterministic recordings. The committed

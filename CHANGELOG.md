@@ -5,6 +5,16 @@ Versions before 1.0 may include breaking changes in a minor release.
 
 ## [Unreleased]
 
+### Fixed
+
+- `lattence graph chain PATH` now prints every discovered cross-layer
+  correlation with both finding identifiers, stored and traversal edge
+  directions, edge types, and evidence references.
+- Enter on a correlated TUI finding now opens the real chain produced by the
+  shared correlator, and `[` and `]` select its real graph hops.
+- Integration coverage now calls the correlator directly with findings and the
+  graph discovered from `examples/vulnerable-agent`.
+
 ## [0.5.0] - 2026-09-17
 
 ### Added
@@ -23,6 +33,13 @@ Versions before 1.0 may include breaking changes in a minor release.
   version 1 data to `presentation.json` for the static dashboard.
 - Clean-wheel acceptance now validates the terminal output, byte-identical
   dashboard data, dashboard assets, real edge orientation, and evidence.
+
+### Known limitation
+
+- The graph and presentation data contained genuine cross-layer chains, but
+  v0.5.0 did not provide a dedicated command that printed them. Its terminal
+  command rendered only the initial overview and did not run an interactive
+  key loop. v0.5.1 adds both human-facing paths.
 
 ## [0.4.1] - 2026-09-16
 
