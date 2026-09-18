@@ -239,3 +239,9 @@ T-103 closes v0.5 at 293 tests and 91.14 percent coverage. Lint, formatting,
 seven strict type targets, package validation, dashboard tests, provenance,
 prose, and clean-wheel acceptance all pass. The annotated `v0.5.0` tag is the
 review boundary before any v1.0 scope.
+
+T-106 adds `lattence graph chain PATH`. It builds the shared presentation from
+fresh project discovery and crypto assessment, then prints every correlation
+with both finding identifiers, each stored and traversed edge, its type and
+orientation, and edge and aggregate evidence references. JSON mode emits the
+same presentation document written for the dashboard.

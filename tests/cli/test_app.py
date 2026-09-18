@@ -17,6 +17,7 @@ COMMANDS = [
     ["provider", "enable"],
     ["provider", "list"],
     ["graph", "export"],
+    ["graph", "chain"],
     ["policy", "check"],
 ]
 COMMON_OPTIONS = [
@@ -68,6 +69,7 @@ def test_usage_errors_exit_with_two() -> None:
         ["provider", "enable", "garak"],
         ["provider", "list"],
         ["graph", "export", "."],
+        ["graph", "chain", "."],
         ["policy", "check", "."],
     ],
 )

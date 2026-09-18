@@ -7,6 +7,7 @@ import typer
 from lattence_ai.attacks import VerificationOutcome
 
 from .crypto_command import crypto_chaos
+from .graph_chain_command import graph_chain
 from .harden_command import harden
 from .options import (
     FailOnOption,
@@ -241,3 +242,4 @@ app.add_typer(policy_app, name="policy")
 app.command("harden")(harden)
 pqc_app.command("assess")(pqc_assess)
 crypto_app.command("chaos")(crypto_chaos)
+graph_app.command("chain")(graph_chain)
