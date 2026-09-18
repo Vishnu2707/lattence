@@ -50,3 +50,9 @@ the bounded topology traversal. A correlation requires a genuine
 and combines both finding evidence identifiers with graph evidence paths.
 Unknown finding targets fail explicitly, and unrelated finding domains or
 paths without a cryptographic relationship produce no correlation.
+
+T-105 calls the correlator directly with the report and crypto findings built
+from discovering `examples/vulnerable-agent`. It verifies the real two-hop
+`LT-AI-002` to `LT-PQC-203` route, both stored edges, both traversal
+directions, the evidence paths, and all seven crypto algorithm relationships
+owned by the connected tool.

@@ -287,7 +287,7 @@ v0.5.1 closes the validation and human-surfacing gaps in v0.5 without changing
 the real graph data or cross-layer correlation semantics.
 
 [T-104] [v0.5.1] [ORCH] scope the real-graph validation and chain-surfacing repair | deps: T-103 | status: done | commit: self
-[T-105] [v0.5.1] [AISEC] test cross-layer correlation directly against the discovered vulnerable-agent graph | deps: T-104 | status: todo | commit: self
+[T-105] [v0.5.1] [AISEC] test cross-layer correlation directly against the discovered vulnerable-agent graph | deps: T-104 | status: done | commit: self
 [T-106] [v0.5.1] [SHIP] expose real cross-layer findings through the graph chain command | deps: T-105 | status: todo | commit: self
 [T-107] [v0.5.1] [UX] wire TUI finding detail and hop navigation to real cross-layer correlations | deps: T-106 | status: todo | commit: self
 [T-108] [v0.5.1] [SHIP] correct release documentation and pass fresh chain acceptance | deps: T-107 | status: todo | commit: self
