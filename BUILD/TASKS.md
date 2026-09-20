@@ -585,7 +585,7 @@ role, and extension-point shapes below are engineering decisions recorded
 in `BUILD/DECISIONS.md` as they are made, the same way `serve` and `sarif`
 were.
 
-[T-142] [v1.0 phase 5] [SHIP] implement a shared RBAC role model and local API key store | deps: T-141 | status: todo | commit: self
+[T-142] [v1.0 phase 5] [SHIP] implement a shared RBAC role model and local API key store | deps: T-141 | status: done | commit: self
 [T-143] [v1.0 phase 5] [API] enforce RBAC on the v1 API routes without breaking the existing static team-mode token | deps: T-142 | status: todo | commit: self
 [T-144] [v1.0 phase 5] [API] add an OIDC-compatible SSO extension point tested against a mock provider | deps: T-143 | status: todo | commit: self
 [T-145] [v1.0 phase 5] [SHIP] add durable queryable audit logging and wire it into CLI scan/attack/policy-check and the API scan/attack routes | deps: T-144 | status: todo | commit: self
@@ -620,3 +620,10 @@ were.
   choices this phase has no basis to make; the queue model here is real and
   correct for one controller process coordinating multiple worker threads,
   not a distributed system across machines.
+
+`lattence.governance` (new, `lattence-core/src/lattence/governance/`, force
+included into the main wheel like `discovery` and `graph`) holds `Role`
+(a `StrEnum`) and `ApiKeyStore`, a SQLite-backed store (stdlib `sqlite3`,
+no new dependency) mapping a hashed API key to a caller id and role set.
+`secrets.token_hex` produces each key; only its SHA-256 hash is stored,
+never the plaintext, which is returned once at creation time.

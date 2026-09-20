@@ -50,6 +50,7 @@ jobs:
       - run: uv run mypy --strict lattence-cli/src
       - run: uv run mypy --strict lattence-core/src/lattence/discovery
       - run: uv run mypy --strict lattence-core/src/lattence/graph
+      - run: uv run mypy --strict lattence-core/src/lattence/governance
       - run: uv run mypy --strict lattence-crypto/src/lattence_crypto
       - run: uv run mypy --strict lattence-evidence
       - run: uv run mypy --strict lattence-mcp
