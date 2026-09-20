@@ -1,10 +1,10 @@
 # Current state
 
-- Milestone: v1.0 phase 2, REST API and plugin SDK, gate closed
-- Last completed: T-127, record the v1.0 phase 2 release gate and annotated
-  tag
-- Next task: none selected. Phase 3 (Docker deployment) is not scoped. Hold
-  for review before starting it.
+- Milestone: v1.0 phase 3, Docker and deployment modes
+- Last completed: T-128, correct unconfigured-token response to 503 and add
+  a regression test
+- Next task: T-129, write a Dockerfile for lattence-api built from the
+  published wheel
 - Blockers: none.
 - Note: local verification uses `uv sync --all-packages --dev`, matching CI.
   A plain `uv sync` does not install every workspace member editable and
@@ -29,7 +29,8 @@
 - v0.5.1 tasks: 6 done, 0 todo
 - v1.0 phase 0 tasks: 1 done, 0 todo
 - v1.0 phase 1 tasks: 5 done, 0 todo
-- v1.0 phase 2 tasks: 12 done, 0 todo
+- v1.0 phase 2 tasks: 13 done, 0 todo
+- v1.0 phase 3 tasks: 0 done, 6 todo
 
 ## v1.0 phase 2 progress
 

@@ -413,3 +413,49 @@ internal server error caused by the request, so it now returns 503. Added
 `test_v1_route_without_token_configured_returns_503` asserting the specific
 status code, not just any error response, so this does not silently regress
 back to 500.
+
+# v1.0 phase 3 task ledger
+
+Phase 3 adds a Docker deployment path for the team mode (one container
+running `lattence-api`, offline, no network dependency beyond what the
+package already declares) and documents, without building, the
+controller/worker enterprise mode. Distributed execution across workers
+depends on the RBAC and audit groundwork Phase 5 owns; building a
+controller/worker runtime now would mean building authorization twice, so
+Phase 3 stops at the design document and Phase 5 implements it against that
+design.
+
+[T-129] [v1.0 phase 3] [SHIP] write a Dockerfile for lattence-api built from the published wheel | deps: T-128 | status: todo | commit: self
+[T-130] [v1.0 phase 3] [SHIP] write docker-compose.yml for the team deployment mode with a mounted project volume | deps: T-129 | status: todo | commit: self
+[T-131] [v1.0 phase 3] [SHIP] confirm container build, run, and an offline scan against a mounted project directory produce correct output | deps: T-130 | status: todo | commit: self
+[T-132] [v1.0 phase 3] [ORCH] document the controller/worker enterprise deployment mode design | deps: T-131 | status: todo | commit: self
+[T-133] [v1.0 phase 3] [SHIP] satisfy the full-suite lint typing and prose gate for phase 3 changes | deps: T-132 | status: todo | commit: self
+[T-134] [v1.0 phase 3] [ORCH] record the v1.0 phase 3 release gate and annotated tag | deps: T-133 | status: todo | commit: self
+
+## v1.0 phase 3 scope notes
+
+- The team deployment mode is one `lattence-api` container per team,
+  authenticated by the same static bearer token from Phase 2, reading a
+  project mounted as a read-only volume. It performs no network access
+  beyond what `pyproject.toml` already declares as dependencies; the
+  container never reaches out to an external security engine unless one is
+  explicitly enabled, matching the existing `--offline` CLI contract.
+- The Dockerfile builds from the published wheel (or a local build in CI),
+  not from a fat, from-source image, keeping the image close to what a real
+  `pip install lattence[api]` user gets.
+- The controller/worker design document scopes a control plane that
+  schedules `scan`/`attack` runs across multiple workers with per-run
+  identity and audit trail. It explicitly depends on Phase 5 RBAC and audit
+  logging; Phase 3 does not implement scheduling, worker registration, or a
+  message queue. It records enough of the design that Phase 5 can build
+  against it without re-deciding the shape.
+
+## v1.0 phase 3 milestone gate
+
+After T-134, run the full suite, create and push annotated tag
+`v1.0-phase3` on `dev`, then show literal `docker compose` output for
+building the image, starting the team-mode service, and running a scan
+against `examples/vulnerable-agent` mounted into the container, confirming
+the result matches the CLI's own output and that no network call outside
+the container's declared dependencies occurred. Hold for review before
+scoping Phase 4.
