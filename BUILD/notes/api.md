@@ -28,6 +28,14 @@ running an unauthorized attack. It then calls
 `lattence.cli.workflow.create_attack_report` and returns the same `Report`
 model that already embeds `Finding` and `EvidenceBundle`.
 
+`GET /v1/chain` (`routes/chain.py`) calls
+`lattence.cli.presentation_workflow.create_security_presentation` and returns
+`SecurityPresentation`. `SecurityPresentation.cross_layer_summary` is a
+`@computed_field`, not a settable field: it serializes into the response JSON
+but `model_validate` rejects it back as an unknown field on a model with
+`extra="forbid"`. Tests that round-trip the response must strip that key
+before revalidating, or assert on it separately.
+
 Local verification must use `uv sync --all-packages --dev`, the same command
 CI runs. A plain `uv sync` only installs the direct dependency closure and
 leaves sibling workspace packages (`lattence-core`, `lattence-evidence`, and
