@@ -113,3 +113,27 @@ jobs:
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
       - run: .githooks/check-prose
+
+  action-smoke:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - id: lattence-scan
+        uses: ./
+        with:
+          path: examples/vulnerable-agent
+          fail-on: none
+          source: local
+      - name: Confirm a real SARIF file was produced
+        run: |
+          test -s "${{ steps.lattence-scan.outputs.sarif-path }}"
+          python3 -c "
+          import json, sys
+          with open('${{ steps.lattence-scan.outputs.sarif-path }}') as f:
+              document = json.load(f)
+          assert document['version'] == '2.1.0'
+          assert document['runs'][0]['results'], 'expected at least one SARIF result'
+          "

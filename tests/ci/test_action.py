@@ -29,7 +29,37 @@ def test_self_scan_workflow_uses_local_action_and_uploads_findings() -> None:
 
     assert workflow["permissions"]["security-events"] == "write"
     steps = workflow["jobs"]["self-scan"]["steps"]
-    assert any(step.get("uses") == "./" for step in steps)
+    lattence_step = next(step for step in steps if step.get("uses") == "./")
+    assert lattence_step["with"]["source"] == "local", (
+        "self-scan must install lattence from this checkout, not PyPI, or it"
+        " silently tests a stale published version instead of this code"
+    )
+
+
+def test_action_supports_installing_from_local_checkout() -> None:
+    action = yaml.safe_load((ROOT / "action.yml").read_text(encoding="utf-8"))
+
+    assert action["inputs"]["source"]["default"] == "pypi"
+    install_step = next(
+        step
+        for step in action["runs"]["steps"]
+        if step.get("name") == "Install Lattence"
+    )
+    assert "github.action_path" in install_step["run"]
+    assert "inputs.source" in install_step["run"]
+
+
+def test_ci_exercises_the_action_end_to_end() -> None:
+    ci = yaml.safe_load(
+        (ROOT / ".github" / "workflows" / "ci.yml").read_text(encoding="utf-8")
+    )
+
+    job = ci["jobs"]["action-smoke"]
+    lattence_step = next(step for step in job["steps"] if step.get("uses") == "./")
+    assert lattence_step["with"]["source"] == "local"
+    assert any("sarif-path" in step.get("run", "") for step in job["steps"]), (
+        "CI must assert a real SARIF file came out of the action, not just that it ran"
+    )
 
 
 def test_workflow_actions_are_pinned_to_a_commit_sha() -> None:

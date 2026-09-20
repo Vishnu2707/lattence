@@ -20,3 +20,4 @@ jobs:
         with:
           path: .
           fail-on: none
+          source: local

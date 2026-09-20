@@ -13,6 +13,10 @@ inputs:
     description: Severity gate. One of critical, high, medium, low, info, none.
     required: false
     default: "high"
+  source:
+    description: Where to install lattence from. "pypi" installs the published package; "local" builds and installs from this action's own checkout, for testing this repository's current code against itself.
+    required: false
+    default: "pypi"
 outputs:
   sarif-path:
     description: Path to the generated SARIF file.
@@ -27,7 +31,12 @@ runs:
 
     - name: Install Lattence
       shell: bash
-      run: pip install lattence
+      run: |
+        if [ "${{ inputs.source }}" = "local" ]; then
+          pip install "${{ github.action_path }}"
+        else
+          pip install lattence
+        fi
 
     - name: Run scan or attack
       id: run
