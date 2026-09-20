@@ -481,6 +481,7 @@ groundwork exist (D-027 in `BUILD/DECISIONS.md`).
 # v1.0 pre-phase-4 fixes
 
 [T-135] [v1.0 fixes] [UX] show the startup banner on bare invocation and lattence tui launch | deps: T-134 | status: done | commit: self
+[T-136] [v1.0 fixes] [SHIP] cut the README to a real quickstart and relocate deep content into docs | deps: T-135 | status: done | commit: self
 
 `render_banner()` previously only fired inside `--version`. `lattence` with
 no arguments now prints the banner followed by help text (replacing
@@ -488,3 +489,16 @@ no arguments now prints the banner followed by help text (replacing
 the banner once before building the presentation, skipped when `--json` or
 `--quiet` keeps stdout machine-readable. No other command gained the
 banner.
+
+README cut from 359 lines and 14 sections to 147 lines and 9 sections. The
+full architecture, cross-layer analysis, and PQC/crypto sections already
+had dedicated docs; only the README's summary and links needed trimming.
+The "Deployment modes" and "Extending it" sections had no existing home, so
+they moved into new `docs/additional-info.md` alongside a full command
+reference, plugin SDK pointer, and install troubleshooting. `docs/
+architecture.md` is new, covering the three-stage pipeline and package
+layout that used to live inline in the README. `tests/cli/
+test_cross_layer_docs.py::test_readme_links_shared_presentation_guide_and_demo`
+no longer asserts the raw diagram path is in the README, since that image
+now lives only in `docs/cross-layer-analysis.md`; it still asserts the
+guide link, the demo gif, and the `graph chain` example remain.
