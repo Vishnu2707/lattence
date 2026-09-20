@@ -1,13 +1,10 @@
 # Current state
 
-- Milestone: v1.0 phase 1 packaging and local install
-- Last completed: T-113, prepare exact package-index upload and clean pipx
-  verification procedure
-- Next task: T-114, publish package and verify public pipx installation after
-  a PyPI upload token is available
-- Blockers: T-114 requires a PyPI account-scoped API token for the first upload.
-  No token or `.pypirc` is present in this environment. The public project
-  endpoint currently returns 404. T-115 depends on T-114.
+- Milestone: v1.0 phase 1 packaging and local install, gate closed
+- Last completed: T-115, run full phase gate and record acceptance
+- Next task: none selected. Phase 2 (REST API and plugin SDK) is not scoped.
+  Hold for review before starting it.
+- Blockers: none open for phase 1.
 - Manual steps: branch protection and tag protection commands from the
   v0.1.0 release are still printed for review only, not run
 
@@ -27,7 +24,7 @@
 - v0.5 tasks: 15 done, 0 todo
 - v0.5.1 tasks: 6 done, 0 todo
 - v1.0 phase 0 tasks: 1 done, 0 todo
-- v1.0 phase 1 tasks: 3 done, 1 blocked, 1 todo
+- v1.0 phase 1 tasks: 5 done, 0 todo
 
 ## v1.0 phase 1 progress
 
@@ -36,8 +33,10 @@
   root help, and all 13 command help screens match the source build exactly.
 - Publication instructions in `docs/publishing.md` use an isolated artifact
   directory, a hidden API-token prompt, and a public-index pipx installation.
-- No public upload or public pipx acceptance has been claimed. `pipx` is not
-  installed locally. The phase gate remains open.
+- Package `lattence` 0.5.2 is live on the public PyPI index. Two independent
+  `pipx install lattence` runs against isolated pipx homes both installed
+  0.5.2 from the public index and printed the correct banner and version.
+  The phase gate is closed.
 
 ## v1.0 phase 0 gate
 
