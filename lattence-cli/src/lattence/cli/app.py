@@ -53,7 +53,6 @@ from .workflow import (
 
 app = typer.Typer(
     name="lattence",
-    no_args_is_help=True,
     invoke_without_command=True,
     rich_markup_mode=None,
 )
@@ -65,6 +64,7 @@ PathArgument = Annotated[Path, typer.Argument()]
 
 @app.callback()
 def root(
+    ctx: typer.Context,
     version: Annotated[
         bool | None,
         typer.Option("--version", help="Show version and exit.", is_eager=True),
@@ -73,6 +73,10 @@ def root(
     if version:
         typer.echo(render_banner())
         typer.echo(f"lattence {package_version('lattence')}")
+        raise typer.Exit()
+    if ctx.invoked_subcommand is None:
+        typer.echo(render_banner())
+        typer.echo(ctx.get_help())
         raise typer.Exit()
 
 
@@ -197,6 +201,8 @@ def tui(
     fail_on: FailOnOption = SeverityGate.HIGH,
 ) -> None:
     del offline, planner, fail_on
+    if not json_output and not quiet:
+        typer.echo(render_banner())
     presentation = create_security_presentation(input_path, out)
     write_dashboard_data(presentation, out)
     if json_output:

@@ -477,3 +477,14 @@ passed, and provenance and prose checks passed. The controller/worker
 enterprise mode is documented in `docs/enterprise-deployment-design.md` and
 deliberately unimplemented; Phase 5 builds it once RBAC and audit
 groundwork exist (D-027 in `BUILD/DECISIONS.md`).
+
+# v1.0 pre-phase-4 fixes
+
+[T-135] [v1.0 fixes] [UX] show the startup banner on bare invocation and lattence tui launch | deps: T-134 | status: done | commit: self
+
+`render_banner()` previously only fired inside `--version`. `lattence` with
+no arguments now prints the banner followed by help text (replacing
+`no_args_is_help`, which bypassed the callback body); `lattence tui` prints
+the banner once before building the presentation, skipped when `--json` or
+`--quiet` keeps stdout machine-readable. No other command gained the
+banner.
