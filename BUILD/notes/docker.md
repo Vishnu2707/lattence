@@ -17,3 +17,13 @@ various tool caches from the build context.
 when Docker is not available on the host running the tests (`shutil.which
 ("docker") is None`), so the suite does not fail in an environment without a
 Docker daemon.
+
+`docker-compose.yml` is the team deployment mode: one `lattence-api`
+service built from the root `Dockerfile`, `LATTENCE_API_TOKEN` required
+through compose's `${VAR:?message}` syntax (compose itself refuses to start
+without it, not just the app), and a project directory bind-mounted
+read-only at `/data`, defaulting to `examples/vulnerable-agent` via
+`LATTENCE_PROJECT_DIR`. `.env.example` documents both variables.
+`tests/docker/test_compose.py` runs `docker compose config` and parses the
+resolved YAML to assert the token wiring, port, and read-only mount, plus a
+second test asserting compose itself rejects starting with no token set.

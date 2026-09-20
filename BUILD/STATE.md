@@ -1,10 +1,10 @@
 # Current state
 
 - Milestone: v1.0 phase 3, Docker and deployment modes
-- Last completed: T-129, write a Dockerfile for lattence-api built from the
-  published wheel
-- Next task: T-130, write docker-compose.yml for the team deployment mode
-  with a mounted project volume
+- Last completed: T-130, write docker-compose.yml for the team deployment
+  mode with a mounted project volume
+- Next task: T-131, confirm container build, run, and an offline scan
+  against a mounted project directory produce correct output
 - Blockers: none.
 - Note: local verification uses `uv sync --all-packages --dev`, matching CI.
   A plain `uv sync` does not install every workspace member editable and
@@ -30,7 +30,7 @@
 - v1.0 phase 0 tasks: 1 done, 0 todo
 - v1.0 phase 1 tasks: 5 done, 0 todo
 - v1.0 phase 2 tasks: 13 done, 0 todo
-- v1.0 phase 3 tasks: 1 done, 5 todo
+- v1.0 phase 3 tasks: 2 done, 4 todo
 
 ## v1.0 phase 2 progress
 
