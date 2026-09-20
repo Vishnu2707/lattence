@@ -633,7 +633,7 @@ covering every v1.0 phase, and confirm the community files (CONTRIBUTING,
 SECURITY) are accurate against the final command set.
 
 [T-149] [v1.0 phase 6] [SHIP] verify every docs/ example against the real bundled example project | deps: T-148 | status: done | commit: self
-[T-150] [v1.0 phase 6] [SHIP] confirm every README claim against the final v1.0 feature set | deps: T-149 | status: todo | commit: self
+[T-150] [v1.0 phase 6] [SHIP] confirm every README claim against the final v1.0 feature set | deps: T-149 | status: done | commit: self
 [T-151] [v1.0 phase 6] [ORCH] write the CHANGELOG entry covering every v1.0 phase | deps: T-150 | status: todo | commit: self
 [T-152] [v1.0 phase 6] [SHIP] confirm CONTRIBUTING.md and SECURITY.md are accurate against the final command set and architecture | deps: T-151 | status: todo | commit: self
 [T-153] [v1.0 phase 6] [SHIP] satisfy the full-suite lint typing and prose gate for phase 6 changes | deps: T-152 | status: todo | commit: self
@@ -729,3 +729,14 @@ added; its deployment modes table still described the controller/worker
 row as a pure design, corrected to distinguish the now-real single-host
 job queue from the still-undone multi-host case, and noted RBAC and SSO
 alongside the static token for the REST API row.
+
+No changes needed: the quickstart scan output (attack paths 92, findings
+13, PQC readiness 21 percent) and attack output re-ran identical to the
+README's literal blocks; the "15 attack rules" claim matches the real file
+count in `lattence-packs/attacks/`; every linked doc and community file
+exists; `pip install lattence` and the Docker command were already
+confirmed live in earlier phase gates. The GitHub Actions CI badge URL
+returned 404 to a bare `curl`, but `gh api repos/Vishnu2707/lattence/
+actions/workflows` confirms the workflow exists and is active, so this
+reads as a badge-rendering quirk under a bare request, not a broken claim,
+and was not changed.
