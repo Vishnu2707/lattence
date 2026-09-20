@@ -1,17 +1,34 @@
 # Current state
 
-- Milestone: v1.0 phase 6, final docs pass, gate closed
-- Last completed: T-154, record the v1.0 phase 6 release gate and
-  annotated tag
-- Next task: final v1.0.0 gate: bump the version, run full clean-clone
-  acceptance across the complete command set, tag v1.0.0. Running
-  straight through per standing instruction.
+- Milestone: v1.0.0 shipped. Repository is public.
+- Last completed: fixed the self-scan workflow installing `lattence` from
+  PyPI (stale, missing `sarif`/`rbac`/`serve`) instead of this checkout;
+  added a `source: local` input to `action.yml` and an `action-smoke` CI
+  job that runs the composite action for real and asserts a valid SARIF
+  file comes out, so this class of bug is a required-check failure before
+  merge. Confirmed green: self-scan run 35536221532 uploaded real SARIF
+  results, CI run 35536221564 passed all 7 jobs.
+- Next task: none selected. Hold for review before scoping any further
+  work.
 - Blockers: none.
 - Note: local verification uses `uv sync --all-packages --dev`, matching CI.
   A plain `uv sync` does not install every workspace member editable and
   produces spurious mypy import-untyped errors across packages.
-- Manual steps: branch protection and tag protection commands from the
-  v0.1.0 release are still printed for review only, not run
+- Branch protection: applied on `main` via `gh api` (verified live,
+  2026-09-20): required status checks `lint`, `test`, `types`,
+  `acceptance`, `provenance`, `prose` (the original six CI jobs; the new
+  `action-smoke` job is not yet in this required list), `enforce_admins`
+  true, `required_linear_history` true, force pushes and deletions
+  disallowed. `dev` intentionally has no required PR review, matching
+  `BUILD/PROTOCOL.md`'s direct-push-per-task workflow; force pushes and
+  deletions are still disallowed there.
+- Tag protection: not applied. GitHub's classic tag protection API
+  (`POST /repos/{owner}/{repo}/tags/protection`) requires an
+  organization-owned repository; this repository is on a personal
+  account, and the endpoint returns 404 here. A ruleset-based tag
+  protection (`POST /repos/{owner}/{repo}/rulesets` with a `tag` target)
+  is available on personal accounts and is the option to revisit if tag
+  protection is wanted.
 
 ## Repository state
 

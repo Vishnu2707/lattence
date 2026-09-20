@@ -807,3 +807,25 @@ phase gates (13 findings, 92 attack paths, 32 cross-layer correlations,
 `dev` and pushed. No PR to `main` opened and no GitHub release created,
 per instruction; branch protection and tag protection `gh api` commands
 are printed for review, not run.
+
+# Post-v1.0.0 fix: self-scan workflow
+
+[T-155] [v1.0.0 fix] [SHIP] fix self-scan installing lattence from stale PyPI instead of the local checkout | deps: v1.0.0 | status: done | commit: self
+
+The self-scan workflow failed on every push after v1.0.0 shipped: `Error:
+No such command 'sarif'`. Root cause, confirmed from the real GitHub
+Actions run logs rather than assumed: `action.yml`'s "Install Lattence"
+step ran `pip install lattence`, resolving the last PyPI release
+(`0.5.2`), which predates `sarif`, `rbac`, and `serve`. It was not an
+argument-shape mismatch; `lattence sarif REPORT_PATH` already matched
+`load_report`'s expectation of an existing report file, exactly how the
+workflow called it. Fixed by adding a `source` input to `action.yml`
+(`pypi` default for third-party consumers, `local` to `pip install` from
+`${{ github.action_path }}`) and switching `lattence-scan.yml` to
+`source: local`. Added an `action-smoke` job to `ci.yml` that runs the
+composite action for real against `examples/vulnerable-agent` and asserts
+a valid 2.1.0 SARIF document with at least one result comes out, so a
+future workflow/CLI mismatch fails CI before merge. Verified green:
+self-scan run 35536221532 (SARIF uploaded, "Successfully uploaded
+results") and CI run 35536221564 (all 7 jobs, including the new
+`action-smoke` job, passed).
