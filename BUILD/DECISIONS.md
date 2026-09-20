@@ -109,3 +109,7 @@ Rationale: Phase 1 must verify a public pipx install before API and enterprise p
 2026-09-20 D-026
 Decision: Add a CLI `serve` command that starts lattence-api and takes only --host and --port, outside the universal scan/attack option set, with fastapi and uvicorn imported lazily so the core CLI install stays dependency-light.
 Rationale: A long-running server process has no single JSON, out, offline, or fail-on gate semantics, and most CLI users never need the API surface installed.
+
+2026-09-20 D-027
+Decision: Phase 3 documents the controller/worker enterprise deployment mode design but implements none of it; Phase 5 builds it against that document once RBAC and audit groundwork exist.
+Rationale: A controller/worker runtime needs per-caller identity and an audit trail to be safe at all, and building an ad hoc version now would mean rebuilding the authorization layer correctly in Phase 5 anyway.

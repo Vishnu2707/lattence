@@ -1,10 +1,10 @@
 # Current state
 
 - Milestone: v1.0 phase 3, Docker and deployment modes
-- Last completed: T-131, confirm container build, run, and an offline scan
-  against a mounted project directory produce correct output
-- Next task: T-132, document the controller/worker enterprise deployment
-  mode design
+- Last completed: T-132, document the controller/worker enterprise
+  deployment mode design
+- Next task: T-133, satisfy the full-suite lint typing and prose gate for
+  phase 3 changes
 - Blockers: none.
 - Note: local verification uses `uv sync --all-packages --dev`, matching CI.
   A plain `uv sync` does not install every workspace member editable and
@@ -30,7 +30,7 @@
 - v1.0 phase 0 tasks: 1 done, 0 todo
 - v1.0 phase 1 tasks: 5 done, 0 todo
 - v1.0 phase 2 tasks: 13 done, 0 todo
-- v1.0 phase 3 tasks: 3 done, 3 todo
+- v1.0 phase 3 tasks: 4 done, 2 todo
 
 ## v1.0 phase 2 progress
 
