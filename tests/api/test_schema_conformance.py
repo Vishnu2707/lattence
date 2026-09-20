@@ -4,9 +4,7 @@ from pathlib import Path
 import jsonschema
 from fastapi.testclient import TestClient
 
-_SCHEMA = json.loads(
-    Path("docs/schemas/report.v1.json").read_text(encoding="utf-8")
-)
+_SCHEMA = json.loads(Path("docs/schemas/report.v1.json").read_text(encoding="utf-8"))
 
 
 def test_scan_response_conforms_to_report_schema(client: TestClient) -> None:

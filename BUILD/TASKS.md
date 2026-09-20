@@ -354,7 +354,7 @@ are explicitly deferred to Phase 5.
 [T-123] [v1.0 phase 2] [SHIP] document API authentication and record RBAC and SSO as deferred to Phase 5 | deps: T-120 | status: done | commit: self
 [T-124] [v1.0 phase 2] [SHIP] add live-instance API integration tests against examples/vulnerable-agent asserting report schema conformance | deps: T-121 | status: done | commit: self
 [T-125] [v1.0 phase 2] [SHIP] wire lattence-api into the package build, add a CLI serve command, and finalize workspace metadata | deps: T-124,T-122,T-123 | status: done | commit: self
-[T-126] [v1.0 phase 2] [SHIP] satisfy the full-suite lint typing and prose gate for phase 2 changes | deps: T-125 | status: todo | commit: self
+[T-126] [v1.0 phase 2] [SHIP] satisfy the full-suite lint typing and prose gate for phase 2 changes | deps: T-125 | status: done | commit: self
 [T-127] [v1.0 phase 2] [ORCH] record the v1.0 phase 2 release gate and annotated tag | deps: T-126 | status: todo | commit: self
 
 ## v1.0 phase 2 scope notes
