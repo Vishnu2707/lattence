@@ -82,3 +82,19 @@ leaves sibling workspace packages (`lattence-core`, `lattence-evidence`, and
 so on) unavailable as editable installs, which makes `mypy --strict` report
 spurious `import-untyped` errors for packages that do carry a `py.typed`
 marker.
+
+RBAC (Phase 5, T-143) is additive to the Phase 2 static token, not a
+replacement. `auth.require_access(role)` in `lattence-api/src/
+lattence_api/auth.py` returns a per-route FastAPI dependency: it checks
+`LATTENCE_RBAC_DB` (a `lattence.governance.ApiKeyStore`) first when
+configured, then falls back to `LATTENCE_API_TOKEN` (actor `team-token`)
+for backward compatibility with the already-shipped Docker team mode.
+Each of `/v1/scan`, `/v1/attack`, and `/v1/chain` now declares its own
+required `Role` (`RUN_SCANS`, `RUN_ATTACKS`, `READ_FINDINGS`) as a route
+parameter, not a router-level dependency, so the resolved
+`AuthenticatedCaller` is available in the route function for the audit
+wiring T-145 adds. `lattence rbac create-key/list/revoke`
+(`lattence-cli/src/lattence/cli/rbac_commands.py`) manage the key store;
+there is no key-creation API route, only the CLI, since a key that can
+mint other keys over HTTP is a bootstrapping risk this phase does not need
+to take on.

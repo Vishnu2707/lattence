@@ -117,3 +117,7 @@ Rationale: A controller/worker runtime needs per-caller identity and an audit tr
 2026-09-20 D-028
 Decision: Add a `sarif [INPUT]` CLI command that loads a saved report the same way `report` does and writes a schema-validated SARIF 2.1.0 document, rather than adding a `--sarif` flag to every existing command.
 Rationale: `report` and `graph export` already establish the pattern of a dedicated INPUT-based command per output format; a new flag on every command would need to be threaded through scan, attack, and report alike for no benefit over one small command.
+
+2026-09-20 D-029
+Decision: RBAC is additive to the Phase 2 static bearer token, not a replacement; a request may authenticate with either a per-caller RBAC API key or the legacy team token, and route handlers require a specific Role rather than any router-level dependency.
+Rationale: Phase 3's Docker team mode already ships and is already tested against the static token; breaking it to force RBAC adoption would regress a shipped deployment mode for no user benefit, and per-route role requirements are what let the resolved caller reach the audit logging Phase 5 also adds.
