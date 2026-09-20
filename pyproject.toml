@@ -71,6 +71,7 @@ members = [
 ]
 
 [tool.uv.sources]
+lattence = { workspace = true }
 lattence-ai = { workspace = true }
 lattence-api = { workspace = true }
 lattence-core = { workspace = true }

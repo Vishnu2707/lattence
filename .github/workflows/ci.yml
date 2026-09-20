@@ -54,6 +54,7 @@ jobs:
       - run: uv run mypy --strict lattence-evidence
       - run: uv run mypy --strict lattence-mcp
       - run: uv run mypy --strict lattence-ai/src/lattence_ai/attacks
+      - run: uv run mypy --strict lattence-api/src/lattence_api
 
   acceptance:
     runs-on: ubuntu-latest
