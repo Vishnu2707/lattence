@@ -1,10 +1,10 @@
 # Current state
 
-- Milestone: v1.0 phase 1 packaging and local install, gate closed
+- Milestone: v1.0 phase 2, REST API and plugin SDK
 - Last completed: T-115, run full phase gate and record acceptance
-- Next task: none selected. Phase 2 (REST API and plugin SDK) is not scoped.
-  Hold for review before starting it.
-- Blockers: none open for phase 1.
+- Next task: T-116, scaffold the lattence-api application and dependency
+  wiring
+- Blockers: none.
 - Manual steps: branch protection and tag protection commands from the
   v0.1.0 release are still printed for review only, not run
 
@@ -25,6 +25,7 @@
 - v0.5.1 tasks: 6 done, 0 todo
 - v1.0 phase 0 tasks: 1 done, 0 todo
 - v1.0 phase 1 tasks: 5 done, 0 todo
+- v1.0 phase 2 tasks: 0 done, 12 todo
 
 ## v1.0 phase 1 progress
 

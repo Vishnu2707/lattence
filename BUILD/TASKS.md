@@ -332,3 +332,58 @@ against an isolated `PIPX_HOME`/`PIPX_BIN_DIR` against the public index both
 installed version 0.5.2 and printed the correct banner and version string
 from the isolated bin path. Phase 1 gate closed. Hold for review before
 scoping Phase 2.
+
+# v1.0 phase 2 task ledger
+
+Phase 2 exposes scan, attack, and cross-layer chain results over HTTP and
+documents the plugin SDK. The API is additive: it reuses the frozen
+`lattence.graph`, `lattence.evidence`, and presentation Pydantic models from
+`BUILD/CONTRACTS.md` without redefining them, and does not change CLI
+behavior, report schema, or graph or finding contracts. `lattence-api` is an
+existing empty workspace member; this phase fills it in. Authentication is
+static bearer token only for v1.0. RBAC, SSO, and multi-tenant access control
+are explicitly deferred to Phase 5.
+
+[T-116] [v1.0 phase 2] [API] scaffold the lattence-api application and dependency wiring | deps: T-115 | status: todo | commit: self
+[T-117] [v1.0 phase 2] [API] wire GET /v1/scan to the existing scan workflow and Project and SecurityGraph models | deps: T-116 | status: todo | commit: self
+[T-118] [v1.0 phase 2] [API] wire POST /v1/attack to the existing attack workflow and Finding and EvidenceBundle models | deps: T-116 | status: todo | commit: self
+[T-119] [v1.0 phase 2] [API] wire GET /v1/chain to the existing graph chain workflow and CrossLayerChain models | deps: T-116 | status: todo | commit: self
+[T-120] [v1.0 phase 2] [API] add bearer token authentication for all v1 routes | deps: T-117,T-118,T-119 | status: todo | commit: self
+[T-121] [v1.0 phase 2] [API] validate every API response against report.v1.json and the SecurityPresentation model | deps: T-120 | status: todo | commit: self
+[T-122] [v1.0 phase 2] [SHIP] document the plugin SDK for third-party SecurityProvider adapters using the Garak, PyRIT, and Promptfoo adapters as the reference implementation | deps: T-116 | status: todo | commit: self
+[T-123] [v1.0 phase 2] [SHIP] document API authentication and record RBAC and SSO as deferred to Phase 5 | deps: T-120 | status: todo | commit: self
+[T-124] [v1.0 phase 2] [SHIP] add live-instance API integration tests against examples/vulnerable-agent asserting report schema conformance | deps: T-121 | status: todo | commit: self
+[T-125] [v1.0 phase 2] [SHIP] wire lattence-api into the package build, add a CLI serve command, and finalize workspace metadata | deps: T-124,T-122,T-123 | status: todo | commit: self
+[T-126] [v1.0 phase 2] [SHIP] satisfy the full-suite lint typing and prose gate for phase 2 changes | deps: T-125 | status: todo | commit: self
+[T-127] [v1.0 phase 2] [ORCH] record the v1.0 phase 2 release gate and annotated tag | deps: T-126 | status: todo | commit: self
+
+## v1.0 phase 2 scope notes
+
+- The API layer is a thin HTTP surface over the existing deterministic
+  workflows (`lattence.cli.workflow`, `graph_chain_command`, and the provider
+  runtime). It does not reimplement scan, attack, or chain logic.
+- `GET /v1/scan`, `POST /v1/attack`, and `GET /v1/chain` accept a project path
+  or an existing report path, mirroring the CLI contract's `[PATH]` and
+  `[INPUT]` arguments, and return the same Pydantic models the CLI already
+  serializes, so responses validate against `docs/schemas/report.v1.json` and
+  the `SecurityPresentation` model without a parallel schema.
+- Authentication is a single static bearer token read from environment
+  configuration, checked on every v1 route. No user store, roles, or session
+  management ships in Phase 2. `BUILD/notes/` for the API module records this
+  explicitly so Phase 5 RBAC and SSO work does not assume more exists today.
+- The plugin SDK doc explains `discover`, `generate_tests`, `execute`, and
+  `normalize_results` from the frozen `SecurityProvider` protocol using the
+  real `garak.py`, `pyrit.py`, and `promptfoo.py` adapters as worked examples,
+  not a new tutorial provider.
+- Integration tests start a real running instance of the API, issue actual
+  HTTP requests against `examples/vulnerable-agent`, and assert the JSON
+  response against the frozen report and presentation schemas. They are not
+  mocked at the HTTP layer.
+
+## v1.0 phase 2 milestone gate
+
+After T-127, run the full suite, create and push annotated tag `v1.0-phase2`
+on `dev`, then show literal `curl` output from a real running `lattence-api`
+instance for `/v1/scan`, `/v1/attack`, and `/v1/chain` against
+`examples/vulnerable-agent`, including the bearer token requirement. Hold for
+review before scoping Phase 3.
