@@ -85,7 +85,15 @@ def test_job_submission_and_completion_are_audited(client: TestClient) -> None:
 
     db_path = os.environ["LATTENCE_AUDIT_DB"]
     log = AuditLog(Path(db_path))
-    submit_events = log.query(action="job_submit:scan")
-    complete_events = log.query(action="job_complete:scan")
-    assert any(event.details.get("job_id") == job_id for event in submit_events)
-    assert any(event.details.get("job_id") == job_id for event in complete_events)
+    submit_events = [
+        event
+        for event in log.query(action="job_submit:scan")
+        if event.details.get("job_id") == job_id
+    ]
+    complete_events = [
+        event
+        for event in log.query(action="job_complete:scan")
+        if event.details.get("job_id") == job_id
+    ]
+    assert len(submit_events) == 1, submit_events
+    assert len(complete_events) == 1, complete_events

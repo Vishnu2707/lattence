@@ -591,7 +591,38 @@ were.
 [T-145] [v1.0 phase 5] [SHIP] add durable queryable audit logging and wire it into CLI scan/attack/policy-check and the API scan/attack routes | deps: T-144 | status: done | commit: self
 [T-146] [v1.0 phase 5] [API] implement a single-controller-multi-worker job queue per the enterprise deployment design, RBAC-gated and audited | deps: T-145 | status: done | commit: self
 [T-147] [v1.0 phase 5] [SHIP] satisfy the full-suite lint typing and prose gate for phase 5 changes | deps: T-146 | status: done | commit: self
-[T-148] [v1.0 phase 5] [ORCH] record the v1.0 phase 5 release gate and annotated tag | deps: T-147 | status: todo | commit: self
+[T-148] [v1.0 phase 5] [ORCH] record the v1.0 phase 5 release gate and annotated tag | deps: T-147 | status: done | commit: self
+
+## v1.0 phase 5 milestone gate
+
+Gate closed 2026-09-20. Live demonstration against a real running
+`lattence serve` instance with `LATTENCE_RBAC_DB` and `LATTENCE_AUDIT_DB`
+configured: an RBAC key issued with only `run_scans` and `read_findings`
+got `403 {"detail":"caller alice lacks role run_attacks"}` from
+`POST /v1/attack` and `200` with a matching 13-finding report from
+`GET /v1/scan`. An unconfigured mock-SSO-shaped token was correctly
+rejected `401` since no `SSOProvider` was registered server-side,
+confirming the extension point does not silently accept unrecognized
+tokens. A job submitted through `POST /v1/jobs?operation=scan` returned
+immediately as `running`, and polling `GET /v1/jobs/{id}` a moment later
+showed `succeeded` with a summary identical to the direct scan.
+
+The first pass of this demonstration surfaced a real bug: the audit
+database showed two `job_submit:scan` rows for one submission, because
+both `JobController.submit` and the `POST /v1/jobs` route handler wrote a
+submission audit event. Fixed by removing the route handler's duplicate
+call, since the controller is the single source of truth for a job's own
+lifecycle events; `record_api_audit_event` stays imported and used only in
+the direct `/v1/scan` and `/v1/attack` routes, which have no controller of
+their own. Re-verified live after the fix: exactly one `job_submit:scan`
+and one matching `job_complete:scan` per submission. All 32 API tests
+still passed both before and after, since the existing assertions checked
+`any(...)` rather than an exact count; that gap is noted here rather than
+silently left for a future regression to rediscover.
+
+Full suite passed at 366 tests and 92.37 percent coverage, lint and
+formatting passed, all nine strict typing targets passed, and provenance
+and prose checks passed.
 
 ## v1.0 phase 5 scope notes
 

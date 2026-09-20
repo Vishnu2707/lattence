@@ -4,7 +4,6 @@ from fastapi import APIRouter, Depends, Header, HTTPException, Request
 from lattence.governance import Role
 from pydantic import BaseModel
 
-from ..audit import record_api_audit_event
 from ..auth import AuthenticatedCaller, require_access
 from ..jobs import Job, JobController, JobOperation, JobStatus, role_for_operation
 
@@ -55,13 +54,6 @@ def submit_job(
 ) -> JobResponse:
     controller: JobController = request.app.state.job_controller
     job = controller.submit(operation, path, caller.caller_id)
-    record_api_audit_event(
-        caller_id=caller.caller_id,
-        action=f"job_submit:{operation.value}",
-        target=path,
-        result="queued",
-        details={"job_id": job.id},
-    )
     return _to_response(job)
 
 
