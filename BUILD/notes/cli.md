@@ -257,3 +257,8 @@ seven strict type targets, package validation, UX tests, provenance, prose, and
 fresh-wheel chain acceptance pass. The chain acceptance uses a separate output
 directory so its new timestamp does not overwrite the dashboard document being
 compared. The annotated `v0.5.1` tag is the review boundary before v1.0.
+
+T-110 changes `graph chain`'s bare count heading to report both finding
+correlations and distinct structural paths. The bundled example has 32 and 9,
+respectively. Its own generated report and presentation files are ignored by
+the example's discovery inventory to keep repeated counts stable.

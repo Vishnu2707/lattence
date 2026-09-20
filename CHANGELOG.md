@@ -5,6 +5,13 @@ Versions before 1.0 may include breaking changes in a minor release.
 
 ## [Unreleased]
 
+### Fixed
+
+- Cross-layer output now distinguishes 32 finding correlations from 9 distinct
+  structural edge paths in the bundled example. Each finding pairing remains
+  visible, but terminal, JSON, and dashboard HTML summaries no longer imply
+  32 independent routes.
+
 ## [0.5.1] - 2026-09-18
 
 ### Fixed

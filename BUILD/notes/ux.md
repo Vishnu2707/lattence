@@ -101,3 +101,7 @@ snapshot for non-interactive streams. The shared presentation workflow invokes
 the cross-layer correlator against the discovered graph before the key loop.
 Enter on an AI, agent, MCP, or general finding row opens its matching real
 chain, and the bracket keys select the chain's real hops and evidence.
+
+T-110 labels finding correlations and distinct structural paths together in
+the TUI Attack Graph heading and dashboard HTML toolbar. Neither view treats
+the 32 finding pairings in the vulnerable example as 32 independent routes.

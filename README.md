@@ -214,7 +214,9 @@ python -m http.server --directory lattence-ui 8000
 ```
 
 The graph command prints every real correlation, including both finding
-identifiers, every edge and orientation, and its evidence references. The TUI
+identifiers, every edge and orientation, and its evidence references. The
+bundled example currently has 32 finding correlations across 9 distinct
+structural edge paths. The TUI
 opens the fixed twelve-section terminal view and writes
 `lattence-ui/presentation.json`. Enter opens the selected finding or path, and
 `[` and `]` select correlated graph hops. The dashboard reads that same version

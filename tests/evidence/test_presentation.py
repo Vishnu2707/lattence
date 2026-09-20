@@ -86,8 +86,30 @@ def test_builds_stable_shared_presentation_json() -> None:
 
     assert rendered == presentation_json(presentation)
     assert presentation.cross_layer_chains[0].hops[0].traversal == "reverse"
+    assert presentation.cross_layer_summary.finding_correlations == 1
+    assert presentation.cross_layer_summary.distinct_structural_paths == 1
+    assert '"finding_correlations": 1' in rendered
+    assert '"distinct_structural_paths": 1' in rendered
     assert '"version": "1"' in rendered
     assert rendered.endswith("\n")
+
+
+def test_summary_collapses_finding_pairs_with_the_same_edge_path() -> None:
+    project, graph, findings, chain = _fixture()
+    second = chain.model_copy(
+        update={
+            "id": "cross-layer:second",
+            "source_finding_id": "LT-AI-008",
+        }
+    )
+    findings.append(findings[0].model_copy(update={"id": "LT-AI-008"}))
+
+    presentation = build_security_presentation(
+        project, graph, findings, [chain, second]
+    )
+
+    assert presentation.cross_layer_summary.finding_correlations == 2
+    assert presentation.cross_layer_summary.distinct_structural_paths == 1
 
 
 def test_rejects_altered_or_synthetic_chain_edges() -> None:

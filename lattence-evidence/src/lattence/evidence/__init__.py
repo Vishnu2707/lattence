@@ -19,10 +19,12 @@ from .normalization import normalize_rule_finding
 from .presentation import (
     CrossLayerChain,
     CrossLayerHop,
+    CrossLayerSummary,
     SecurityPresentation,
     build_cross_layer_chain,
     build_security_presentation,
     presentation_json,
+    summarize_cross_layer_chains,
 )
 from .remediation import RemediationError, RemediationPlan, remediation_plans
 from .reporting import (
@@ -44,6 +46,7 @@ __all__ = [
     "CryptoFindingTargets",
     "CrossLayerChain",
     "CrossLayerHop",
+    "CrossLayerSummary",
     "FindingId",
     "FindingStatus",
     "PolicyDecision",
@@ -64,6 +67,7 @@ __all__ = [
     "normalize_rule_finding",
     "normalize_crypto_findings",
     "presentation_json",
+    "summarize_cross_layer_chains",
     "remediation_plans",
     "render_html_report",
     "report_json",

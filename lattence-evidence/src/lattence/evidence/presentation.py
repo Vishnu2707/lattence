@@ -12,7 +12,7 @@ from lattence.graph import (
     TraversalDirection,
     UtcDateTime,
 )
-from pydantic import Field, model_validator
+from pydantic import Field, computed_field, model_validator
 
 from .models import Finding
 from .reporting import ReportModel
@@ -40,6 +40,25 @@ class CrossLayerChain(ReportModel):
     evidence_refs: list[str] = Field(default_factory=list)
 
 
+class CrossLayerSummary(ReportModel):
+    finding_correlations: int = Field(ge=0)
+    distinct_structural_paths: int = Field(ge=0)
+
+
+def summarize_cross_layer_chains(
+    chains: Iterable[CrossLayerChain],
+) -> CrossLayerSummary:
+    chain_list = list(chains)
+    structural_paths = {
+        tuple((hop.edge_id, hop.traversal) for hop in chain.hops)
+        for chain in chain_list
+    }
+    return CrossLayerSummary(
+        finding_correlations=len(chain_list),
+        distinct_structural_paths=len(structural_paths),
+    )
+
+
 class SecurityPresentation(ReportModel):
     version: Literal["1"] = "1"
     project: Project
@@ -47,6 +66,11 @@ class SecurityPresentation(ReportModel):
     findings: list[Finding]
     cross_layer_chains: list[CrossLayerChain]
     generated_at: UtcDateTime
+
+    @computed_field  # type: ignore[prop-decorator]
+    @property
+    def cross_layer_summary(self) -> CrossLayerSummary:
+        return summarize_cross_layer_chains(self.cross_layer_chains)
 
     @model_validator(mode="after")
     def references_are_valid(self) -> Self:

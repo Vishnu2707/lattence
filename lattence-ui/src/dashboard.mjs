@@ -19,6 +19,7 @@ const elements = {
   save: document.querySelector("#save-view"),
   copy: document.querySelector("#copy-json"),
   export: document.querySelector("#export-json"),
+  summary: document.querySelector("#chain-summary"),
 };
 
 const state = {
@@ -145,6 +146,10 @@ function renderDetail(row) {
 }
 
 function render() {
+  const summary = state.presentation.cross_layer_summary;
+  elements.summary.textContent = summary
+    ? `${summary.finding_correlations} finding correlations across ${summary.distinct_structural_paths} distinct structural paths`
+    : "0 finding correlations across 0 distinct structural paths";
   renderNavigation();
   renderHeader();
   renderRows();

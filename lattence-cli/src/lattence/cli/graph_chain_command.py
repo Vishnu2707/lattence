@@ -30,7 +30,14 @@ PathArgument = Annotated[Path, typer.Argument()]
 def _chain_lines(presentation: SecurityPresentation, project: Path) -> list[Text]:
     chains = presentation.cross_layer_chains
     lines = [Text(f"LATTENCE  graph chain  {project}"), Text()]
-    lines.append(Text(f"CROSS-LAYER CHAINS  {len(chains)}", style="bold #4C8DFF"))
+    summary = presentation.cross_layer_summary
+    lines.append(
+        Text(
+            f"CROSS-LAYER  {summary.finding_correlations} finding correlations "
+            f"across {summary.distinct_structural_paths} distinct structural paths",
+            style="bold #4C8DFF",
+        )
+    )
     if not chains:
         lines.append(Text("PASS  No cross-layer finding chains."))
         return lines

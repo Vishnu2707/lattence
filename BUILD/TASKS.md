@@ -300,3 +300,12 @@ After T-109, run the full suite, create and push annotated tag `v0.5.1` on
 checkout. The literal command output must show both finding identifiers, both
 real edge types, their orientation, and every evidence reference. Hold at the
 tag for review. Do not start v1.0.
+
+# v1.0 phase 0 gate
+
+[T-110] [v1.0 phase 0] [ORCH] distinguish finding correlations from structural paths across terminal JSON and dashboard output | deps: T-109 | status: done | commit: self
+
+The remaining phases are scoped only after this gate is reviewed. Phase 1 is
+packaging and local install, Phase 2 is API and plugin SDK, Phase 3 is Docker
+deployment, Phase 4 is SARIF and CI, Phase 5 is enterprise controls and workers,
+and Phase 6 is final documentation. Do not start the next phase before review.

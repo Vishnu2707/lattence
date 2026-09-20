@@ -24,6 +24,7 @@ def test_graph_chain_prints_real_edges_and_evidence(tmp_path: Path) -> None:
 
     assert result.exit_code == 0, result.output
     assert "LATTENCE  graph chain" in result.stdout
+    assert "32 finding correlations across 9 distinct structural paths" in result.stdout
     assert "LT-AI-002 -> LT-PQC-203" in result.stdout
     assert "EDGE 1      accesses  reverse" in result.stdout
     assert "EDGE 2      key_exchange  forward" in result.stdout
@@ -41,6 +42,10 @@ def test_graph_chain_json_is_the_real_presentation(tmp_path: Path) -> None:
 
     assert result.exit_code == 0, result.output
     payload = json.loads(result.stdout)
+    assert payload["cross_layer_summary"] == {
+        "finding_correlations": 32,
+        "distinct_structural_paths": 9,
+    }
     assert any(
         chain["source_finding_id"] == "LT-AI-002"
         and chain["crypto_finding_id"] == "LT-PQC-203"

@@ -45,3 +45,8 @@ traversal orientation and evidence, and receive a stable content-derived
 identifier. Presentation validation rejects unknown finding targets, synthetic
 or altered edges, broken orientation, cycles, missing crypto relationships,
 and endpoint mismatches. Stable JSON serialization ends with one newline.
+
+T-110 adds a computed cross-layer summary to presentation JSON without changing
+the version 1 input contract. A structural path is the ordered sequence of
+graph edge identifiers and traversal directions, regardless of finding ids.
+The vulnerable example has 32 finding correlations but 9 such paths.

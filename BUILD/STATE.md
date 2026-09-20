@@ -1,8 +1,8 @@
 # Current state
 
-- Milestone: v0.5.1 complete
-- Last completed: T-109, record the v0.5.1 release gate and annotated tag
-- Next task: none; hold for review before v1.0
+- Milestone: v1.0 phase 0 complete, awaiting review
+- Last completed: T-110, distinguish finding correlations from structural paths
+- Next task: scope phase 1 packaging and local install after phase 0 review
 - Blockers: none
 - Manual steps: branch protection and tag protection commands from the
   v0.1.0 release are still printed for review only, not run
@@ -22,6 +22,19 @@
 - v0.4.1 tasks: 7 done (T-082 through T-088), 0 todo
 - v0.5 tasks: 15 done, 0 todo
 - v0.5.1 tasks: 6 done, 0 todo
+- v1.0 phase 0 tasks: 1 done, 0 todo
+
+## v1.0 phase 0 gate
+
+- The real vulnerable-agent export has 32 finding correlations across 9
+  distinct structural edge paths. Path group sizes are 10, 2, 2, 6, 2, 2, 2,
+  2, and 4 finding pairs.
+- Terminal, presentation JSON, TUI Attack Graph, and dashboard HTML now label
+  both counts. Each finding-to-path correlation remains visible.
+- The bundled example ignores generated presentation and report files during
+  discovery, so repeated local output does not change the graph being analyzed.
+- Full suite: 300 passed, 90.64 percent coverage. Lint, formatting, all seven
+  strict typing targets, UX tests, provenance, and prose checks passed.
 
 ## v0.5.1 acceptance before release gate
 

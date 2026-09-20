@@ -33,6 +33,10 @@ assert.equal(visualGrammar.detail.modal, false);
 assert.equal(visualGrammar.table.keyboardNavigation, true);
 
 const css = readFileSync(new URL("../src/tokens.css", import.meta.url), "utf8");
+const dashboardHtml = readFileSync(new URL("../index.html", import.meta.url), "utf8");
+const dashboardScript = readFileSync(new URL("../src/dashboard.mjs", import.meta.url), "utf8");
+assert.ok(dashboardHtml.includes('id="chain-summary"'));
+assert.ok(dashboardScript.includes("finding correlations across"));
 for (const value of Object.values(visualGrammar.colors)) {
   assert.ok(css.includes(value), `missing color token ${value}`);
 }

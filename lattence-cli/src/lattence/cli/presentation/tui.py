@@ -230,12 +230,19 @@ def render_tui(
     section = navigation[state.section_index]
     rows = _rows(presentation, section)
     selected_index = min(state.row_index, max(0, len(rows) - 1))
+    section_title = section
+    if section == "Attack Graph":
+        summary = presentation.cross_layer_summary
+        section_title = (
+            f"Attack Graph: {summary.finding_correlations} finding correlations / "
+            f"{summary.distinct_structural_paths} structural paths"
+        )
 
     layout = Layout()
     layout.split_column(Layout(name="body"), Layout(name="footer", size=1))
     layout["body"].split_row(
         Layout(_navigation(state, navigation), name="navigation", size=23),
-        Layout(_table(rows, state, section), name="table"),
+        Layout(_table(rows, state, section_title), name="table"),
     )
     if state.detail_open and rows:
         detail_content: Any = rows[selected_index]["detail"]
@@ -255,7 +262,7 @@ def render_tui(
         )
         layout["body"].split_row(
             Layout(_navigation(state, navigation), size=23),
-            Layout(_table(rows, state, section)),
+            Layout(_table(rows, state, section_title)),
             Layout(detail, size=38),
         )
     footer = "←/→ section  ↑/↓ row  Enter detail  [/] hop  ? help  q quit"

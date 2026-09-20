@@ -108,6 +108,13 @@ def test_tui_keyboard_navigation_opens_chain_detail_and_help() -> None:
 
 def test_real_finding_row_opens_correlation_and_navigates_hops() -> None:
     presentation = create_security_presentation(EXAMPLE)
+    graph_view = render_tui(
+        presentation,
+        TuiState(section_index=8),
+        width=160,
+        height=24,
+    )
+    assert "32 finding correlations / 9 structural paths" in graph_view
     ai_finding_ids = [
         finding.id
         for finding in presentation.findings

@@ -97,3 +97,7 @@ Rationale: The accepted fixture needs two hops, while an eight-hop all-path sear
 2026-09-18 D-023
 Decision: v0.5.1 validates correlation directly against a discovered project graph and adds dedicated CLI and TUI chain access before any v1.0 work.
 Rationale: v0.5 contained real chain data, but its direct correlator coverage used a synthetic graph and no dedicated command printed the chain for a human.
+
+2026-09-20 D-024
+Decision: Count a structural cross-layer path by its ordered graph edge identifiers and traversal directions, while retaining every finding-to-path correlation.
+Rationale: The bundled example yields 32 valid finding correlations over 9 distinct structural paths; reporting both avoids implying 32 independent routes.
