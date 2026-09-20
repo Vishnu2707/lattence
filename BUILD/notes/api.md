@@ -47,6 +47,15 @@ avoid a timing side channel. This is the whole v1.0 auth model: one shared
 secret, no per-caller identity, no scopes. RBAC and SSO are Phase 5 work; see
 [[phase2-auth-deferred]].
 
+`/v1/scan` and `/v1/attack` call `lattence.cli.workflow.machine_report`
+before returning, which runs the same `jsonschema.Draft202012Validator`
+against `docs/schemas/report.v1.json` that the CLI's `--json` output already
+uses. A validation failure is a server-side contract defect, not a client
+error, so it maps to 500 with the jsonschema message. `/v1/chain` needs no
+separate schema check: `build_security_presentation` runs
+`SecurityPresentation.references_are_valid` at construction time, so an
+invalid presentation can never reach the route handler in the first place.
+
 Local verification must use `uv sync --all-packages --dev`, the same command
 CI runs. A plain `uv sync` only installs the direct dependency closure and
 leaves sibling workspace packages (`lattence-core`, `lattence-evidence`, and

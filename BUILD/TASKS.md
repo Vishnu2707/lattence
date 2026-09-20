@@ -349,7 +349,7 @@ are explicitly deferred to Phase 5.
 [T-118] [v1.0 phase 2] [API] wire POST /v1/attack to the existing attack workflow and Finding and EvidenceBundle models | deps: T-116 | status: done | commit: self
 [T-119] [v1.0 phase 2] [API] wire GET /v1/chain to the existing graph chain workflow and CrossLayerChain models | deps: T-116 | status: done | commit: self
 [T-120] [v1.0 phase 2] [API] add bearer token authentication for all v1 routes | deps: T-117,T-118,T-119 | status: done | commit: self
-[T-121] [v1.0 phase 2] [API] validate every API response against report.v1.json and the SecurityPresentation model | deps: T-120 | status: todo | commit: self
+[T-121] [v1.0 phase 2] [API] validate every API response against report.v1.json and the SecurityPresentation model | deps: T-120 | status: done | commit: self
 [T-122] [v1.0 phase 2] [SHIP] document the plugin SDK for third-party SecurityProvider adapters using the Garak, PyRIT, and Promptfoo adapters as the reference implementation | deps: T-116 | status: todo | commit: self
 [T-123] [v1.0 phase 2] [SHIP] document API authentication and record RBAC and SSO as deferred to Phase 5 | deps: T-120 | status: todo | commit: self
 [T-124] [v1.0 phase 2] [SHIP] add live-instance API integration tests against examples/vulnerable-agent asserting report schema conformance | deps: T-121 | status: todo | commit: self

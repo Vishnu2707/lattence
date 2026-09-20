@@ -1,9 +1,10 @@
 # Current state
 
 - Milestone: v1.0 phase 2, REST API and plugin SDK
-- Last completed: T-120, add bearer token authentication for all v1 routes
-- Next task: T-121, validate every API response against report.v1.json and
-  SecurityPresentation
+- Last completed: T-121, validate every API response against report.v1.json
+  and SecurityPresentation
+- Next task: T-122, document the plugin SDK for third-party SecurityProvider
+  adapters
 - Blockers: none.
 - Note: local verification uses `uv sync --all-packages --dev`, matching CI.
   A plain `uv sync` does not install every workspace member editable and
@@ -28,7 +29,7 @@
 - v0.5.1 tasks: 6 done, 0 todo
 - v1.0 phase 0 tasks: 1 done, 0 todo
 - v1.0 phase 1 tasks: 5 done, 0 todo
-- v1.0 phase 2 tasks: 5 done, 7 todo
+- v1.0 phase 2 tasks: 6 done, 6 todo
 
 ## v1.0 phase 1 progress
 

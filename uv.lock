@@ -711,6 +711,7 @@ version = "0.0.0"
 source = { editable = "lattence-api" }
 dependencies = [
     { name = "fastapi" },
+    { name = "jsonschema" },
     { name = "lattence" },
     { name = "uvicorn" },
 ]
@@ -718,6 +719,7 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "fastapi", specifier = ">=0.115,<1" },
+    { name = "jsonschema", specifier = ">=4.23,<5" },
     { name = "lattence", editable = "." },
     { name = "uvicorn", specifier = ">=0.32,<1" },
 ]
