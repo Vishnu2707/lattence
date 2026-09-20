@@ -267,3 +267,9 @@ T-111 prepares public package metadata at version 0.5.2. It declares the
 Apache-2.0 SPDX expression and license file, README Markdown long description,
 classifiers, keywords, and repository, issue, changelog, and documentation
 links. The final 1.0.0 version remains reserved for the completed milestone.
+
+T-112 adds an archive and command-parity acceptance script. A new Python 3.12
+environment installed the isolated 0.5.2 wheel. The wheel metadata, license,
+README long description, packaged rules and assets, source archive README and
+license, version output, root help, and all 13 command help screens passed.
+The workspace lock now records the same root package version.
