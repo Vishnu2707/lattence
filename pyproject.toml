@@ -1,6 +1,6 @@
 [project]
 name = "lattence"
-version = "0.5.2"
+version = "1.0.0"
 description = "AI security and post-quantum security assurance"
 readme = { file = "README.md", content-type = "text/markdown" }
 requires-python = ">=3.12"
@@ -85,6 +85,7 @@ packages = ["lattence-cli/src/lattence"]
 [tool.hatch.build.targets.wheel.force-include]
 "lattence-core/src/lattence/discovery" = "lattence/discovery"
 "lattence-core/src/lattence/graph" = "lattence/graph"
+"lattence-core/src/lattence/governance" = "lattence/governance"
 "lattence-evidence/src/lattence/evidence" = "lattence/evidence"
 "lattence-mcp/src/lattence/mcp" = "lattence/mcp"
 "lattence-ai/src/lattence_ai" = "lattence_ai"
@@ -92,6 +93,7 @@ packages = ["lattence-cli/src/lattence"]
 "lattence-packs/attacks" = "lattence/packs/attacks"
 "lattence-packs/discovery" = "lattence/packs/discovery"
 "docs/schemas/report.v1.json" = "lattence/schemas/report.v1.json"
+"docs/schemas/sarif-2.1.0.json" = "lattence/schemas/sarif-2.1.0.json"
 "assets/brand/banner.txt" = "lattence/assets/banner.txt"
 "lattence-ui/src/visual-grammar.json" = "lattence/assets/visual-grammar.json"
 

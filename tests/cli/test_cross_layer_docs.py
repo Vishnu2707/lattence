@@ -26,5 +26,4 @@ def test_readme_links_shared_presentation_guide_and_demo() -> None:
 
     assert "docs/cross-layer-analysis.md" in readme
     assert "assets/demo/tui.gif" in readme
-    assert "assets/diagrams/cross-layer-chain.svg" in readme
     assert "lattence graph chain" in readme

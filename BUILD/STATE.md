@@ -1,14 +1,34 @@
 # Current state
 
-- Milestone: v1.0 phase 2, REST API and plugin SDK
-- Last completed: T-117, wire GET /v1/scan to the existing scan workflow
-- Next task: T-118, wire POST /v1/attack to the existing attack workflow
+- Milestone: v1.0.0 shipped. Repository is public.
+- Last completed: fixed the self-scan workflow installing `lattence` from
+  PyPI (stale, missing `sarif`/`rbac`/`serve`) instead of this checkout;
+  added a `source: local` input to `action.yml` and an `action-smoke` CI
+  job that runs the composite action for real and asserts a valid SARIF
+  file comes out, so this class of bug is a required-check failure before
+  merge. Confirmed green: self-scan run 35536221532 uploaded real SARIF
+  results, CI run 35536221564 passed all 7 jobs.
+- Next task: none selected. Hold for review before scoping any further
+  work.
 - Blockers: none.
 - Note: local verification uses `uv sync --all-packages --dev`, matching CI.
   A plain `uv sync` does not install every workspace member editable and
   produces spurious mypy import-untyped errors across packages.
-- Manual steps: branch protection and tag protection commands from the
-  v0.1.0 release are still printed for review only, not run
+- Branch protection: applied on `main` via `gh api` (verified live,
+  2026-09-20): required status checks `lint`, `test`, `types`,
+  `acceptance`, `provenance`, `prose` (the original six CI jobs; the new
+  `action-smoke` job is not yet in this required list), `enforce_admins`
+  true, `required_linear_history` true, force pushes and deletions
+  disallowed. `dev` intentionally has no required PR review, matching
+  `BUILD/PROTOCOL.md`'s direct-push-per-task workflow; force pushes and
+  deletions are still disallowed there.
+- Tag protection: not applied. GitHub's classic tag protection API
+  (`POST /repos/{owner}/{repo}/tags/protection`) requires an
+  organization-owned repository; this repository is on a personal
+  account, and the endpoint returns 404 here. A ruleset-based tag
+  protection (`POST /repos/{owner}/{repo}/rulesets` with a `tag` target)
+  is available on personal accounts and is the option to revisit if tag
+  protection is wanted.
 
 ## Repository state
 
@@ -27,7 +47,60 @@
 - v0.5.1 tasks: 6 done, 0 todo
 - v1.0 phase 0 tasks: 1 done, 0 todo
 - v1.0 phase 1 tasks: 5 done, 0 todo
-- v1.0 phase 2 tasks: 2 done, 10 todo
+- v1.0 phase 2 tasks: 13 done, 0 todo
+- v1.0 phase 3 tasks: 6 done, 0 todo
+- v1.0 fixes (banner, README): 2 done, 0 todo
+- v1.0 phase 4 tasks: 5 done, 0 todo
+- v1.0 phase 5 tasks: 7 done, 0 todo
+- v1.0 phase 6 tasks: 6 done, 0 todo
+
+## v1.0 phase 5 progress
+
+- Full suite: 366 passed, 92.37 percent coverage.
+- Lint and formatting: passed across the tree.
+- Strict typing: passed for all nine package targets (governance is new)
+  plus tests/docker and tests/ci.
+- Provenance and prose: passed.
+- RBAC, SSO extension point, durable audit logging, and a real
+  single-controller-multi-worker job queue shipped. A duplicate
+  `job_submit` audit event was caught live during the gate demonstration
+  (not by an existing test) and fixed before the gate closed; the test
+  that should have caught it was also strengthened.
+
+## v1.0 phase 4 progress
+
+- Full suite: 337 passed, 91.42 percent coverage.
+- Lint and formatting: passed across the tree.
+- Strict typing: passed for all eight package targets plus tests/docker
+  and tests/ci.
+- Provenance and prose: passed.
+- SARIF conversion validated against the real OASIS SARIF 2.1.0 schema.
+  GitHub Action and self-scan workflow added, with every third-party
+  action reference pinned to a commit SHA verified live via `gh api`
+  rather than guessed.
+
+## v1.0 phase 3 progress
+
+- Full suite: 325 passed, 91.43 percent coverage.
+- Lint and formatting: passed across the full tree, including tests/docker.
+- Strict typing: passed for all eight package targets plus tests/docker.
+- Provenance and prose: full tracked tree and commit history passed.
+- Main package wheel and source archive still build and pass twine check;
+  the Dockerfile and compose file do not affect the published `lattence`
+  distribution's contents.
+
+## v1.0 phase 2 progress
+
+- Full suite: 321 passed, 91.43 percent coverage.
+- Lint and formatting: passed across the full tree, including the new
+  lattence-api package.
+- Strict typing: passed for all seven original package targets plus
+  lattence-api/src/lattence_api.
+- Provenance and prose: full tracked tree and commit history passed.
+- lattence serve added to the CLI, lazily importing fastapi, uvicorn, and
+  lattence_api so the core `lattence` wheel stays dependency-light. Main
+  wheel and source archive still build and pass twine check with lattence-api
+  as an optional extra, not force-included.
 
 ## v1.0 phase 1 progress
 

@@ -2,9 +2,10 @@
 
 ## Usage questions
 
-Read [README.md](README.md) first. It covers install, the `scan`, `attack`,
-`report`, `pqc assess`, and `graph export` commands, and how to write a rule
-pack. If it does not answer your question, open a
+Read [README.md](README.md) first, then
+[docs/additional-info.md](docs/additional-info.md) for the full command
+reference, rule pack authoring, and deployment mode comparison. If neither
+answers your question, open a
 [GitHub issue](https://github.com/Vishnu2707/lattence/issues) with the
 `question` label.
 

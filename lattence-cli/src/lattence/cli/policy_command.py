@@ -21,7 +21,7 @@ from .targets import (
     TargetDeclarationError,
     load_scope_declaration,
 )
-from .workflow import load_report
+from .workflow import load_report, record_cli_audit_event
 
 policy_app = typer.Typer(name="policy", no_args_is_help=True)
 PathArgument = Annotated[Path, typer.Argument()]
@@ -64,7 +64,7 @@ def policy_check(
     planner: PlannerOption = Planner.RULES,
     fail_on: FailOnOption = SeverityGate.HIGH,
 ) -> None:
-    del out, offline, no_color, planner, fail_on
+    del offline, no_color, planner, fail_on
     try:
         report = load_report(input_path)
         report_directory = input_path if input_path.is_dir() else input_path.parent
@@ -77,6 +77,16 @@ def policy_check(
         result = check_report_scope(report, declaration)
     except (OSError, ScopeValidationError, TargetDeclarationError, ValueError) as error:
         raise typer.BadParameter(str(error)) from error
+    record_cli_audit_event(
+        action="policy_check",
+        target=input_path,
+        result="allowed" if result.allowed else "denied",
+        out=out,
+        details={
+            "touched": len(result.touched_node_ids),
+            "out_of_scope": len(result.out_of_scope_node_ids),
+        },
+    )
     if json_output:
         typer.echo(_json(result), nl=False)
     elif not quiet:

@@ -1,9 +1,8 @@
 # Publish the local CLI
 
-Phase 1 publishes the pre-v1 `0.5.2` distribution. The final `1.0.0`
-version remains reserved for the completed milestone. The current PyPI name
-must be checked again immediately before upload because another account can
-claim it.
+This is the release checklist for uploading a new `lattence` version to
+PyPI. The current PyPI name must be checked again immediately before
+upload because another account can claim it.
 
 ## Prepare isolated artifacts
 
@@ -17,8 +16,9 @@ uv run twine check "$publish_dir"/*
 ```
 
 The staging directory starts empty, so the upload cannot include an older
-version left in `dist/`. Check that it contains exactly
-`lattence-0.5.2-py3-none-any.whl` and `lattence-0.5.2.tar.gz`.
+version left in `dist/`. Check that it contains exactly the wheel and
+source archive for the version in `pyproject.toml`, for example
+`lattence-1.0.0-py3-none-any.whl` and `lattence-1.0.0.tar.gz`.
 
 ## Upload to PyPI
 
@@ -53,7 +53,7 @@ pipx_root=$(mktemp -d /tmp/lattence-pipx.XXXXXX)
 PIPX_HOME="$pipx_root/home" PIPX_BIN_DIR="$pipx_root/bin" PIP_INDEX_URL=https://pypi.org/simple pipx install --python python3.12 lattence
 "$pipx_root/bin/lattence" --version
 "$pipx_root/bin/lattence" --help
-.venv/bin/python tests/acceptance/check_distribution.py "$publish_dir/lattence-0.5.2-py3-none-any.whl" "$publish_dir/lattence-0.5.2.tar.gz" .venv/bin/lattence "$pipx_root/bin/lattence"
+.venv/bin/python tests/acceptance/check_distribution.py "$publish_dir"/lattence-*-py3-none-any.whl "$publish_dir"/lattence-*.tar.gz .venv/bin/lattence "$pipx_root/bin/lattence"
 ```
 
 The last command compares the published installation's version, root help,

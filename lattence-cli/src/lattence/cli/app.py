@@ -34,6 +34,8 @@ from .presentation_workflow import (
     write_dashboard_data,
 )
 from .provider_commands import provider_app
+from .rbac_commands import rbac_app
+from .serve_command import serve
 from .targets import TargetDeclarationError, load_target_declaration
 from .workflow import (
     attack_text,
@@ -42,17 +44,18 @@ from .workflow import (
     exceeds_gate,
     load_report,
     machine_report,
+    record_cli_audit_event,
     severity_meets_gate,
     verify_json,
     verify_report,
     verify_text,
     write_graph,
     write_report_artifacts,
+    write_sarif,
 )
 
 app = typer.Typer(
     name="lattence",
-    no_args_is_help=True,
     invoke_without_command=True,
     rich_markup_mode=None,
 )
@@ -64,6 +67,7 @@ PathArgument = Annotated[Path, typer.Argument()]
 
 @app.callback()
 def root(
+    ctx: typer.Context,
     version: Annotated[
         bool | None,
         typer.Option("--version", help="Show version and exit.", is_eager=True),
@@ -72,6 +76,10 @@ def root(
     if version:
         typer.echo(render_banner())
         typer.echo(f"lattence {package_version('lattence')}")
+        raise typer.Exit()
+    if ctx.invoked_subcommand is None:
+        typer.echo(render_banner())
+        typer.echo(ctx.get_help())
         raise typer.Exit()
 
 
@@ -89,6 +97,13 @@ def scan(
     del offline, planner
     result = create_report(path, out)
     artifacts = write_report_artifacts(result, out)
+    record_cli_audit_event(
+        action="scan",
+        target=path,
+        result="completed",
+        out=out,
+        details={"findings": result.summary.total},
+    )
     if json_output:
         typer.echo(machine_report(result), nl=False)
     elif not quiet:
@@ -125,6 +140,13 @@ def attack(
     provider_directory = out.parent if out.suffix else out
     result = create_attack_report(path, provider_directory, offline, out)
     write_report_artifacts(result, out)
+    record_cli_audit_event(
+        action="attack",
+        target=path,
+        result="completed",
+        out=out,
+        details={"findings": result.summary.total},
+    )
     if json_output:
         typer.echo(machine_report(result), nl=False)
     elif not quiet:
@@ -185,6 +207,29 @@ def report(
 
 
 @app.command()
+def sarif(
+    input_path: PathArgument = Path("."),
+    json_output: JsonOption = False,
+    out: OutOption = Path("."),
+    offline: OfflineOption = False,
+    no_color: NoColorOption = False,
+    quiet: QuietOption = False,
+    planner: PlannerOption = Planner.RULES,
+    fail_on: FailOnOption = SeverityGate.HIGH,
+) -> None:
+    del offline, no_color, planner, fail_on
+    result = load_report(input_path)
+    if json_output:
+        from lattence.evidence import sarif_json
+
+        typer.echo(sarif_json(result), nl=False)
+    else:
+        destination = write_sarif(result, out)
+        if not quiet:
+            typer.echo(f"SARIF  {destination}")
+
+
+@app.command()
 def tui(
     input_path: PathArgument = Path("."),
     json_output: JsonOption = False,
@@ -196,6 +241,8 @@ def tui(
     fail_on: FailOnOption = SeverityGate.HIGH,
 ) -> None:
     del offline, planner, fail_on
+    if not json_output and not quiet:
+        typer.echo(render_banner())
     presentation = create_security_presentation(input_path, out)
     write_dashboard_data(presentation, out)
     if json_output:
@@ -238,7 +285,9 @@ app.add_typer(crypto_app, name="crypto")
 app.add_typer(provider_app, name="provider")
 app.add_typer(graph_app, name="graph")
 app.add_typer(policy_app, name="policy")
+app.add_typer(rbac_app, name="rbac")
 app.command("harden")(harden)
+app.command("serve")(serve)
 pqc_app.command("assess")(pqc_assess)
 crypto_app.command("chaos")(crypto_chaos)
 graph_app.command("chain")(graph_chain)

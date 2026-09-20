@@ -105,3 +105,27 @@ Rationale: The bundled example yields 32 valid finding correlations over 9 disti
 2026-09-20 D-025
 Decision: Prepare version 0.5.2 for the first public package-index upload and reserve 1.0.0 for the final milestone.
 Rationale: Phase 1 must verify a public pipx install before API and enterprise phases are complete, so publishing 1.0.0 now would misstate completion.
+
+2026-09-20 D-026
+Decision: Add a CLI `serve` command that starts lattence-api and takes only --host and --port, outside the universal scan/attack option set, with fastapi and uvicorn imported lazily so the core CLI install stays dependency-light.
+Rationale: A long-running server process has no single JSON, out, offline, or fail-on gate semantics, and most CLI users never need the API surface installed.
+
+2026-09-20 D-027
+Decision: Phase 3 documents the controller/worker enterprise deployment mode design but implements none of it; Phase 5 builds it against that document once RBAC and audit groundwork exist.
+Rationale: A controller/worker runtime needs per-caller identity and an audit trail to be safe at all, and building an ad hoc version now would mean rebuilding the authorization layer correctly in Phase 5 anyway.
+
+2026-09-20 D-028
+Decision: Add a `sarif [INPUT]` CLI command that loads a saved report the same way `report` does and writes a schema-validated SARIF 2.1.0 document, rather than adding a `--sarif` flag to every existing command.
+Rationale: `report` and `graph export` already establish the pattern of a dedicated INPUT-based command per output format; a new flag on every command would need to be threaded through scan, attack, and report alike for no benefit over one small command.
+
+2026-09-20 D-029
+Decision: RBAC is additive to the Phase 2 static bearer token, not a replacement; a request may authenticate with either a per-caller RBAC API key or the legacy team token, and route handlers require a specific Role rather than any router-level dependency.
+Rationale: Phase 3's Docker team mode already ships and is already tested against the static token; breaking it to force RBAC adoption would regress a shipped deployment mode for no user benefit, and per-route role requirements are what let the resolved caller reach the audit logging Phase 5 also adds.
+
+2026-09-20 D-030
+Decision: Ship SSO as a code-level extension point (an `SSOProvider` protocol plus a `MockSSOProvider` reference implementation), not a real OIDC client library integration.
+Rationale: The brief explicitly says full provider integration is not required; a real OIDC client needs JWKS fetching, signature verification, and issuer and audience validation, all genuinely new network-dependent surface that the mock proves the seam for without taking on.
+
+2026-09-20 D-031
+Decision: Implement the controller/worker job queue as one in-process controller with a ThreadPoolExecutor worker pool, not a multi-host system, and let /v1/jobs accept the same RBAC-or-legacy-token authentication the direct routes already use.
+Rationale: A correct single-host queue is real, testable, and immediately useful; a multi-host queue needs a message broker and worker registration this phase has no basis to choose, and restricting job submission to RBAC-only while the direct routes still accept the legacy token would make the queue strictly worse than calling /v1/scan directly for team-mode users.

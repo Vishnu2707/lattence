@@ -35,6 +35,7 @@ from .reporting import (
     report_json,
     write_json_report,
 )
+from .sarif import build_sarif, sarif_json
 
 __all__ = [
     "Confidence",
@@ -64,6 +65,8 @@ __all__ = [
     "build_report",
     "build_cross_layer_chain",
     "build_security_presentation",
+    "build_sarif",
+    "sarif_json",
     "normalize_rule_finding",
     "normalize_crypto_findings",
     "presentation_json",

@@ -1,3 +1,4 @@
+import getpass
 import json
 from collections.abc import Iterable
 from dataclasses import dataclass
@@ -15,11 +16,13 @@ from lattence.evidence import (
     build_report,
     normalize_rule_finding,
     report_json,
+    sarif_json,
     write_html_report,
     write_json_report,
 )
 from lattence.graph import (
     CryptoAlgorithm,
+    JsonValue,
     Node,
     build_security_graph,
     security_graph_json,
@@ -250,6 +253,13 @@ def write_graph(report: Report, output: Path) -> Path:
     return destination
 
 
+def write_sarif(report: Report, output: Path) -> Path:
+    destination = output / "lattence.sarif.json" if output.is_dir() else output
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    destination.write_text(sarif_json(report), encoding="utf-8")
+    return destination
+
+
 def attack_text(report: Report, target: Path) -> str:
     lines = [f"LATTENCE  attack  {target}", ""]
     for finding in report.findings:
@@ -328,3 +338,27 @@ def readiness_json(report: Report) -> str:
 
 def machine_report(report: Report) -> str:
     return report_json(report, _schema_path())
+
+
+def record_cli_audit_event(
+    *,
+    action: str,
+    target: Path,
+    result: str,
+    out: Path,
+    details: dict[str, JsonValue],
+) -> None:
+    from lattence.governance import AuditLog, default_audit_db_path
+
+    log = AuditLog(default_audit_db_path(out))
+    try:
+        actor = getpass.getuser()
+    except OSError:
+        actor = "unknown"
+    log.record(
+        actor=actor,
+        action=action,
+        target=str(target),
+        result=result,
+        details=details,
+    )

@@ -8,7 +8,7 @@ def test_public_project_metadata_matches_repo_and_license() -> None:
     project = tomllib.loads((ROOT / "pyproject.toml").read_text())["project"]
 
     assert project["name"] == "lattence"
-    assert project["version"] == "0.5.2"
+    assert project["version"] == "1.0.0"
     assert project["readme"] == {
         "file": "README.md",
         "content-type": "text/markdown",

@@ -11,6 +11,7 @@ COMMANDS = [
     ["harden"],
     ["verify"],
     ["report"],
+    ["sarif"],
     ["tui"],
     ["pqc", "assess"],
     ["crypto", "chaos"],
@@ -38,6 +39,48 @@ def test_package_and_version_entrypoint() -> None:
     lines = result.stdout.splitlines()
     assert 1 <= len(lines) - 1 <= 6
     assert lines[-1] == f"lattence {version('lattence')}"
+
+
+def test_bare_invocation_shows_banner_and_help() -> None:
+    from lattence.cli.presentation import render_banner
+
+    result = runner.invoke(app, [])
+
+    assert result.exit_code == 0
+    assert render_banner().strip() in result.stdout
+    assert "Usage: lattence" in result.stdout
+
+
+def test_tui_shows_banner_in_non_interactive_mode() -> None:
+    from lattence.cli.presentation import render_banner
+
+    result = runner.invoke(
+        app,
+        ["tui", "examples/vulnerable-agent", "--offline", "--no-color", "--out", "."],
+    )
+
+    assert result.exit_code == 0
+    assert render_banner().strip() in result.stdout
+
+
+def test_tui_json_mode_omits_banner() -> None:
+    from lattence.cli.presentation import render_banner
+
+    result = runner.invoke(
+        app,
+        [
+            "tui",
+            "examples/vulnerable-agent",
+            "--offline",
+            "--json",
+            "--out",
+            ".",
+        ],
+    )
+
+    assert result.exit_code == 0
+    assert render_banner().strip() not in result.stdout
+    assert result.stdout.startswith("{")
 
 
 @pytest.mark.parametrize("command", COMMANDS)

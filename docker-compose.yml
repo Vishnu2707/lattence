@@ -1,0 +1,9 @@
+services:
+  lattence-api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      LATTENCE_API_TOKEN: ${LATTENCE_API_TOKEN:?set LATTENCE_API_TOKEN before starting}
+    volumes:
+      - ${LATTENCE_PROJECT_DIR:-./examples/vulnerable-agent}:/data:ro
