@@ -109,3 +109,12 @@ with no network call, so the extension point is exercised by real tests
 without a real identity provider. A real integration implements
 `SSOProvider.resolve` to verify the token (JWKS, signature, issuer,
 audience) against an actual provider; none ships in v1.0.
+
+Job queue (`jobs.py`, `routes/jobs.py`, T-146): `JobController` lives on
+`app.state.job_controller`, created fresh per `create_app()` call (so
+tests get an isolated controller and thread pool per app instance).
+`submit_job` uses a sub-dependency, `require_job_submitter`, that declares
+`operation: JobOperation` itself so FastAPI resolves the query parameter
+before role enforcement runs, then calls `require_access(role)(...)`
+directly as a plain function rather than through another `Depends`, since
+the role is only known after that parameter is parsed.

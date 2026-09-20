@@ -125,3 +125,7 @@ Rationale: Phase 3's Docker team mode already ships and is already tested agains
 2026-09-20 D-030
 Decision: Ship SSO as a code-level extension point (an `SSOProvider` protocol plus a `MockSSOProvider` reference implementation), not a real OIDC client library integration.
 Rationale: The brief explicitly says full provider integration is not required; a real OIDC client needs JWKS fetching, signature verification, and issuer and audience validation, all genuinely new network-dependent surface that the mock proves the seam for without taking on.
+
+2026-09-20 D-031
+Decision: Implement the controller/worker job queue as one in-process controller with a ThreadPoolExecutor worker pool, not a multi-host system, and let /v1/jobs accept the same RBAC-or-legacy-token authentication the direct routes already use.
+Rationale: A correct single-host queue is real, testable, and immediately useful; a multi-host queue needs a message broker and worker registration this phase has no basis to choose, and restricting job submission to RBAC-only while the direct routes still accept the legacy token would make the queue strictly worse than calling /v1/scan directly for team-mode users.

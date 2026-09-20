@@ -589,7 +589,7 @@ were.
 [T-143] [v1.0 phase 5] [API] enforce RBAC on the v1 API routes without breaking the existing static team-mode token | deps: T-142 | status: done | commit: self
 [T-144] [v1.0 phase 5] [API] add an OIDC-compatible SSO extension point tested against a mock provider | deps: T-143 | status: done | commit: self
 [T-145] [v1.0 phase 5] [SHIP] add durable queryable audit logging and wire it into CLI scan/attack/policy-check and the API scan/attack routes | deps: T-144 | status: done | commit: self
-[T-146] [v1.0 phase 5] [API] implement a single-controller-multi-worker job queue per the enterprise deployment design, RBAC-gated and audited | deps: T-145 | status: todo | commit: self
+[T-146] [v1.0 phase 5] [API] implement a single-controller-multi-worker job queue per the enterprise deployment design, RBAC-gated and audited | deps: T-145 | status: done | commit: self
 [T-147] [v1.0 phase 5] [SHIP] satisfy the full-suite lint typing and prose gate for phase 5 changes | deps: T-146 | status: todo | commit: self
 [T-148] [v1.0 phase 5] [ORCH] record the v1.0 phase 5 release gate and annotated tag | deps: T-147 | status: todo | commit: self
 
@@ -649,3 +649,20 @@ isolation and would otherwise write a stray `lattence-audit.db` into the
 repository root during a test run; this was caught by `git status`
 showing an untracked file after a full suite run, not by a failing
 assertion.
+
+`lattence_api.jobs.JobController` (T-146) holds a `ThreadPoolExecutor`
+(default 2 workers) and an in-memory `dict[str, Job]`, guarded by one
+lock. `submit` records a `queued` audit event, dispatches to the pool, and
+returns immediately; the worker thread calls the exact same
+`create_report`/`create_attack_report`/`create_security_presentation`
+functions the direct routes call, then records `succeeded` or `failed`.
+`POST /v1/jobs`, `GET /v1/jobs/{id}`, and `GET /v1/jobs` reuse
+`require_access`, so job submission needs the operation's role
+(`run_scans`/`run_attacks`/`read_findings`) and accepts either an RBAC key
+or the legacy team token, same as the direct routes. `docs/
+enterprise-deployment-design.md` is updated in the same commit to
+distinguish what Phase 5 actually built (single-host, in-process,
+real) from what a genuine multi-host implementation still needs
+(a message broker, worker registration, state persistence across a
+controller restart, short-lived worker credentials); D-031 in
+`BUILD/DECISIONS.md` records the scoping call.
