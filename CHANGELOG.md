@@ -5,12 +5,60 @@ Versions before 1.0 may include breaking changes in a minor release.
 
 ## [Unreleased]
 
+v1.0 work, phases 0 through 6, targeting the `1.0.0` release.
+
+### Added
+
+- Public package publication: `lattence` and `lattence[api]` on PyPI,
+  verified with an isolated `pipx install lattence`.
+- A REST API (`lattence serve`, `lattence-api`): `GET /v1/scan`,
+  `POST /v1/attack`, and `GET /v1/chain`, returning the same frozen report
+  and presentation models the CLI already serializes.
+- A plugin SDK guide documenting the `SecurityProvider` interface against
+  the shipped Garak, PyRIT, and Promptfoo adapters.
+- Bearer token authentication for the API, with role-based access control
+  (`read_findings`, `run_scans`, `run_attacks`, `manage_policy`) issued
+  through `lattence rbac create-key/list/revoke`, layered on top of the
+  static team token without breaking it.
+- An OIDC-compatible SSO extension point (`SSOProvider`), with a shipped
+  mock reference provider.
+- Durable, queryable audit logging for every `scan`, `attack`, and
+  `policy check`, on both the CLI and the API.
+- A single-controller-multi-worker job queue (`POST /v1/jobs`,
+  `GET /v1/jobs/{id}`, `GET /v1/jobs`), backed by an in-process thread
+  pool, RBAC-gated and audited.
+- A Docker image and `docker-compose.yml` for a single-container team
+  deployment, verified offline against a mounted project with no network
+  calls beyond the published port.
+- SARIF 2.1.0 output (`lattence sarif`), validated against the real OASIS
+  schema, plus a GitHub Action and a self-scan workflow uploading results
+  to GitHub code scanning.
+- The startup banner now also prints on a bare `lattence` invocation and
+  at the top of `lattence tui`, not only `--version`.
+
+### Changed
+
+- The README was cut from 359 lines to a real quickstart; the full
+  architecture, cross-layer analysis, PQC, deployment mode, and rule pack
+  extension material moved into `docs/`, with a new `docs/architecture.md`
+  and `docs/additional-info.md`.
+- The controller/worker enterprise deployment design
+  (`docs/enterprise-deployment-design.md`), written before RBAC and audit
+  logging existed, was updated to distinguish the real single-host job
+  queue that shipped from the multi-host case that is still only a
+  design.
+
 ### Fixed
 
 - Cross-layer output now distinguishes 32 finding correlations from 9 distinct
   structural edge paths in the bundled example. Each finding pairing remains
   visible, but terminal, JSON, and dashboard HTML summaries no longer imply
   32 independent routes.
+- The API returned `500` for a server missing `LATTENCE_API_TOKEN`; a
+  missing configuration is a service-unavailable condition, not an
+  internal error, so it now returns `503`.
+- A job submission was audited twice, once by the job controller and once
+  by the route handler; fixed to log the submission once.
 
 ## [0.5.1] - 2026-09-18
 
