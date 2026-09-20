@@ -355,7 +355,7 @@ are explicitly deferred to Phase 5.
 [T-124] [v1.0 phase 2] [SHIP] add live-instance API integration tests against examples/vulnerable-agent asserting report schema conformance | deps: T-121 | status: done | commit: self
 [T-125] [v1.0 phase 2] [SHIP] wire lattence-api into the package build, add a CLI serve command, and finalize workspace metadata | deps: T-124,T-122,T-123 | status: done | commit: self
 [T-126] [v1.0 phase 2] [SHIP] satisfy the full-suite lint typing and prose gate for phase 2 changes | deps: T-125 | status: done | commit: self
-[T-127] [v1.0 phase 2] [ORCH] record the v1.0 phase 2 release gate and annotated tag | deps: T-126 | status: todo | commit: self
+[T-127] [v1.0 phase 2] [ORCH] record the v1.0 phase 2 release gate and annotated tag | deps: T-126 | status: done | commit: self
 
 ## v1.0 phase 2 scope notes
 
@@ -387,3 +387,20 @@ on `dev`, then show literal `curl` output from a real running `lattence-api`
 instance for `/v1/scan`, `/v1/attack`, and `/v1/chain` against
 `examples/vulnerable-agent`, including the bearer token requirement. Hold for
 review before scoping Phase 3.
+
+Gate closed 2026-09-20. `lattence serve --port 8099` ran as a real background
+process with `LATTENCE_API_TOKEN` set. Literal results: a request to
+`/v1/scan` with no `Authorization` header returned `401
+{"detail":"missing bearer token"}`; a request with the wrong token returned
+`401 {"detail":"invalid bearer token"}`; with the correct bearer token,
+`GET /v1/scan?path=examples/vulnerable-agent` returned `200` with
+`schema_version "1"` and 13 findings, `POST
+/v1/attack?path=examples/vulnerable-agent&offline=true` returned `200` with
+the same 13 findings, and `GET
+/v1/chain?path=examples/vulnerable-agent` returned `200` with 32
+`cross_layer_chains` and `cross_layer_summary
+{"finding_correlations": 32, "distinct_structural_paths": 9}`, matching the
+v0.5.1 acceptance numbers. The full suite passed at 321 tests and 91.43
+percent coverage, lint and formatting passed across the tree, all eight
+strict typing targets passed (the original seven plus
+`lattence-api/src/lattence_api`), and provenance and prose checks passed.
