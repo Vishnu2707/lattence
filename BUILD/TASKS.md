@@ -502,3 +502,20 @@ test_cross_layer_docs.py::test_readme_links_shared_presentation_guide_and_demo`
 no longer asserts the raw diagram path is in the README, since that image
 now lives only in `docs/cross-layer-analysis.md`; it still asserts the
 guide link, the demo gif, and the `graph chain` example remain.
+
+# v1.0 phase 4 task ledger
+
+Phase 4 adds SARIF 2.1.0 output, a GitHub Action, and CI integration.
+
+[T-137] [v1.0 phase 4] [EVID] implement SARIF 2.1.0 conversion validated against the real SARIF schema | deps: T-136 | status: done | commit: self
+
+`lattence.evidence.sarif` converts a `Report` into a SARIF 2.1.0 document:
+one `results` entry per finding (`ruleId`, severity-mapped `level`, message,
+and a `physicalLocation` resolved from the finding's target node when the
+node carries a `SourceRef`), and one deduplicated `rules` entry per finding
+id carrying its OWASP and CWE mappings. `sarif_json` validates the built
+document against `docs/schemas/sarif-2.1.0.json`, the real OASIS SARIF 2.1.0
+JSON schema (fetched from the `microsoft/sarif-sdk` mirror, since the OASIS
+repository's raw schema path returns 404), not a hand-written stand-in.
+The schema is force-included into the wheel the same way
+`report.v1.json` already is.

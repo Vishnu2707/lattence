@@ -92,6 +92,7 @@ packages = ["lattence-cli/src/lattence"]
 "lattence-packs/attacks" = "lattence/packs/attacks"
 "lattence-packs/discovery" = "lattence/packs/discovery"
 "docs/schemas/report.v1.json" = "lattence/schemas/report.v1.json"
+"docs/schemas/sarif-2.1.0.json" = "lattence/schemas/sarif-2.1.0.json"
 "assets/brand/banner.txt" = "lattence/assets/banner.txt"
 "lattence-ui/src/visual-grammar.json" = "lattence/assets/visual-grammar.json"
 
