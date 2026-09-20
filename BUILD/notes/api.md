@@ -36,6 +36,17 @@ but `model_validate` rejects it back as an unknown field on a model with
 `extra="forbid"`. Tests that round-trip the response must strip that key
 before revalidating, or assert on it separately.
 
+Authentication (`auth.py`, `require_bearer_token`) is a static bearer token
+read from the `LATTENCE_API_TOKEN` environment variable on every request, so
+rotation only requires restarting the process with a new value, no stored
+credential table. It is wired as a router-level `Depends` on the scan,
+attack, and chain routers in `app.py`, not on `/health`. Missing server
+configuration returns 500, a missing or malformed header returns 401, and a
+mismatched token returns 401. Comparison uses `secrets.compare_digest` to
+avoid a timing side channel. This is the whole v1.0 auth model: one shared
+secret, no per-caller identity, no scopes. RBAC and SSO are Phase 5 work; see
+[[phase2-auth-deferred]].
+
 Local verification must use `uv sync --all-packages --dev`, the same command
 CI runs. A plain `uv sync` only installs the direct dependency closure and
 leaves sibling workspace packages (`lattence-core`, `lattence-evidence`, and

@@ -2,7 +2,7 @@ from fastapi.testclient import TestClient
 from lattence_api import create_app
 
 
-def test_health_returns_ok() -> None:
+def test_health_returns_ok_without_authentication() -> None:
     client = TestClient(create_app())
     response = client.get("/health")
     assert response.status_code == 200
