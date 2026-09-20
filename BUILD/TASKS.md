@@ -636,7 +636,7 @@ SECURITY) are accurate against the final command set.
 [T-150] [v1.0 phase 6] [SHIP] confirm every README claim against the final v1.0 feature set | deps: T-149 | status: done | commit: self
 [T-151] [v1.0 phase 6] [ORCH] write the CHANGELOG entry covering every v1.0 phase | deps: T-150 | status: done | commit: self
 [T-152] [v1.0 phase 6] [SHIP] confirm CONTRIBUTING.md and SECURITY.md are accurate against the final command set and architecture | deps: T-151 | status: done | commit: self
-[T-153] [v1.0 phase 6] [SHIP] satisfy the full-suite lint typing and prose gate for phase 6 changes | deps: T-152 | status: todo | commit: self
+[T-153] [v1.0 phase 6] [SHIP] satisfy the full-suite lint typing and prose gate for phase 6 changes | deps: T-152 | status: done | commit: self
 [T-154] [v1.0 phase 6] [ORCH] record the v1.0 phase 6 release gate and annotated tag | deps: T-153 | status: todo | commit: self
 
 ## v1.0 phase 5 scope notes
@@ -760,3 +760,10 @@ which moved to docs/ under Fix 1. ROADMAP.md still listed "a published
 PyPI package" and "a Docker image" as planned after both shipped in
 phases 1 and 3; replaced with the real remaining gaps (a real OIDC
 client, multi-host distributed workers).
+
+Full suite: 366 passed, 92.37 percent coverage. Lint and formatting:
+passed across the tree. Strict typing: passed for all nine package
+targets plus tests/docker and tests/ci. Provenance and prose: passed.
+Main package wheel and source archive still build and pass twine check,
+still at version 0.5.2; the version bump to 1.0.0 happens at the final
+v1.0.0 gate, not here.
