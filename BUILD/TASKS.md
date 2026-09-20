@@ -427,7 +427,7 @@ design.
 
 [T-129] [v1.0 phase 3] [SHIP] write a Dockerfile for lattence-api built from the published wheel | deps: T-128 | status: done | commit: self
 [T-130] [v1.0 phase 3] [SHIP] write docker-compose.yml for the team deployment mode with a mounted project volume | deps: T-129 | status: done | commit: self
-[T-131] [v1.0 phase 3] [SHIP] confirm container build, run, and an offline scan against a mounted project directory produce correct output | deps: T-130 | status: todo | commit: self
+[T-131] [v1.0 phase 3] [SHIP] confirm container build, run, and an offline scan against a mounted project directory produce correct output | deps: T-130 | status: done | commit: self
 [T-132] [v1.0 phase 3] [ORCH] document the controller/worker enterprise deployment mode design | deps: T-131 | status: todo | commit: self
 [T-133] [v1.0 phase 3] [SHIP] satisfy the full-suite lint typing and prose gate for phase 3 changes | deps: T-132 | status: todo | commit: self
 [T-134] [v1.0 phase 3] [ORCH] record the v1.0 phase 3 release gate and annotated tag | deps: T-133 | status: todo | commit: self

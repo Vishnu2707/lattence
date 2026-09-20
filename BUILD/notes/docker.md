@@ -27,3 +27,18 @@ read-only at `/data`, defaulting to `examples/vulnerable-agent` via
 `tests/docker/test_compose.py` runs `docker compose config` and parses the
 resolved YAML to assert the token wiring, port, and read-only mount, plus a
 second test asserting compose itself rejects starting with no token set.
+
+`tests/docker/test_compose_scan_acceptance.py` is the real end-to-end check:
+it runs `docker compose up -d --build`, waits for `/health`, issues a real
+HTTP `GET /v1/scan?path=/data` against the mounted `examples/vulnerable-agent`
+volume, tears the stack down in a `finally`, and asserts the container's
+findings and summary match calling `create_report` directly against the same
+project. Manually confirmed once outside the automated test: 13 findings and
+an identical summary between the container and the bare CLI, and zero
+`socket.connect()` calls traced inside the running container during a scan,
+confirming the offline, no-external-network-dependency claim beyond the
+declared package dependencies. An earlier attempt used a compose `internal:
+true` network to prove this at the container level, but that also blocks the
+published port from being reachable from the host on this engine, defeating
+the point of a team-reachable API; the socket trace inside the container is
+the actual proof instead, and the network stays a plain default bridge.

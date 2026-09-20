@@ -7,4 +7,3 @@ services:
       LATTENCE_API_TOKEN: ${LATTENCE_API_TOKEN:?set LATTENCE_API_TOKEN before starting}
     volumes:
       - ${LATTENCE_PROJECT_DIR:-./examples/vulnerable-agent}:/data:ro
-    network_mode: bridge
