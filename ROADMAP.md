@@ -8,8 +8,13 @@ that.
 
 - An `llm` planner mode may land in a future release. `--planner llm` is
   recognized today and exits with a not-implemented error.
-- A published PyPI package. Install is source-only today.
-- A Docker image. None exists yet.
+- A real OIDC client. `lattence_api.sso.SSOProvider` is a working extension
+  point with a mock reference provider; no built-in provider validates a
+  real identity token yet.
+- Multi-host distributed workers. The job queue today is a single
+  controller process with an in-process worker pool; see
+  [docs/enterprise-deployment-design.md](docs/enterprise-deployment-design.md)
+  for what a real distributed version still needs.
 - Private vulnerability reporting through GitHub, once the repository is
   public or otherwise eligible. See [SECURITY.md](SECURITY.md).
 

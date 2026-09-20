@@ -2,13 +2,12 @@
 
 ## Supported versions
 
-Lattence is pre-1.0. Security fixes are released for the latest minor
-version line only. That is currently 0.1.x.
+Security fixes are released for the latest minor version line only.
 
 | Version | Supported |
 | --- | --- |
-| 0.1.x | yes |
-| < 0.1 | no |
+| 1.0.x | yes |
+| < 1.0 | no |
 
 ## Reporting a vulnerability
 
@@ -29,17 +28,27 @@ fix is released or the 90 days pass, whichever comes first.
 ## Responsible use of this tool
 
 Lattence is offensive security tooling. It discovers agent, tool, and model
-attack surface, and its `attack` command runs a native catalog of attack
+attack surface, and its `attack` and `crypto chaos` commands run active
 checks against a project. Point it only at systems you own or are
-explicitly authorized to test.
+explicitly authorized to test. This applies equally when running through
+the REST API (`POST /v1/attack`) or the job queue (`POST /v1/jobs?
+operation=attack`), not only the CLI.
 
-The `attack` command enforces this technically: it refuses to run without a
-`lattence.targets.yaml` declaration in the project root that names the
-target and acknowledges `owned-or-authorized`. Project targets cannot
-resolve outside the declared root, and URL targets cannot embed credentials.
-This is a consent gate, not a guarantee. It stops accidental misuse, not a
-user who deliberately declares a target they are not authorized to test.
+`attack` and `crypto chaos` enforce this technically: both refuse to run
+without a `lattence.targets.yaml` declaration in the project root that
+names the target and acknowledges `owned-or-authorized`. Project targets
+cannot resolve outside the declared root, and URL targets cannot embed
+credentials. This is a consent gate, not a guarantee. It stops accidental
+misuse, not a user who deliberately declares a target they are not
+authorized to test.
+
+The REST API's bearer token (`LATTENCE_API_TOKEN`) and RBAC API keys grant
+whoever holds them the roles they were issued. Treat both like any other
+credential: rotate a token by restarting the server with a new value,
+revoke an RBAC key with `lattence rbac revoke CALLER_ID`, and do not commit
+either to source control.
 
 If you find that Lattence itself can be made to scan or attack a target
-outside its declared scope, report it as a security issue under this
+outside its declared scope, or that the API's authentication or RBAC
+enforcement can be bypassed, report it as a security issue under this
 policy.

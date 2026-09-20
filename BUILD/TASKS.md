@@ -635,7 +635,7 @@ SECURITY) are accurate against the final command set.
 [T-149] [v1.0 phase 6] [SHIP] verify every docs/ example against the real bundled example project | deps: T-148 | status: done | commit: self
 [T-150] [v1.0 phase 6] [SHIP] confirm every README claim against the final v1.0 feature set | deps: T-149 | status: done | commit: self
 [T-151] [v1.0 phase 6] [ORCH] write the CHANGELOG entry covering every v1.0 phase | deps: T-150 | status: done | commit: self
-[T-152] [v1.0 phase 6] [SHIP] confirm CONTRIBUTING.md and SECURITY.md are accurate against the final command set and architecture | deps: T-151 | status: todo | commit: self
+[T-152] [v1.0 phase 6] [SHIP] confirm CONTRIBUTING.md and SECURITY.md are accurate against the final command set and architecture | deps: T-151 | status: done | commit: self
 [T-153] [v1.0 phase 6] [SHIP] satisfy the full-suite lint typing and prose gate for phase 6 changes | deps: T-152 | status: todo | commit: self
 [T-154] [v1.0 phase 6] [ORCH] record the v1.0 phase 6 release gate and annotated tag | deps: T-153 | status: todo | commit: self
 
@@ -747,3 +747,16 @@ tracker: no task ids, phase numbers stay only where they describe when a
 user-visible capability shipped. Renamed to `[1.0.0]` with the release
 date at the final v1.0.0 gate, not here, since phase 6 has its own gate
 first and the version has not tagged yet.
+
+Found and fixed four stale claims: CONTRIBUTING.md's workspace package list
+was missing `lattence-api` and pointed the rule pack example at README's
+now-removed "Extending it" section instead of `docs/additional-info.md`.
+SECURITY.md said "pre-1.0" and "currently 0.1.x" while the real published
+version is 0.5.2 heading into 1.0.0, and its responsible-use section named
+only `attack`, not `crypto chaos` or the API/job-queue paths that also run
+active checks; both fixed, plus a note on rotating the API token and
+revoking RBAC keys. SUPPORT.md pointed at README for rule-pack authoring,
+which moved to docs/ under Fix 1. ROADMAP.md still listed "a published
+PyPI package" and "a Docker image" as planned after both shipped in
+phases 1 and 3; replaced with the real remaining gaps (a real OIDC
+client, multi-host distributed workers).

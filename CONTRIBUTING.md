@@ -13,9 +13,11 @@ uv run pytest
 
 `uv sync --all-packages --dev` installs every workspace package
 (`lattence-cli`, `lattence-core`, `lattence-crypto`, `lattence-evidence`,
-`lattence-mcp`, `lattence-ai`, `lattence-packs`) into one shared
-environment, plus the dev tools (`pytest`, `pytest-cov`, `ruff`, `mypy`,
-`twine`).
+`lattence-mcp`, `lattence-ai`, `lattence-api`, `lattence-packs`) into one
+shared environment, plus the dev tools (`pytest`, `pytest-cov`, `ruff`,
+`mypy`, `twine`). Use this command, not a plain `uv sync`: a plain sync
+skips installing sibling workspace packages as editable, which makes
+`mypy --strict` report spurious `import-untyped` errors.
 
 ## What CI checks
 
@@ -41,7 +43,8 @@ full suite.
 
 Detection, attack, and policy rules are YAML files, not Python. They are
 validated against `docs/schemas/rule-pack.v1.json`. See the example in
-`README.md` under "Extending it". A new rule needs:
+[`docs/additional-info.md`](docs/additional-info.md#extending-the-rule-packs).
+A new rule needs:
 
 - A unique `id` matching `LT-[A-Z][A-Z0-9]*-[0-9]{3}`.
 - `kind` of `detection`, `attack`, or `policy`.
