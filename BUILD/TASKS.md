@@ -344,7 +344,7 @@ existing empty workspace member; this phase fills it in. Authentication is
 static bearer token only for v1.0. RBAC, SSO, and multi-tenant access control
 are explicitly deferred to Phase 5.
 
-[T-116] [v1.0 phase 2] [API] scaffold the lattence-api application and dependency wiring | deps: T-115 | status: todo | commit: self
+[T-116] [v1.0 phase 2] [API] scaffold the lattence-api application and dependency wiring | deps: T-115 | status: done | commit: self
 [T-117] [v1.0 phase 2] [API] wire GET /v1/scan to the existing scan workflow and Project and SecurityGraph models | deps: T-116 | status: todo | commit: self
 [T-118] [v1.0 phase 2] [API] wire POST /v1/attack to the existing attack workflow and Finding and EvidenceBundle models | deps: T-116 | status: todo | commit: self
 [T-119] [v1.0 phase 2] [API] wire GET /v1/chain to the existing graph chain workflow and CrossLayerChain models | deps: T-116 | status: todo | commit: self

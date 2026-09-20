@@ -36,6 +36,9 @@ Issues = "https://github.com/Vishnu2707/lattence/issues"
 Changelog = "https://github.com/Vishnu2707/lattence/blob/dev/CHANGELOG.md"
 Documentation = "https://github.com/Vishnu2707/lattence/tree/dev/docs"
 
+[project.optional-dependencies]
+api = ["lattence-api"]
+
 [project.scripts]
 lattence = "lattence.cli:main"
 
@@ -45,6 +48,8 @@ build-backend = "hatchling.build"
 
 [dependency-groups]
 dev = [
+  "httpx>=0.27,<1",
+  "lattence-api",
   "mypy>=1.15,<2",
   "pytest>=8.3,<9",
   "pytest-cov>=6.0,<7",
@@ -67,6 +72,7 @@ members = [
 
 [tool.uv.sources]
 lattence-ai = { workspace = true }
+lattence-api = { workspace = true }
 lattence-core = { workspace = true }
 lattence-crypto = { workspace = true }
 lattence-evidence = { workspace = true }

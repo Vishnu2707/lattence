@@ -2,6 +2,14 @@
 name = "lattence-api"
 version = "0.0.0"
 requires-python = ">=3.12"
+dependencies = [
+  "fastapi>=0.115,<1",
+  "uvicorn>=0.32,<1",
+]
 
 [tool.uv]
-package = false
+package = true
+
+[build-system]
+requires = ["hatchling==1.27.0"]
+build-backend = "hatchling.build"
