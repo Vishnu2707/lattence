@@ -121,3 +121,7 @@ Rationale: `report` and `graph export` already establish the pattern of a dedica
 2026-09-20 D-029
 Decision: RBAC is additive to the Phase 2 static bearer token, not a replacement; a request may authenticate with either a per-caller RBAC API key or the legacy team token, and route handlers require a specific Role rather than any router-level dependency.
 Rationale: Phase 3's Docker team mode already ships and is already tested against the static token; breaking it to force RBAC adoption would regress a shipped deployment mode for no user benefit, and per-route role requirements are what let the resolved caller reach the audit logging Phase 5 also adds.
+
+2026-09-20 D-030
+Decision: Ship SSO as a code-level extension point (an `SSOProvider` protocol plus a `MockSSOProvider` reference implementation), not a real OIDC client library integration.
+Rationale: The brief explicitly says full provider integration is not required; a real OIDC client needs JWKS fetching, signature verification, and issuer and audience validation, all genuinely new network-dependent surface that the mock proves the seam for without taking on.

@@ -587,7 +587,7 @@ were.
 
 [T-142] [v1.0 phase 5] [SHIP] implement a shared RBAC role model and local API key store | deps: T-141 | status: done | commit: self
 [T-143] [v1.0 phase 5] [API] enforce RBAC on the v1 API routes without breaking the existing static team-mode token | deps: T-142 | status: done | commit: self
-[T-144] [v1.0 phase 5] [API] add an OIDC-compatible SSO extension point tested against a mock provider | deps: T-143 | status: todo | commit: self
+[T-144] [v1.0 phase 5] [API] add an OIDC-compatible SSO extension point tested against a mock provider | deps: T-143 | status: done | commit: self
 [T-145] [v1.0 phase 5] [SHIP] add durable queryable audit logging and wire it into CLI scan/attack/policy-check and the API scan/attack routes | deps: T-144 | status: todo | commit: self
 [T-146] [v1.0 phase 5] [API] implement a single-controller-multi-worker job queue per the enterprise deployment design, RBAC-gated and audited | deps: T-145 | status: todo | commit: self
 [T-147] [v1.0 phase 5] [SHIP] satisfy the full-suite lint typing and prose gate for phase 5 changes | deps: T-146 | status: todo | commit: self

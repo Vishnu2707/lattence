@@ -55,9 +55,25 @@ resolve to anything, and that also does not match the legacy token, returns
 Token comparison for the legacy path uses a constant-time check so a wrong
 guess cannot be distinguished from a near-miss by timing.
 
+## SSO extension point
+
+`lattence_api.sso.SSOProvider` is a protocol for resolving an external
+identity token (an OIDC access or ID token, for example) to a Lattence
+caller id and role set. Call `lattence_api.sso.set_sso_provider(provider)`
+before serving requests to activate one; `require_access` checks it before
+RBAC and before the legacy token. `lattence_api.sso.MockSSOProvider` is the
+shipped reference implementation: it resolves tokens of the form
+`mock-sso:<caller_id>:<role,role,...>` without contacting any external
+service, proving the seam works end to end. Wiring a real identity
+provider means implementing `SSOProvider.resolve` to validate the token
+against that provider (JWKS fetch, signature check, issuer and audience
+validation) instead of parsing a role list out of the token string; no
+real OIDC client ships in v1.0.
+
 ## What is still deferred
 
-- SSO integration: no OIDC-compatible extension point ships yet.
+- A real OIDC client: the extension point is real, a production identity
+  provider integration is not shipped.
 - There is no session concept; every request re-authenticates.
 - The distributed controller/worker mode's own authorization uses this
   same RBAC store; see

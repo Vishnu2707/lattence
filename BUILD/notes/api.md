@@ -98,3 +98,14 @@ wiring T-145 adds. `lattence rbac create-key/list/revoke`
 there is no key-creation API route, only the CLI, since a key that can
 mint other keys over HTTP is a bootstrapping risk this phase does not need
 to take on.
+
+SSO (`lattence_api/sso.py`, T-144) is `SSOProvider`, a `runtime_checkable`
+Protocol with one method, `resolve(bearer_token) -> ResolvedIdentity | None`,
+reusing `lattence.governance.ResolvedIdentity` rather than a parallel type.
+`set_sso_provider`/`active_sso_provider` hold a module-level singleton the
+app checks before RBAC and before the legacy token in `auth.require_access`.
+`MockSSOProvider` resolves `mock-sso:<caller_id>:<roles>` tokens locally,
+with no network call, so the extension point is exercised by real tests
+without a real identity provider. A real integration implements
+`SSOProvider.resolve` to verify the token (JWKS, signature, issuer,
+audience) against an actual provider; none ships in v1.0.
