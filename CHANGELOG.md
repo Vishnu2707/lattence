@@ -3,9 +3,7 @@
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 Versions before 1.0 may include breaking changes in a minor release.
 
-## [Unreleased]
-
-v1.0 work, phases 0 through 6, targeting the `1.0.0` release.
+## [1.0.0] - 2026-09-20
 
 ### Added
 

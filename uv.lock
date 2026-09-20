@@ -630,7 +630,7 @@ wheels = [
 
 [[package]]
 name = "lattence"
-version = "0.5.2"
+version = "1.0.0"
 source = { editable = "." }
 dependencies = [
     { name = "cryptography" },

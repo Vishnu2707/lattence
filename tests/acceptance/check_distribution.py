@@ -33,7 +33,7 @@ def check_archives(wheel: Path, source: Path) -> None:
         metadata = Parser().parsestr(archive.read(metadata_name).decode())
         names = set(archive.namelist())
         assert metadata["Name"] == "lattence"
-        assert metadata["Version"] == "0.5.2"
+        assert metadata["Version"] == "1.0.0"
         assert metadata["License-Expression"] == "Apache-2.0"
         assert metadata["Description-Content-Type"] == "text/markdown"
         assert "Lattence scans an agentic codebase" in metadata.get_payload()
