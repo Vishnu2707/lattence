@@ -1,8 +1,9 @@
 # Current state
 
-- Milestone: v1.0 phase 0 complete, awaiting review
-- Last completed: T-110, distinguish finding correlations from structural paths
-- Next task: scope phase 1 packaging and local install after phase 0 review
+- Milestone: v1.0 phase 1 packaging and local install
+- Last completed: T-111, finalize public package metadata and version
+- Next task: T-112, validate wheel and source archive metadata and clean
+  command parity
 - Blockers: none
 - Manual steps: branch protection and tag protection commands from the
   v0.1.0 release are still printed for review only, not run
@@ -23,6 +24,7 @@
 - v0.5 tasks: 15 done, 0 todo
 - v0.5.1 tasks: 6 done, 0 todo
 - v1.0 phase 0 tasks: 1 done, 0 todo
+- v1.0 phase 1 tasks: 1 done, 4 todo
 
 ## v1.0 phase 0 gate
 

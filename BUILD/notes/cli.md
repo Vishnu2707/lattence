@@ -262,3 +262,8 @@ T-110 changes `graph chain`'s bare count heading to report both finding
 correlations and distinct structural paths. The bundled example has 32 and 9,
 respectively. Its own generated report and presentation files are ignored by
 the example's discovery inventory to keep repeated counts stable.
+
+T-111 prepares public package metadata at version 0.5.2. It declares the
+Apache-2.0 SPDX expression and license file, README Markdown long description,
+classifiers, keywords, and repository, issue, changelog, and documentation
+links. The final 1.0.0 version remains reserved for the completed milestone.

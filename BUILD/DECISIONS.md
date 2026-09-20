@@ -101,3 +101,7 @@ Rationale: v0.5 contained real chain data, but its direct correlator coverage us
 2026-09-20 D-024
 Decision: Count a structural cross-layer path by its ordered graph edge identifiers and traversal directions, while retaining every finding-to-path correlation.
 Rationale: The bundled example yields 32 valid finding correlations over 9 distinct structural paths; reporting both avoids implying 32 independent routes.
+
+2026-09-20 D-025
+Decision: Prepare version 0.5.2 for the first public package-index upload and reserve 1.0.0 for the final milestone.
+Rationale: Phase 1 must verify a public pipx install before API and enterprise phases are complete, so publishing 1.0.0 now would misstate completion.

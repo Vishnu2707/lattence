@@ -309,3 +309,16 @@ The remaining phases are scoped only after this gate is reviewed. Phase 1 is
 packaging and local install, Phase 2 is API and plugin SDK, Phase 3 is Docker
 deployment, Phase 4 is SARIF and CI, Phase 5 is enterprise controls and workers,
 and Phase 6 is final documentation. Do not start the next phase before review.
+
+# v1.0 phase 1 task ledger
+
+Phase 1 prepares a public pre-v1 package, validates both distribution formats,
+then requires a real package-index upload and clean public pipx install before
+the gate. The distribution version is `0.5.2`; `1.0.0` is reserved for the
+final milestone.
+
+[T-111] [v1.0 phase 1] [SHIP] finalize public package metadata and version | deps: T-110 | status: done | commit: self
+[T-112] [v1.0 phase 1] [SHIP] validate wheel and source archive metadata and clean command parity | deps: T-111 | status: todo | commit: self
+[T-113] [v1.0 phase 1] [SHIP] prepare exact package-index upload and clean pipx verification procedure | deps: T-112 | status: todo | commit: self
+[T-114] [v1.0 phase 1] [SHIP] publish package and verify public pipx installation | deps: T-113 | status: todo | commit: self
+[T-115] [v1.0 phase 1] [ORCH] run full phase gate and record acceptance | deps: T-114 | status: todo | commit: self
