@@ -41,7 +41,8 @@ read from the `LATTENCE_API_TOKEN` environment variable on every request, so
 rotation only requires restarting the process with a new value, no stored
 credential table. It is wired as a router-level `Depends` on the scan,
 attack, and chain routers in `app.py`, not on `/health`. Missing server
-configuration returns 500, a missing or malformed header returns 401, and a
+configuration returns 503 (service unavailable, not a client error), a
+missing or malformed header returns 401, and a
 mismatched token returns 401. Comparison uses `secrets.compare_digest` to
 avoid a timing side channel. This is the whole v1.0 auth model: one shared
 secret, no per-caller identity, no scopes. RBAC and SSO are Phase 5 work; see

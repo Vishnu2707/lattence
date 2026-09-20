@@ -404,3 +404,12 @@ v0.5.1 acceptance numbers. The full suite passed at 321 tests and 91.43
 percent coverage, lint and formatting passed across the tree, all eight
 strict typing targets passed (the original seven plus
 `lattence-api/src/lattence_api`), and provenance and prose checks passed.
+
+[T-128] [v1.0 phase 2] [API] correct unconfigured-token response to 503 and add a regression test | deps: T-127 | status: done | commit: self
+
+`require_bearer_token` returned 500 for a missing `LATTENCE_API_TOKEN`. A
+missing server configuration is a service-unavailable condition, not an
+internal server error caused by the request, so it now returns 503. Added
+`test_v1_route_without_token_configured_returns_503` asserting the specific
+status code, not just any error response, so this does not silently regress
+back to 500.

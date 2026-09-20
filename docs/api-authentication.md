@@ -9,7 +9,7 @@ authentication.
 Set the `LATTENCE_API_TOKEN` environment variable to a random secret before
 starting the server. There is no default value and no fallback: a request
 to a `/v1/*` route on a server without `LATTENCE_API_TOKEN` set returns
-`500` rather than serving unauthenticated. Rotating the token means changing
+`503` rather than serving unauthenticated. Rotating the token means changing
 the environment variable and restarting the process; there is no revocation
 list or expiry, since there is only one token.
 
