@@ -1,8 +1,8 @@
 # Current state
 
 - Milestone: v1.0 phase 2, REST API and plugin SDK
-- Last completed: T-117, wire GET /v1/scan to the existing scan workflow
-- Next task: T-118, wire POST /v1/attack to the existing attack workflow
+- Last completed: T-118, wire POST /v1/attack to the existing attack workflow
+- Next task: T-119, wire GET /v1/chain to the existing graph chain workflow
 - Blockers: none.
 - Note: local verification uses `uv sync --all-packages --dev`, matching CI.
   A plain `uv sync` does not install every workspace member editable and
@@ -27,7 +27,7 @@
 - v0.5.1 tasks: 6 done, 0 todo
 - v1.0 phase 0 tasks: 1 done, 0 todo
 - v1.0 phase 1 tasks: 5 done, 0 todo
-- v1.0 phase 2 tasks: 2 done, 10 todo
+- v1.0 phase 2 tasks: 3 done, 9 todo
 
 ## v1.0 phase 1 progress
 

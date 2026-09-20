@@ -20,6 +20,14 @@ directly and returns the frozen `Report` model. A missing project path
 returns 404. `lattence-api` depends on the root `lattence` package (declared
 as a workspace source) for every workflow function it calls.
 
+`POST /v1/attack` (`routes/attack.py`) requires `lattence.targets.yaml` in the
+target path, same as the CLI `attack` command, using
+`lattence.cli.load_target_declaration`. A missing or invalid declaration
+returns 400, mirroring the CLI's `BadParameter` behavior instead of silently
+running an unauthorized attack. It then calls
+`lattence.cli.workflow.create_attack_report` and returns the same `Report`
+model that already embeds `Finding` and `EvidenceBundle`.
+
 Local verification must use `uv sync --all-packages --dev`, the same command
 CI runs. A plain `uv sync` only installs the direct dependency closure and
 leaves sibling workspace packages (`lattence-core`, `lattence-evidence`, and
