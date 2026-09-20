@@ -632,7 +632,7 @@ claim is true of the shipped feature set, write the CHANGELOG entry
 covering every v1.0 phase, and confirm the community files (CONTRIBUTING,
 SECURITY) are accurate against the final command set.
 
-[T-149] [v1.0 phase 6] [SHIP] verify every docs/ example against the real bundled example project | deps: T-148 | status: todo | commit: self
+[T-149] [v1.0 phase 6] [SHIP] verify every docs/ example against the real bundled example project | deps: T-148 | status: done | commit: self
 [T-150] [v1.0 phase 6] [SHIP] confirm every README claim against the final v1.0 feature set | deps: T-149 | status: todo | commit: self
 [T-151] [v1.0 phase 6] [ORCH] write the CHANGELOG entry covering every v1.0 phase | deps: T-150 | status: todo | commit: self
 [T-152] [v1.0 phase 6] [SHIP] confirm CONTRIBUTING.md and SECURITY.md are accurate against the final command set and architecture | deps: T-151 | status: todo | commit: self
@@ -718,3 +718,14 @@ across the tree. Strict typing: passed for all nine package targets (the
 original eight plus the new `lattence-core/src/lattence/governance`) plus
 `tests/docker` and `tests/ci`. Provenance and prose: passed. Main package
 wheel and source archive still build and pass twine check.
+
+Verified live against `examples/vulnerable-agent`: the `tui`
+command in `docs/cross-layer-analysis.md` writes `presentation.json` and
+exits 0; `graph chain` output already matched in earlier gates;
+`docs/plugin-sdk.md`'s `SecurityProvider` snippet diffed identical to
+`lattence-cli/src/lattence/providers/runtime.py`. `docs/additional-info.md`'s
+command reference table was missing `sarif` and the `rbac` subcommands,
+added; its deployment modes table still described the controller/worker
+row as a pure design, corrected to distinguish the now-real single-host
+job queue from the still-undone multi-host case, and noted RBAC and SSO
+alongside the static token for the REST API row.

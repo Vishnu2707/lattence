@@ -21,6 +21,7 @@ error.
 | `harden [PATH or FINDING_ID]` | Print structured remediation for a report or a single finding. Read-only. |
 | `verify FINDING_ID` | Re-observe a single finding from a saved report and print `VULNERABLE`, `PASS`, or `BLOCKED`. |
 | `report [INPUT]` | Rebuild the HTML report from a saved JSON report. |
+| `sarif [INPUT]` | Convert a saved JSON report into a schema-validated SARIF 2.1.0 document. |
 | `tui [INPUT]` | Open the full-screen terminal view, or write the shared presentation document with `--json`. |
 | `pqc assess [PATH]` | Build the crypto dependency graph, migration tests, hybrid TLS validation, and agility score. |
 | `crypto chaos [PATH]` | Run bounded, reversible key-exchange and signature downgrade probes. Requires `lattence.targets.yaml`. |
@@ -30,6 +31,15 @@ error.
 | `graph chain [INPUT]` | Print or export cross-layer finding chains and their evidence. |
 | `policy check [INPUT]` | Exit non-zero if any report target node falls outside a declared scope file. |
 | `serve` | Start the REST API (`--host`, default `127.0.0.1`; `--port`, default `8000`). Requires the `api` extra. |
+| `rbac create-key CALLER_ID --role ROLE...` | Issue an RBAC API key with one or more roles. Prints the plaintext key once. Requires `LATTENCE_RBAC_DB`. |
+| `rbac list` | List every RBAC caller id and its roles. |
+| `rbac revoke CALLER_ID` | Delete every key for a caller id. |
+
+`serve` and `rbac` do not accept the common option set above: a
+long-running server and identity management each have their own narrower
+argument shape. `sarif` does accept it, following the same `report` and
+`graph export` pattern. See [API authentication](api-authentication.md)
+for RBAC and SSO in detail.
 
 ## Plugin SDK
 
@@ -70,13 +80,15 @@ or attack belongs in YAML when the schema can express it.
 | Mode | What it is | When to use it |
 | --- | --- | --- |
 | CLI | `lattence` run locally or in a CI step against a project checkout. | Local development, one-off scans, CI gates. |
-| REST API | `lattence serve`, a single `lattence-api` process behind a static bearer token. See [API authentication](api-authentication.md). | Calling scan/attack/chain results from another service or UI. |
+| REST API | `lattence serve`, a single `lattence-api` process behind a static team token, per-caller RBAC keys, or an SSO extension point. See [API authentication](api-authentication.md). | Calling scan/attack/chain results from another service or UI. |
 | Docker team mode | `docker compose up`, one container, one bearer token, a project bind-mounted read-only. | A team that wants the API without managing a Python environment. |
-| Controller/worker (Phase 5) | Distributed execution across a worker pool with per-caller RBAC and an audit trail. | Organizations running many scans across many teams' projects. See [enterprise deployment design](enterprise-deployment-design.md). |
+| Job queue (single-host) | `POST /v1/jobs` on the same API process, backed by an in-process thread pool, RBAC-gated and audited. | Submitting a scan or attack and polling for the result instead of holding the HTTP connection open. |
+| Controller/worker (multi-host) | Not implemented. See [enterprise deployment design](enterprise-deployment-design.md) for the design and what a real distributed version still needs. | Organizations running many scans across many teams' projects at a scale one host cannot serve. |
 
-All four modes call the same deterministic workflow functions. A report
-produced through the CLI, the API, or the container is byte-identical for
-the same project and code revision.
+All API-backed modes call the same deterministic workflow functions a
+direct CLI run does. A report produced through the CLI, the API, the job
+queue, or the container is byte-identical for the same project and code
+revision.
 
 ## Troubleshooting install issues
 
