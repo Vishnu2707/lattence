@@ -528,3 +528,25 @@ report, then `write_sarif` (new in `workflow.py`) writes
 `lattence.sarif.json`, an exact `--out` file path, or prints the document
 to stdout with `--json`. Every path runs the real schema validation inside
 `sarif_json` before output.
+
+[T-139] [v1.0 phase 4] [SHIP] add a GitHub Action and self-scan workflow that scan, convert to SARIF, and upload to code scanning | deps: T-138 | status: done | commit: self
+
+`action.yml` is a composite action: install Lattence from PyPI, run `scan`
+or `attack` (`run-attack` input, default false) with the caller's
+`fail-on` gate but never let a gate failure abort the run early, convert
+the resulting report to SARIF with the new `sarif` command, upload it with
+`github/codeql-action/upload-sarif`, then apply the requested gate as the
+action's own exit code as a final step. `.github/workflows/
+lattence-scan.yml` demonstrates it against Lattence's own repository root
+on push, pull request, and a weekly schedule, with `fail-on: none` since
+this is a demonstration workflow, not a merge gate.
+`tests/ci/test_action.py` parses both YAML files and asserts every
+third-party `uses:` reference is pinned to a full 40-character commit SHA,
+not a floating tag; the `github/codeql-action/upload-sarif` SHA
+(`c23de5a82f64bb08c6d9f28844551440ca298e76`, tag `v4.38.1`) was looked up
+live via `gh api repos/github/codeql-action/git/refs/tags`, not invented,
+after an earlier draft of this file had a placeholder SHA caught before
+commit. Manually confirmed end to end outside the test suite: `lattence
+scan .` against the full Lattence repository (which includes the
+`examples/vulnerable-agent` fixture) produces 13 findings, and `lattence
+sarif` on that report produces a 13-result SARIF document.

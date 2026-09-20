@@ -1,0 +1,22 @@
+name: Lattence self-scan
+
+on:
+  push:
+    branches: [dev]
+  pull_request:
+  schedule:
+    - cron: "0 6 * * 1"
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  self-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: ./
+        with:
+          path: .
+          fail-on: none

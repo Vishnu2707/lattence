@@ -1,0 +1,59 @@
+name: Lattence scan
+description: Run a Lattence security scan and upload SARIF results to GitHub code scanning.
+inputs:
+  path:
+    description: Project path to scan, relative to the workspace root.
+    required: false
+    default: "."
+  run-attack:
+    description: Also run the native attack catalog. Requires lattence.targets.yaml in the target path.
+    required: false
+    default: "false"
+  fail-on:
+    description: Severity gate. One of critical, high, medium, low, info, none.
+    required: false
+    default: "high"
+outputs:
+  sarif-path:
+    description: Path to the generated SARIF file.
+    value: ${{ steps.sarif.outputs.path }}
+runs:
+  using: composite
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+      with:
+        python-version: "3.12"
+
+    - name: Install Lattence
+      shell: bash
+      run: pip install lattence
+
+    - name: Run scan or attack
+      id: run
+      shell: bash
+      run: |
+        set +e
+        if [ "${{ inputs.run-attack }}" = "true" ]; then
+          lattence attack "${{ inputs.path }}" --out lattence-scan --fail-on "${{ inputs.fail-on }}"
+        else
+          lattence scan "${{ inputs.path }}" --out lattence-scan --fail-on "${{ inputs.fail-on }}"
+        fi
+        echo "exit_code=$?" >> "$GITHUB_OUTPUT"
+        echo "report=lattence-scan/lattence-report.json" >> "$GITHUB_OUTPUT"
+
+    - name: Convert to SARIF
+      id: sarif
+      shell: bash
+      run: |
+        lattence sarif "${{ steps.run.outputs.report }}" --out lattence-scan/lattence.sarif.json
+        echo "path=lattence-scan/lattence.sarif.json" >> "$GITHUB_OUTPUT"
+
+    - name: Upload SARIF to code scanning
+      uses: github/codeql-action/upload-sarif@c23de5a82f64bb08c6d9f28844551440ca298e76 # v4.38.1
+      with:
+        sarif_file: ${{ steps.sarif.outputs.path }}
+
+    - name: Enforce severity gate
+      shell: bash
+      run: exit ${{ steps.run.outputs.exit_code }}
