@@ -1,10 +1,10 @@
 # Current state
 
 - Milestone: v1.0 phase 2, REST API and plugin SDK
-- Last completed: T-123, document API authentication and record RBAC and
-  SSO as deferred to Phase 5
-- Next task: T-124, add live-instance API integration tests against
+- Last completed: T-124, add live-instance API integration tests against
   examples/vulnerable-agent
+- Next task: T-125, wire lattence-api into the package build, add a CLI
+  serve command, and finalize workspace metadata
 - Blockers: none.
 - Note: local verification uses `uv sync --all-packages --dev`, matching CI.
   A plain `uv sync` does not install every workspace member editable and
@@ -29,7 +29,7 @@
 - v0.5.1 tasks: 6 done, 0 todo
 - v1.0 phase 0 tasks: 1 done, 0 todo
 - v1.0 phase 1 tasks: 5 done, 0 todo
-- v1.0 phase 2 tasks: 8 done, 4 todo
+- v1.0 phase 2 tasks: 9 done, 3 todo
 
 ## v1.0 phase 1 progress
 

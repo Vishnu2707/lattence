@@ -56,6 +56,12 @@ separate schema check: `build_security_presentation` runs
 `SecurityPresentation.references_are_valid` at construction time, so an
 invalid presentation can never reach the route handler in the first place.
 
+`tests/api/test_live_instance.py` runs `uvicorn.Server` in a background
+thread bound to an ephemeral `127.0.0.1` port and issues real `httpx`
+requests over that socket, not FastAPI's in-process `TestClient` ASGI
+transport. This is the literal live-instance check the phase gate needs
+before the manual `curl` walkthrough.
+
 Local verification must use `uv sync --all-packages --dev`, the same command
 CI runs. A plain `uv sync` only installs the direct dependency closure and
 leaves sibling workspace packages (`lattence-core`, `lattence-evidence`, and
