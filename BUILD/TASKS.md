@@ -574,3 +574,49 @@ fixture) and `lattence sarif` on that report produces a matching
 13-result SARIF document. Full suite passed at 337 tests and 91.42 percent
 coverage, lint and formatting passed, all eight strict typing targets
 passed, and provenance and prose checks passed.
+
+# v1.0 phase 5 task ledger
+
+Phase 5 adds RBAC, an OIDC-compatible SSO extension point, durable audit
+logging, and a realistically scoped distributed worker queue. Nothing in
+`BUILD/CONTRACTS.md` defines an identity or authorization model, so this
+phase is additive rather than a conflict with a frozen contract; storage,
+role, and extension-point shapes below are engineering decisions recorded
+in `BUILD/DECISIONS.md` as they are made, the same way `serve` and `sarif`
+were.
+
+[T-142] [v1.0 phase 5] [SHIP] implement a shared RBAC role model and local API key store | deps: T-141 | status: todo | commit: self
+[T-143] [v1.0 phase 5] [API] enforce RBAC on the v1 API routes without breaking the existing static team-mode token | deps: T-142 | status: todo | commit: self
+[T-144] [v1.0 phase 5] [API] add an OIDC-compatible SSO extension point tested against a mock provider | deps: T-143 | status: todo | commit: self
+[T-145] [v1.0 phase 5] [SHIP] add durable queryable audit logging and wire it into CLI scan/attack/policy-check and the API scan/attack routes | deps: T-144 | status: todo | commit: self
+[T-146] [v1.0 phase 5] [API] implement a single-controller-multi-worker job queue per the enterprise deployment design, RBAC-gated and audited | deps: T-145 | status: todo | commit: self
+[T-147] [v1.0 phase 5] [SHIP] satisfy the full-suite lint typing and prose gate for phase 5 changes | deps: T-146 | status: todo | commit: self
+[T-148] [v1.0 phase 5] [ORCH] record the v1.0 phase 5 release gate and annotated tag | deps: T-147 | status: todo | commit: self
+
+## v1.0 phase 5 scope notes
+
+- Roles: `read_findings`, `run_scans`, `run_attacks`, `manage_policy`,
+  matching the brief exactly. `manage_policy` is defined now even though
+  no API route enforces it yet, since `policy check` is still CLI-only;
+  it is enforced there through audit logging, not a route guard.
+- RBAC is additive, not a replacement for the Phase 2 static bearer token.
+  `docker compose` team mode keeps working unchanged: a request with the
+  legacy `LATTENCE_API_TOKEN` still gets full access, audited under actor
+  `team-token`. A request with a per-caller RBAC API key gets exactly the
+  roles that key was issued, audited under its caller id. Breaking the
+  static-token path would break the already-shipped and already-tested
+  Phase 3 Docker deployment for no benefit.
+- SSO is an extension point (a `SSOProvider` protocol resolving a bearer
+  token to a caller id and role set), not a real OIDC client. Adding a real
+  OIDC dependency (token introspection, JWKS fetch, signature verification)
+  is exactly the kind of external, network-dependent integration the brief
+  says is not required; a mock provider proves the seam works.
+- Distributed workers: an in-process, single-controller-multi-worker queue
+  (a thread pool pulling `Job` records and calling the same
+  `create_report`/`create_attack_report` functions the API already calls),
+  matching the `Job` model in `docs/enterprise-deployment-design.md`.
+  Explicitly deferred: multi-host workers, a real message broker, and
+  worker-side short-lived credential issuance. Those need infrastructure
+  choices this phase has no basis to make; the queue model here is real and
+  correct for one controller process coordinating multiple worker threads,
+  not a distributed system across machines.
