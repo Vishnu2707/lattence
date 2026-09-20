@@ -30,6 +30,8 @@ engine.
 ## Install
 
 Lattence is not yet published to PyPI. Install it from source.
+Maintainers can follow the [publication checklist](docs/publishing.md) for the
+first package-index upload and public pipx verification.
 
 ```bash
 git clone https://github.com/Vishnu2707/lattence.git

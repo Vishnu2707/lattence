@@ -319,6 +319,6 @@ final milestone.
 
 [T-111] [v1.0 phase 1] [SHIP] finalize public package metadata and version | deps: T-110 | status: done | commit: self
 [T-112] [v1.0 phase 1] [SHIP] validate wheel and source archive metadata and clean command parity | deps: T-111 | status: done | commit: self
-[T-113] [v1.0 phase 1] [SHIP] prepare exact package-index upload and clean pipx verification procedure | deps: T-112 | status: todo | commit: self
-[T-114] [v1.0 phase 1] [SHIP] publish package and verify public pipx installation | deps: T-113 | status: todo | commit: self
+[T-113] [v1.0 phase 1] [SHIP] prepare exact package-index upload and clean pipx verification procedure | deps: T-112 | status: done | commit: self
+[T-114] [v1.0 phase 1] [SHIP] publish package and verify public pipx installation | deps: T-113 | status: blocked | commit: self
 [T-115] [v1.0 phase 1] [ORCH] run full phase gate and record acceptance | deps: T-114 | status: todo | commit: self

@@ -1,11 +1,13 @@
 # Current state
 
 - Milestone: v1.0 phase 1 packaging and local install
-- Last completed: T-112, validate wheel and source archive metadata and clean
-  command parity
-- Next task: T-113, prepare exact package-index upload and clean pipx
+- Last completed: T-113, prepare exact package-index upload and clean pipx
   verification procedure
-- Blockers: none
+- Next task: T-114, publish package and verify public pipx installation after
+  a PyPI upload token is available
+- Blockers: T-114 requires a PyPI account-scoped API token for the first upload.
+  No token or `.pypirc` is present in this environment. The public project
+  endpoint currently returns 404. T-115 depends on T-114.
 - Manual steps: branch protection and tag protection commands from the
   v0.1.0 release are still printed for review only, not run
 
@@ -25,7 +27,17 @@
 - v0.5 tasks: 15 done, 0 todo
 - v0.5.1 tasks: 6 done, 0 todo
 - v1.0 phase 0 tasks: 1 done, 0 todo
-- v1.0 phase 1 tasks: 2 done, 3 todo
+- v1.0 phase 1 tasks: 3 done, 1 blocked, 1 todo
+
+## v1.0 phase 1 progress
+
+- Version 0.5.2 wheel and source archive pass metadata and package validation.
+- A fresh Python 3.12 environment installed the local wheel. Its version,
+  root help, and all 13 command help screens match the source build exactly.
+- Publication instructions in `docs/publishing.md` use an isolated artifact
+  directory, a hidden API-token prompt, and a public-index pipx installation.
+- No public upload or public pipx acceptance has been claimed. `pipx` is not
+  installed locally. The phase gate remains open.
 
 ## v1.0 phase 0 gate
 

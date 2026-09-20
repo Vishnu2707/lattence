@@ -273,3 +273,9 @@ environment installed the isolated 0.5.2 wheel. The wheel metadata, license,
 README long description, packaged rules and assets, source archive README and
 license, version output, root help, and all 13 command help screens passed.
 The workspace lock now records the same root package version.
+
+T-113 records the first-upload token requirement, isolated archive staging,
+exact upload command, and public-index pipx verification procedure. No PyPI
+token or configuration is available in this environment, so T-114 is blocked
+before upload. The public package name currently returns 404, and there is
+no local pipx executable. No published-package acceptance has been claimed.
