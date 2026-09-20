@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Lattence security dashboard</title>
+    <link rel="stylesheet" href="./src/tokens.css">
+    <link rel="stylesheet" href="./src/dashboard.css">
+  </head>
+  <body>
+    <div class="dashboard-shell">
+      <nav id="navigation" aria-label="Security dashboard sections"></nav>
+      <main>
+        <header class="toolbar">
+          <span id="chain-summary" aria-live="polite"></span>
+          <label>Filter <input id="filter" type="search" autocomplete="off"></label>
+          <button id="save-view" type="button">Save view</button>
+          <button id="copy-json" type="button">Copy as JSON</button>
+          <button id="export-json" type="button">Export</button>
+        </header>
+        <section class="table-viewport" aria-label="Selected security data">
+          <table>
+            <thead><tr id="table-header"></tr></thead>
+            <tbody id="table-body"></tbody>
+          </table>
+        </section>
+      </main>
+      <aside id="detail-panel" class="panel" aria-label="Selected row detail">
+        <h2>Detail</h2>
+        <ol id="path-view" class="path-list" aria-label="Selected attack path"></ol>
+        <pre id="detail-content">Select a row to inspect evidence.</pre>
+      </aside>
+    </div>
+    <script type="module" src="./src/dashboard.mjs"></script>
+  </body>
+</html>

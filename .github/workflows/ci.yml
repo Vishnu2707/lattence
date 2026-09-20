@@ -50,10 +50,12 @@ jobs:
       - run: uv run mypy --strict lattence-cli/src
       - run: uv run mypy --strict lattence-core/src/lattence/discovery
       - run: uv run mypy --strict lattence-core/src/lattence/graph
+      - run: uv run mypy --strict lattence-core/src/lattence/governance
       - run: uv run mypy --strict lattence-crypto/src/lattence_crypto
       - run: uv run mypy --strict lattence-evidence
       - run: uv run mypy --strict lattence-mcp
       - run: uv run mypy --strict lattence-ai/src/lattence_ai/attacks
+      - run: uv run mypy --strict lattence-api/src/lattence_api
 
   acceptance:
     runs-on: ubuntu-latest
@@ -66,13 +68,36 @@ jobs:
       - run: uv build
       - run: python -m venv /tmp/lattence-acceptance
       - run: /tmp/lattence-acceptance/bin/pip install dist/*.whl
-      - name: Scan the vulnerable-agent fixture offline
+      - name: Run clean-wheel acceptance
         run: |
+          export PATH="$GITHUB_WORKSPACE/tests/acceptance/bin:$PATH"
           cd examples/vulnerable-agent
-          /tmp/lattence-acceptance/bin/lattence scan .
-          /tmp/lattence-acceptance/bin/lattence attack .
+          /tmp/lattence-acceptance/bin/lattence scan . --fail-on none
+          /tmp/lattence-acceptance/bin/lattence provider list --out .
+          /tmp/lattence-acceptance/bin/lattence provider enable garak --out .
+          /tmp/lattence-acceptance/bin/lattence attack . --fail-on none
           /tmp/lattence-acceptance/bin/lattence report lattence-report.json
+          /tmp/lattence-acceptance/bin/lattence harden lattence-report.json --fail-on none
+          /tmp/lattence-acceptance/bin/lattence policy check lattence-report.json
           test -f lattence-report.html
+          /tmp/lattence-acceptance/bin/lattence tui . --offline --no-color --out "$GITHUB_WORKSPACE/lattence-ui" --fail-on none > /tmp/lattence-tui.txt
+          /tmp/lattence-acceptance/bin/lattence tui . --offline --json --out "$GITHUB_WORKSPACE/lattence-ui" --fail-on none > /tmp/lattence-presentation.json
+          /tmp/lattence-acceptance/bin/lattence graph chain . --offline --no-color --out /tmp/lattence-chain-output > /tmp/lattence-chain.txt
+          cmp "$GITHUB_WORKSPACE/lattence-ui/presentation.json" /tmp/lattence-presentation.json
+          grep -q "Attack Graph" /tmp/lattence-tui.txt
+          grep -q "LT-AI-002 -> LT-PQC-203" /tmp/lattence-chain.txt
+          grep -q "EDGE 1      accesses  reverse" /tmp/lattence-chain.txt
+          grep -q "EDGE 2      key_exchange  forward" /tmp/lattence-chain.txt
+          grep -q "EVIDENCE  app.py, crypto_config.py" /tmp/lattence-chain.txt
+          python "$GITHUB_WORKSPACE/tests/acceptance/check_presentation.py" "$GITHUB_WORKSPACE/lattence-ui/presentation.json" "$GITHUB_WORKSPACE/lattence-ui"
+          cd ../crypto-migration
+          cp tls.conf /tmp/lattence-tls-original.conf
+          /tmp/lattence-acceptance/bin/lattence pqc assess . --offline --json --out /tmp/lattence-crypto-report --fail-on none > /tmp/lattence-pqc.json
+          /tmp/lattence-acceptance/bin/lattence crypto chaos . --offline --json --out /tmp/lattence-crypto-report --fail-on none > /tmp/lattence-chaos.json
+          cmp tls.conf /tmp/lattence-tls-original.conf
+          python -c 'import json; p=json.load(open("/tmp/lattence-pqc.json")); assert p["ml_kem"]["status"] == "already_migrated" and p["hybrid_tls"]["status"] == "valid"'
+          python -c 'import json; p=json.load(open("/tmp/lattence-chaos.json")); assert p["downgrade"]["status"] == "resistant" and len(p["downgrade"]["evidence"]) == 2'
+          test -f /tmp/lattence-crypto-report/lattence-report.html
 
   provenance:
     runs-on: ubuntu-latest
@@ -88,3 +113,27 @@ jobs:
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
       - run: .githooks/check-prose
+
+  action-smoke:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - id: lattence-scan
+        uses: ./
+        with:
+          path: examples/vulnerable-agent
+          fail-on: none
+          source: local
+      - name: Confirm a real SARIF file was produced
+        run: |
+          test -s "${{ steps.lattence-scan.outputs.sarif-path }}"
+          python3 -c "
+          import json, sys
+          with open('${{ steps.lattence-scan.outputs.sarif-path }}') as f:
+              document = json.load(f)
+          assert document['version'] == '2.1.0'
+          assert document['runs'][0]['results'], 'expected at least one SARIF result'
+          "

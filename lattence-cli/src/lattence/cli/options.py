@@ -20,6 +20,12 @@ class SeverityGate(StrEnum):
     NONE = "none"
 
 
+def require_implemented_planner(value: Planner) -> Planner:
+    if value is Planner.LLM:
+        raise typer.BadParameter("LLM planner is not implemented; use --planner rules")
+    return value
+
+
 JsonOption = Annotated[bool, typer.Option("--json", help="Write JSON to stdout.")]
 OutOption = Annotated[Path, typer.Option("--out", help="Output path.")]
 OfflineOption = Annotated[
@@ -29,7 +35,12 @@ NoColorOption = Annotated[
     bool, typer.Option("--no-color", help="Disable terminal colors.")
 ]
 QuietOption = Annotated[bool, typer.Option("--quiet", help="Suppress normal logs.")]
-PlannerOption = Annotated[Planner, typer.Option("--planner", help="Planner mode.")]
+PlannerOption = Annotated[
+    Planner,
+    typer.Option(
+        "--planner", help="Planner mode.", callback=require_implemented_planner
+    ),
+]
 FailOnOption = Annotated[
     SeverityGate, typer.Option("--fail-on", help="Finding failure threshold.")
 ]

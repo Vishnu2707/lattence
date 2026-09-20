@@ -56,7 +56,9 @@
         "medium": { "type": "integer", "minimum": 0 },
         "low": { "type": "integer", "minimum": 0 },
         "info": { "type": "integer", "minimum": 0 },
-        "pqc_readiness": { "type": "number", "minimum": 0, "maximum": 100 }
+        "pqc_readiness": { "type": "number", "minimum": 0, "maximum": 100 },
+        "quantum_vulnerable_assets": { "type": "integer", "minimum": 0 },
+        "quantum_vulnerable_paths": { "type": "integer", "minimum": 0 }
       }
     }
   },

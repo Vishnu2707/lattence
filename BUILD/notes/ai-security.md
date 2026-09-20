@@ -30,3 +30,29 @@ T-032 added LT-AI-009 for denial and resource exhaustion boundaries. The rule
 has positive and negative application fixtures.
 T-033 added a strict catalog loader. The native catalog contains exactly 15
 unique, sorted attack rules and rejects incomplete or non-attack collections.
+
+T-047 added `AttackRunner.replay(rule_id, target_node_id)` and
+`verify_finding(report, finding_id, rules)`. Replay rebuilds the same
+`TestCase` `observe` already builds internally (same id, seed, and inputs
+shape), so it is not new detection logic, just a public single-test entry
+point that does not require regenerating every test for every node.
+`verify_finding` looks up a `Finding` by id in an existing `Report`, replays
+it against that report's own embedded `SecurityGraph`, and returns
+`VULNERABLE` (still matches), `RESOLVED` (no longer matches), or
+`NOT_FOUND` (unknown finding id, rule, or target node). It takes no project
+path and does not rescan: verification is a property of the report you
+already have, not a fresh scan. This is what T-048's `verify` command
+wires up.
+
+T-092 correlates AI, agent, and MCP findings with PQC and crypto findings over
+the bounded topology traversal. A correlation requires a genuine
+`key_exchange` or `protected_by` edge, retains every hop and its orientation,
+and combines both finding evidence identifiers with graph evidence paths.
+Unknown finding targets fail explicitly, and unrelated finding domains or
+paths without a cryptographic relationship produce no correlation.
+
+T-105 calls the correlator directly with the report and crypto findings built
+from discovering `examples/vulnerable-agent`. It verifies the real two-hop
+`LT-AI-002` to `LT-PQC-203` route, both stored edges, both traversal
+directions, the evidence paths, and all seven crypto algorithm relationships
+owned by the connected tool.

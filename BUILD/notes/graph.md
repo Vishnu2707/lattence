@@ -20,3 +20,16 @@ results. Parallel edges remain distinct in returned paths.
 T-022 added stable JSON serialization and file export. Node, edge, set-like,
 reference, and relationship lists are ordered before serialization. The output
 uses sorted keys, UTF-8 text, and a final newline.
+
+T-085 connects applications, agents, tools, and MCP servers to algorithms and
+certificates with the existing `key_exchange` and `protected_by` relationships.
+Bindings choose exact source, application entrypoint, explicit config/source
+reference, or same-module proximity in that order. Every edge records its
+binding reason and source evidence; unrelated modules and algorithm-name-only
+matches remain disconnected.
+
+T-090 adds bounded topology traversal without changing directed graph edges.
+Each hop retains the edge identifier, stored endpoints, relationship type,
+evidence, traversal endpoints, and explicit forward or reverse orientation.
+Results contain only shortest simple paths per source and target pair, retain
+parallel edges, reject unknown nodes, and use stable ordering.

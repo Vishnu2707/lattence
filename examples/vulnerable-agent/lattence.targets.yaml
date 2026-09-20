@@ -3,3 +3,5 @@ authorization: owned-or-authorized
 targets:
   - kind: project
     value: "."
+  - kind: project
+    value: "crypto_config.py"

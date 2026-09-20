@@ -20,7 +20,15 @@ from .nodes import (
 )
 from .schema import Edge, EdgeType, Project, SecurityGraph, TrustLevel
 from .serialization import security_graph_json, write_security_graph
-from .traversal import GraphPath, find_attack_paths, reachable_nodes
+from .traversal import (
+    GraphPath,
+    TopologyHop,
+    TopologyPath,
+    TraversalDirection,
+    find_attack_paths,
+    find_topology_paths,
+    reachable_nodes,
+)
 
 __all__ = [
     "API",
@@ -47,10 +55,14 @@ __all__ = [
     "SecurityGraph",
     "SourceRef",
     "Tool",
+    "TopologyHop",
+    "TopologyPath",
+    "TraversalDirection",
     "TrustLevel",
     "UtcDateTime",
     "build_security_graph",
     "find_attack_paths",
+    "find_topology_paths",
     "reachable_nodes",
     "security_graph_json",
     "write_security_graph",

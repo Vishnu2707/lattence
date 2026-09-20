@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="680" viewBox="0 0 1200 680" role="img" aria-labelledby="title desc">
+  <title id="title">Lattence cryptographic assurance pipeline</title>
+  <desc id="desc">Project discovery flows through a crypto dependency graph, quantum exposure analysis, migration tests, hybrid TLS validation, agility scoring, and evidence findings.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 Z" fill="#4C8DFF"/>
+    </marker>
+    <style>
+      .bg{fill:#0B0D10}.panel{fill:#14181F;stroke:#30363D;stroke-width:2}.accent{fill:#111B2B;stroke:#4C8DFF;stroke-width:2}.safe{fill:#102016;stroke:#3E9B4F;stroke-width:2}.text{fill:#F2F4F8;font:600 18px ui-monospace,monospace}.small{fill:#A7B0BE;font:14px ui-monospace,monospace}.line{fill:none;stroke:#4C8DFF;stroke-width:3;marker-end:url(#arrow)}
+    </style>
+  </defs>
+  <rect class="bg" width="1200" height="680"/>
+  <text class="text" x="60" y="65" font-size="28">CRYPTOGRAPHIC ASSURANCE PIPELINE</text>
+  <text class="small" x="60" y="95">offline analysis → migration proof → normalized evidence</text>
+
+  <rect class="panel" x="60" y="150" width="240" height="120"/>
+  <text class="text" x="85" y="190">PROJECT DISCOVERY</text>
+  <text class="small" x="85" y="222">libraries · algorithms</text>
+  <text class="small" x="85" y="246">certificates · TLS</text>
+
+  <rect class="accent" x="480" y="150" width="240" height="120"/>
+  <text class="text" x="505" y="190">CRYPTO GRAPH</text>
+  <text class="small" x="505" y="222">direct dependencies</text>
+  <text class="small" x="505" y="246">transitive paths</text>
+
+  <rect class="panel" x="900" y="150" width="240" height="120"/>
+  <text class="text" x="925" y="190">QUANTUM EXPOSURE</text>
+  <text class="small" x="925" y="222">safe · hybrid</text>
+  <text class="small" x="925" y="246">vulnerable · unknown</text>
+
+  <path class="line" d="M 300 210 L 480 210"/>
+  <path class="line" d="M 720 210 L 900 210"/>
+
+  <rect class="panel" x="60" y="390" width="240" height="120"/>
+  <text class="text" x="85" y="430">ML-KEM TEST</text>
+  <text class="small" x="85" y="462">key establishment</text>
+  <text class="small" x="85" y="486">hybrid transition</text>
+
+  <rect class="panel" x="350" y="390" width="240" height="120"/>
+  <text class="text" x="375" y="430">ML-DSA TEST</text>
+  <text class="small" x="375" y="462">signing assets</text>
+  <text class="small" x="375" y="486">hybrid credentials</text>
+
+  <rect class="safe" x="640" y="390" width="240" height="120"/>
+  <text class="text" x="665" y="430">HYBRID TLS</text>
+  <text class="small" x="665" y="462">TLS 1.3 + hybrid KEM</text>
+  <text class="small" x="665" y="486">+ hybrid signatures</text>
+
+  <rect class="accent" x="930" y="390" width="210" height="120"/>
+  <text class="text" x="955" y="430">AGILITY SCORE</text>
+  <text class="small" x="955" y="462">five components</text>
+  <text class="small" x="955" y="486">limiting factors</text>
+
+  <path class="line" d="M 1020 270 L 1020 330 L 180 330 L 180 390"/>
+  <path class="line" d="M 1020 330 L 470 330 L 470 390"/>
+  <path class="line" d="M 300 450 L 640 450"/>
+  <path class="line" d="M 590 450 L 640 450"/>
+  <path class="line" d="M 880 450 L 930 450"/>
+
+  <rect class="panel" x="350" y="570" width="500" height="70"/>
+  <text class="text" x="375" y="600">FROZEN FINDING + EVIDENCE SCHEMA</text>
+  <text class="small" x="375" y="625">reports · remediation · policy gates</text>
+  <path class="line" d="M 1035 510 L 1035 605 L 850 605"/>
+</svg>

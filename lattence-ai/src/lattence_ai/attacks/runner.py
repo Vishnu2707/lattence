@@ -2,9 +2,10 @@ import hashlib
 from collections.abc import Iterable
 
 from lattence.discovery import RulePack
+from lattence.evidence import Report
 from lattence.graph import JsonValue, Node, SecurityGraph
 
-from .models import ObservationResult, RawResult, TestCase
+from .models import ObservationResult, RawResult, TestCase, VerificationOutcome
 
 
 def _seed(rule_id: str, target_id: str) -> int:
@@ -101,3 +102,33 @@ class AttackRunner:
 
     def run(self) -> tuple[ObservationResult, ...]:
         return tuple(self.observe(test) for test in self.generate_tests())
+
+    def replay(self, rule_id: str, target_node_id: str) -> ObservationResult | None:
+        rule = self._rules.get(rule_id)
+        node = self._nodes.get(target_node_id)
+        if rule is None or node is None:
+            return None
+        test = TestCase(
+            id=f"{rule_id}:{target_node_id}",
+            title=rule.title,
+            target_node_id=target_node_id,
+            inputs={"rule_id": rule_id},
+            timeout_seconds=30.0,
+            replay_seed=_seed(rule_id, target_node_id),
+        )
+        return self.observe(test)
+
+
+def verify_finding(
+    report: Report, finding_id: str, rules: Iterable[RulePack]
+) -> VerificationOutcome:
+    finding = next((item for item in report.findings if item.id == finding_id), None)
+    if finding is None:
+        return VerificationOutcome.NOT_FOUND
+    runner = AttackRunner(report.graph, rules)
+    observation = runner.replay(finding_id, finding.target_node_id)
+    if observation is None:
+        return VerificationOutcome.NOT_FOUND
+    if observation.matched:
+        return VerificationOutcome.VULNERABLE
+    return VerificationOutcome.RESOLVED

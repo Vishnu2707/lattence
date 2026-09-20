@@ -54,3 +54,778 @@ Each line is one commit unit. Status values are `todo`, `doing`, `done`, and
 After T-045, run the full suite, create the annotated `v0.1` tag on `dev`, open
 the milestone pull request to `main`, merge with a merge commit, then fast-forward
 `dev` to `main`.
+
+v0.1.0 shipped 2026-09-08. `dev` and `main` are both at the release commit.
+
+# v0.2 task ledger
+
+v0.2 closes CLI-contract gaps left by v0.1's scaffolded commands, favoring
+tasks whose behavior `BUILD/CONTRACTS.md` and `BUILD/DESIGN.md` already
+specify precisely, over inventing product behavior for commands the
+contracts name but do not describe (see "Deferred" below).
+
+[T-046] [v0.2] [SHIP] wire the --fail-on severity gate to scan and attack exit codes | deps: none | status: done | commit: self
+[T-047] [v0.2] [AISEC] implement deterministic single-finding replay verification | deps: T-024 | status: done | commit: self
+[T-048] [v0.2] [SHIP] wire the verify command to replay verification | deps: T-047 | status: done | commit: self
+
+## T-047 design note
+
+`AttackRunner.observe(test)` in `lattence-ai/src/lattence_ai/attacks/runner.py`
+is already a pure function of `(rule_id, target_node_id)` against a graph. A
+`Finding`'s `id` and `target_node_id`, together with the `SecurityGraph`
+already embedded in a `Report`, are enough to rebuild the same `TestCase` and
+re-observe it without rescanning the project. T-047 adds a function that
+takes a `Report` and a finding id, rebuilds the runner from the report's own
+graph and the loaded native attack catalog, re-observes the one test, and
+returns whether it still matches. T-048 wires `verify FINDING_ID` to it,
+reading the existing report from `--out` (there is no path argument on
+`verify` in the CLI contract), and prints `VULNERABLE` if it still matches,
+`PASS` if it no longer does, or `BLOCKED` if the finding id or report is not
+found, per the valid state words in `BUILD/DESIGN.md`.
+
+## Milestone gate
+
+After the last v0.2 task, run the full suite, create the annotated `v0.2` tag
+on `dev`, and hold for review before opening a pull request to `main` or
+starting v0.3.
+
+# v0.3 task ledger
+
+v0.3 adds optional external security engines, read-only remediation output,
+and declared-scope policy validation. External engines are never hard
+dependencies. Their results normalize into the frozen `Finding` schema through
+the frozen `SecurityProvider` interface.
+
+[T-049] [v0.3] [SHIP] implement the SecurityProvider runtime and strict provider result validation | deps: T-002,T-024 | status: done | commit: self
+[T-050] [v0.3] [SHIP] add an optional Garak SecurityProvider adapter | deps: T-049 | status: done | commit: self
+[T-051] [v0.3] [SHIP] add an optional PyRIT SecurityProvider adapter | deps: T-049 | status: done | commit: self
+[T-052] [v0.3] [SHIP] add an optional Promptfoo SecurityProvider adapter | deps: T-049 | status: done | commit: self
+[T-053] [v0.3] [SHIP] persist provider enablement and wire provider enable and list | deps: T-049 | status: done | commit: self
+[T-054] [v0.3] [SHIP] execute enabled external providers and merge normalized findings into attack reports | deps: T-050,T-051,T-052,T-053 | status: done | commit: self
+[T-055] [v0.3] [EVID] build structured read-only remediation plans from report findings and evidence | deps: T-036 | status: done | commit: self
+[T-056] [v0.3] [SHIP] wire harden for a finding id or scan report without modifying project files | deps: T-055 | status: done | commit: self
+[T-057] [v0.3] [SHIP] validate report target nodes against a versioned declared-scope file | deps: T-023,T-036 | status: done | commit: self
+[T-058] [v0.3] [SHIP] wire policy check with non-zero exit on every out-of-scope target node | deps: T-057 | status: done | commit: self
+[T-059] [v0.3] [SHIP] reject --planner llm with a clear not-implemented error | deps: T-004 | status: done | commit: self
+[T-060] [v0.3] [SHIP] document v0.3 commands and optional external engine setup | deps: T-054,T-056,T-058,T-059 | status: done | commit: self
+[T-061] [v0.3] [SHIP] pass clean-clone external provider, harden, and policy acceptance | deps: T-060 | status: done | commit: self
+[T-062] [v0.3] [SHIP] satisfy the milestone formatting gate for v0.3 changes | deps: T-061 | status: done | commit: self
+[T-063] [v0.3] [SHIP] satisfy the milestone strict typing gate for provider modules | deps: T-062 | status: done | commit: self
+[T-064] [v0.3] [ORCH] record the v0.3 release gate and changelog | deps: T-063 | status: done | commit: self
+
+## v0.3 scope notes
+
+- `harden` is read-only. It prints a structured remediation list per finding
+  from `Finding.remediation`, the target node, and reproduction context in the
+  evidence bundle. It has no patch or file-modification mode.
+- `provider enable` and `provider list` manage Garak, PyRIT, and Promptfoo
+  adapters. Missing external engines produce an unavailable provider state,
+  not an installation failure for Lattence.
+- `policy check` reads a scan or attack report and a
+  `lattence.targets.yaml` or equivalent versioned scope declaration. It checks
+  the actual target nodes recorded in the report graph and exits non-zero when
+  any touched node is outside the declaration.
+- `--planner llm` remains recognized but not implemented. It fails clearly and
+  never falls back silently.
+
+## Deferred after v0.3
+
+- `tui` moves to v0.5 with the dashboard so both use one visual grammar.
+- `crypto chaos` remains in v0.4 as originally scheduled.
+- The model-backed LLM planner moves to v0.4 or later.
+
+## v0.3 milestone gate
+
+After T-064, run the full suite, create and push the annotated `v0.3.0` tag on
+`dev`, then run acceptance from a fresh clean clone. Hold at the tag for review
+before opening a milestone pull request or starting v0.4.
+
+# v0.4 task ledger
+
+v0.4 is the flagship post-quantum release. It turns discovered cryptography
+into a dependency graph, identifies quantum-vulnerable dependency paths,
+tests ML-KEM and ML-DSA migration readiness, validates hybrid TLS, scores
+crypto agility, and runs bounded reversible downgrade chaos only against
+explicitly declared targets. The release includes a complete documentation
+section and diagrams for the end-to-end workflow.
+
+[T-065] [v0.4] [CRYPTO] build deterministic cryptographic dependency graph projections | deps: T-020,T-034 | status: done | commit: self
+[T-066] [v0.4] [CRYPTO] detect quantum-vulnerable direct and transitive dependency paths | deps: T-065 | status: done | commit: self
+[T-067] [v0.4] [CRYPTO] test ML-KEM migration compatibility and readiness | deps: T-065,T-066 | status: done | commit: self
+[T-068] [v0.4] [CRYPTO] test ML-DSA migration compatibility and readiness | deps: T-065,T-066 | status: done | commit: self
+[T-069] [v0.4] [CRYPTO] validate hybrid TLS key exchange and signature configurations | deps: T-067,T-068 | status: done | commit: self
+[T-070] [v0.4] [CRYPTO] calculate deterministic crypto agility scores and limiting factors | deps: T-066,T-067,T-068,T-069 | status: done | commit: self
+[T-071] [v0.4] [CHAOS] define bounded reversible crypto mutation plans and safety guards | deps: T-023,T-065 | status: done | commit: self
+[T-072] [v0.4] [CHAOS] execute contained key-exchange downgrade experiments with rollback | deps: T-067,T-069,T-071 | status: done | commit: self
+[T-073] [v0.4] [CHAOS] execute contained signature downgrade experiments with rollback | deps: T-068,T-069,T-071 | status: done | commit: self
+[T-074] [v0.4] [CHAOS] validate downgrade resistance with deterministic evidence capture | deps: T-072,T-073 | status: done | commit: self
+[T-075] [v0.4] [EVID] normalize migration, agility, and downgrade results into findings | deps: T-070,T-074 | status: done | commit: self
+[T-076] [v0.4] [SHIP] wire PQC assessment and consent-gated crypto chaos workflows | deps: T-023,T-075 | status: done | commit: self
+[T-077] [v0.4] [UX] render crypto graph, migration, agility, and downgrade terminal output | deps: T-070,T-075,T-076 | status: done | commit: self
+[T-078] [v0.4] [UX] create flagship crypto architecture and migration workflow diagrams | deps: T-077 | status: done | commit: self
+[T-079] [v0.4] [SHIP] author the complete v0.4 cryptography documentation section | deps: T-076,T-078 | status: done | commit: self
+[T-080] [v0.4] [SHIP] pass clean-clone crypto assessment, chaos, and downgrade acceptance | deps: T-079 | status: done | commit: self
+[T-081] [v0.4] [ORCH] record the v0.4 release gate and changelog | deps: T-080 | status: done | commit: self
+
+## v0.4 scope notes
+
+- The crypto graph is an offline deterministic projection of the existing
+  security graph and discovery evidence. It includes algorithms, libraries,
+  certificates, TLS configuration, and the dependency paths that connect
+  them, without changing frozen graph or report schemas.
+- Quantum-vulnerable dependency detection covers direct and transitive paths.
+  Migration testing separately evaluates ML-KEM key establishment and ML-DSA
+  signatures, then validates classical-plus-PQC hybrid TLS configurations.
+- Crypto agility is a deterministic score with explicit limiting factors,
+  derived from replaceability, configurability, dependency exposure,
+  migration readiness, and downgrade resistance.
+- Crypto chaos requires an owned-target declaration, operates only on bounded
+  local configuration targets, records deterministic dry runs and evidence,
+  and restores every mutation on success, failure, or timeout.
+- `--planner llm` remains recognized but not implemented in v0.4. It continues
+  to fail clearly instead of falling back to the rules planner.
+
+## v0.4 milestone gate
+
+After T-081, run the full suite, create and push the annotated `v0.4.0` tag on
+`dev`, then run crypto assessment, consent-gated chaos, downgrade validation,
+and documentation acceptance from a fresh clean clone. Hold at the tag for
+review before opening a milestone pull request or starting v0.5.
+
+# v0.4.1 repair task ledger
+
+v0.4.1 corrects the v0.4 crypto assessment before any v0.5 work begins. The
+repair prevents generated-output self-ingestion, separates isolated vulnerable
+assets from traversable paths, connects crypto assets to the main trust graph
+using evidence-backed ownership and reference relationships, and corrects the
+PQC command heading.
+
+[T-082] [v0.4.1] [CRYPTO] exclude generated and configured output artifacts from crypto discovery | deps: T-081 | status: done | commit: self
+[T-083] [v0.4.1] [ORCH] define isolated crypto asset and traversable path report semantics | deps: T-082 | status: done | commit: self
+[T-084] [v0.4.1] [EVID] report isolated vulnerable assets separately from traversable paths in JSON HTML and terminal output | deps: T-083 | status: done | commit: self
+[T-085] [v0.4.1] [GRAPH] wire crypto assets into the trust graph through ownership proximity dependency and config-reference evidence | deps: T-084 | status: done | commit: self
+[T-086] [v0.4.1] [UX] render command-specific PQC assessment and crypto chaos headings | deps: T-085 | status: done | commit: self
+[T-087] [v0.4.1] [SHIP] pass repeated-assessment attack and crypto-chaos clean-clone acceptance | deps: T-086 | status: done | commit: self
+[T-088] [v0.4.1] [ORCH] record the v0.4.1 release gate changelog and tag | deps: T-087 | status: done | commit: self
+
+## v0.4.1 relationship design
+
+- Keep the frozen `key_exchange` and `protected_by` relationship types.
+  `key_exchange` connects an owning component to transport or key-exchange
+  configuration. `protected_by` connects an owning component to encryption,
+  signature, hash, certificate, and other cryptographic protection assets.
+- Resolve ownership by strongest available evidence in order: exact source,
+  explicit application entrypoint, a source/config file reference from a
+  component source, then the nearest common project module directory. Do not
+  create a project-wide Cartesian product or infer relationships from an
+  algorithm name alone.
+- Preserve evidence paths and record the binding reason in edge metadata so a
+  cross-layer traversal is explainable and deterministic.
+
+## v0.4.1 milestone gate
+
+After T-088, run the full suite, create and push annotated tag `v0.4.1` on
+`dev`, then perform acceptance from a fresh clone of that tag. Run `pqc assess`
+twice and require identical node, relationship, isolated-asset, and path counts;
+also run `attack` and `crypto chaos` against the bundled examples. Hold for
+review before proposing v0.5 scope.
+
+# v0.5 task ledger
+
+v0.5 adds deterministic cross-layer AI-to-crypto analysis and two presentation
+surfaces over one shared information architecture. It uses only real security
+graph edges, records the stored direction and traversal direction of every hop,
+and exposes evidence without introducing a model-backed planner.
+
+[T-089] [v0.5] [ORCH] define cross-layer chain semantics and the shared TUI and dashboard data contract | deps: T-088 | status: done | commit: self
+[T-090] [v0.5] [GRAPH] implement deterministic orientation-aware cross-layer topology traversal | deps: T-089 | status: done | commit: self
+[T-091] [v0.5] [EVID] target crypto findings at the concrete algorithm certificate or TLS nodes that support them | deps: T-084,T-090 | status: done | commit: self
+[T-092] [v0.5] [AISEC] correlate AI findings to crypto findings through genuine graph paths with stable explanations | deps: T-090,T-091 | status: done | commit: self
+[T-093] [v0.5] [EVID] serialize cross-layer chains and evidence drill-down into a strict presentation data model | deps: T-092 | status: done | commit: self
+[T-094] [v0.5] [UX] implement shared visual tokens navigation labels tables and detail-panel grammar | deps: T-089,T-093 | status: done | commit: self
+[T-095] [v0.5] [UX] implement the keyboard-driven TUI shell with the fixed twelve-section navigation | deps: T-094 | status: done | commit: self
+[T-096] [v0.5] [UX] implement the dashboard shell with fixed rail dense tables filters and side-panel details | deps: T-094 | status: done | commit: self
+[T-097] [v0.5] [UX] implement interactive attack-graph path selection and cross-layer evidence drill-down | deps: T-095,T-096 | status: done | commit: self
+[T-098] [v0.5] [SHIP] wire lattence tui and dashboard data export to the shared cross-layer workflow | deps: T-093,T-097 | status: done | commit: self
+[T-099] [v0.5] [UX] add the cross-layer chain diagram and deterministic TUI demonstration assets | deps: T-097,T-098 | status: done | commit: self
+[T-100] [v0.5] [SHIP] document cross-layer analysis TUI dashboard traversal and evidence workflows | deps: T-098,T-099 | status: done | commit: self
+[T-101] [v0.5] [SHIP] verify vulnerable-agent exposes LT-AI-002 through real edges to a concrete crypto weakness | deps: T-091,T-092,T-098 | status: done | commit: self
+[T-102] [v0.5] [SHIP] pass clean-wheel and fresh-clone TUI dashboard and cross-layer acceptance | deps: T-100,T-101 | status: done | commit: self
+[T-103] [v0.5] [ORCH] record the v0.5 release gate changelog and annotated tag | deps: T-102 | status: done | commit: self
+
+## v0.5 cross-layer semantics
+
+- A cross-layer chain starts at an AI, agent, or MCP finding target and ends at
+  a concrete crypto finding target. Every hop must be an existing graph edge.
+- Traversal may follow an edge forward or backward to move from an affected
+  resource to its owning or accessing component. Output records both the edge's
+  stored direction and the traversal direction. It never calls a mixed-
+  orientation topology chain an all-forward directed path.
+- The acceptance fixture must expose `LT-AI-002` at
+  `dataset:rag-pipeline:app.py:15` through genuine edges to a vulnerable crypto
+  node that explains TLS 1.2 or partial hybrid TLS. The current graph already
+  contains the two-edge topology chain from that dataset through
+  `tool:app.py:delete_customer_record` to vulnerable X25519.
+- The TUI and dashboard use the fixed twelve-entry navigation from
+  `BUILD/DESIGN.md`. Dense tables, keyboard navigation, filters, side-panel
+  details, path highlighting, JSON copy, and export share one data contract and
+  visual grammar.
+- `--planner llm` remains recognized and not implemented. Cross-layer analysis
+  is deterministic graph traversal.
+
+## v0.5 milestone gate
+
+After T-103, run the full suite, create and push annotated tag `v0.5.0` on
+`dev`, then run acceptance from a fresh clone of the tag. Acceptance must print
+one real end-to-end `LT-AI-002` cross-layer chain with every stored graph edge,
+orientation, crypto endpoint, and evidence reference. Hold for review before
+v1.0.
+
+# v0.5.1 repair task ledger
+
+v0.5.1 closes the validation and human-surfacing gaps in v0.5 without changing
+the real graph data or cross-layer correlation semantics.
+
+[T-104] [v0.5.1] [ORCH] scope the real-graph validation and chain-surfacing repair | deps: T-103 | status: done | commit: self
+[T-105] [v0.5.1] [AISEC] test cross-layer correlation directly against the discovered vulnerable-agent graph | deps: T-104 | status: done | commit: self
+[T-106] [v0.5.1] [SHIP] expose real cross-layer findings through the graph chain command | deps: T-105 | status: done | commit: self
+[T-107] [v0.5.1] [UX] wire TUI finding detail and hop navigation to real cross-layer correlations | deps: T-106 | status: done | commit: self
+[T-108] [v0.5.1] [SHIP] correct release documentation and pass fresh chain acceptance | deps: T-107 | status: done | commit: self
+[T-109] [v0.5.1] [ORCH] record the v0.5.1 release gate and annotated tag | deps: T-108 | status: done | commit: self
+
+## v0.5.1 milestone gate
+
+After T-109, run the full suite, create and push annotated tag `v0.5.1` on
+`dev`, then run `graph chain` against `examples/vulnerable-agent` from a fresh
+checkout. The literal command output must show both finding identifiers, both
+real edge types, their orientation, and every evidence reference. Hold at the
+tag for review. Do not start v1.0.
+
+# v1.0 phase 0 gate
+
+[T-110] [v1.0 phase 0] [ORCH] distinguish finding correlations from structural paths across terminal JSON and dashboard output | deps: T-109 | status: done | commit: self
+
+The remaining phases are scoped only after this gate is reviewed. Phase 1 is
+packaging and local install, Phase 2 is API and plugin SDK, Phase 3 is Docker
+deployment, Phase 4 is SARIF and CI, Phase 5 is enterprise controls and workers,
+and Phase 6 is final documentation. Do not start the next phase before review.
+
+# v1.0 phase 1 task ledger
+
+Phase 1 prepares a public pre-v1 package, validates both distribution formats,
+then requires a real package-index upload and clean public pipx install before
+the gate. The distribution version is `0.5.2`; `1.0.0` is reserved for the
+final milestone.
+
+[T-111] [v1.0 phase 1] [SHIP] finalize public package metadata and version | deps: T-110 | status: done | commit: self
+[T-112] [v1.0 phase 1] [SHIP] validate wheel and source archive metadata and clean command parity | deps: T-111 | status: done | commit: self
+[T-113] [v1.0 phase 1] [SHIP] prepare exact package-index upload and clean pipx verification procedure | deps: T-112 | status: done | commit: self
+[T-114] [v1.0 phase 1] [SHIP] publish package and verify public pipx installation | deps: T-113 | status: done | commit: self
+[T-115] [v1.0 phase 1] [ORCH] run full phase gate and record acceptance | deps: T-114 | status: done | commit: self
+
+## v1.0 phase 1 milestone gate
+
+Package `lattence` 0.5.2 is published on the real public PyPI index
+(`https://pypi.org/pypi/lattence/json` lists release `0.5.2` with wheel and
+sdist uploaded 2026-09-20). Two independent `pipx install lattence` runs
+against an isolated `PIPX_HOME`/`PIPX_BIN_DIR` against the public index both
+installed version 0.5.2 and printed the correct banner and version string
+from the isolated bin path. Phase 1 gate closed. Hold for review before
+scoping Phase 2.
+
+# v1.0 phase 2 task ledger
+
+Phase 2 exposes scan, attack, and cross-layer chain results over HTTP and
+documents the plugin SDK. The API is additive: it reuses the frozen
+`lattence.graph`, `lattence.evidence`, and presentation Pydantic models from
+`BUILD/CONTRACTS.md` without redefining them, and does not change CLI
+behavior, report schema, or graph or finding contracts. `lattence-api` is an
+existing empty workspace member; this phase fills it in. Authentication is
+static bearer token only for v1.0. RBAC, SSO, and multi-tenant access control
+are explicitly deferred to Phase 5.
+
+[T-116] [v1.0 phase 2] [API] scaffold the lattence-api application and dependency wiring | deps: T-115 | status: done | commit: self
+[T-117] [v1.0 phase 2] [API] wire GET /v1/scan to the existing scan workflow and Project and SecurityGraph models | deps: T-116 | status: done | commit: self
+[T-118] [v1.0 phase 2] [API] wire POST /v1/attack to the existing attack workflow and Finding and EvidenceBundle models | deps: T-116 | status: done | commit: self
+[T-119] [v1.0 phase 2] [API] wire GET /v1/chain to the existing graph chain workflow and CrossLayerChain models | deps: T-116 | status: done | commit: self
+[T-120] [v1.0 phase 2] [API] add bearer token authentication for all v1 routes | deps: T-117,T-118,T-119 | status: done | commit: self
+[T-121] [v1.0 phase 2] [API] validate every API response against report.v1.json and the SecurityPresentation model | deps: T-120 | status: done | commit: self
+[T-122] [v1.0 phase 2] [SHIP] document the plugin SDK for third-party SecurityProvider adapters using the Garak, PyRIT, and Promptfoo adapters as the reference implementation | deps: T-116 | status: done | commit: self
+[T-123] [v1.0 phase 2] [SHIP] document API authentication and record RBAC and SSO as deferred to Phase 5 | deps: T-120 | status: done | commit: self
+[T-124] [v1.0 phase 2] [SHIP] add live-instance API integration tests against examples/vulnerable-agent asserting report schema conformance | deps: T-121 | status: done | commit: self
+[T-125] [v1.0 phase 2] [SHIP] wire lattence-api into the package build, add a CLI serve command, and finalize workspace metadata | deps: T-124,T-122,T-123 | status: done | commit: self
+[T-126] [v1.0 phase 2] [SHIP] satisfy the full-suite lint typing and prose gate for phase 2 changes | deps: T-125 | status: done | commit: self
+[T-127] [v1.0 phase 2] [ORCH] record the v1.0 phase 2 release gate and annotated tag | deps: T-126 | status: done | commit: self
+
+## v1.0 phase 2 scope notes
+
+- The API layer is a thin HTTP surface over the existing deterministic
+  workflows (`lattence.cli.workflow`, `graph_chain_command`, and the provider
+  runtime). It does not reimplement scan, attack, or chain logic.
+- `GET /v1/scan`, `POST /v1/attack`, and `GET /v1/chain` accept a project path
+  or an existing report path, mirroring the CLI contract's `[PATH]` and
+  `[INPUT]` arguments, and return the same Pydantic models the CLI already
+  serializes, so responses validate against `docs/schemas/report.v1.json` and
+  the `SecurityPresentation` model without a parallel schema.
+- Authentication is a single static bearer token read from environment
+  configuration, checked on every v1 route. No user store, roles, or session
+  management ships in Phase 2. `BUILD/notes/` for the API module records this
+  explicitly so Phase 5 RBAC and SSO work does not assume more exists today.
+- The plugin SDK doc explains `discover`, `generate_tests`, `execute`, and
+  `normalize_results` from the frozen `SecurityProvider` protocol using the
+  real `garak.py`, `pyrit.py`, and `promptfoo.py` adapters as worked examples,
+  not a new tutorial provider.
+- Integration tests start a real running instance of the API, issue actual
+  HTTP requests against `examples/vulnerable-agent`, and assert the JSON
+  response against the frozen report and presentation schemas. They are not
+  mocked at the HTTP layer.
+
+## v1.0 phase 2 milestone gate
+
+After T-127, run the full suite, create and push annotated tag `v1.0-phase2`
+on `dev`, then show literal `curl` output from a real running `lattence-api`
+instance for `/v1/scan`, `/v1/attack`, and `/v1/chain` against
+`examples/vulnerable-agent`, including the bearer token requirement. Hold for
+review before scoping Phase 3.
+
+Gate closed 2026-09-20. `lattence serve --port 8099` ran as a real background
+process with `LATTENCE_API_TOKEN` set. Literal results: a request to
+`/v1/scan` with no `Authorization` header returned `401
+{"detail":"missing bearer token"}`; a request with the wrong token returned
+`401 {"detail":"invalid bearer token"}`; with the correct bearer token,
+`GET /v1/scan?path=examples/vulnerable-agent` returned `200` with
+`schema_version "1"` and 13 findings, `POST
+/v1/attack?path=examples/vulnerable-agent&offline=true` returned `200` with
+the same 13 findings, and `GET
+/v1/chain?path=examples/vulnerable-agent` returned `200` with 32
+`cross_layer_chains` and `cross_layer_summary
+{"finding_correlations": 32, "distinct_structural_paths": 9}`, matching the
+v0.5.1 acceptance numbers. The full suite passed at 321 tests and 91.43
+percent coverage, lint and formatting passed across the tree, all eight
+strict typing targets passed (the original seven plus
+`lattence-api/src/lattence_api`), and provenance and prose checks passed.
+
+[T-128] [v1.0 phase 2] [API] correct unconfigured-token response to 503 and add a regression test | deps: T-127 | status: done | commit: self
+
+`require_bearer_token` returned 500 for a missing `LATTENCE_API_TOKEN`. A
+missing server configuration is a service-unavailable condition, not an
+internal server error caused by the request, so it now returns 503. Added
+`test_v1_route_without_token_configured_returns_503` asserting the specific
+status code, not just any error response, so this does not silently regress
+back to 500.
+
+# v1.0 phase 3 task ledger
+
+Phase 3 adds a Docker deployment path for the team mode (one container
+running `lattence-api`, offline, no network dependency beyond what the
+package already declares) and documents, without building, the
+controller/worker enterprise mode. Distributed execution across workers
+depends on the RBAC and audit groundwork Phase 5 owns; building a
+controller/worker runtime now would mean building authorization twice, so
+Phase 3 stops at the design document and Phase 5 implements it against that
+design.
+
+[T-129] [v1.0 phase 3] [SHIP] write a Dockerfile for lattence-api built from the published wheel | deps: T-128 | status: done | commit: self
+[T-130] [v1.0 phase 3] [SHIP] write docker-compose.yml for the team deployment mode with a mounted project volume | deps: T-129 | status: done | commit: self
+[T-131] [v1.0 phase 3] [SHIP] confirm container build, run, and an offline scan against a mounted project directory produce correct output | deps: T-130 | status: done | commit: self
+[T-132] [v1.0 phase 3] [ORCH] document the controller/worker enterprise deployment mode design | deps: T-131 | status: done | commit: self
+[T-133] [v1.0 phase 3] [SHIP] satisfy the full-suite lint typing and prose gate for phase 3 changes | deps: T-132 | status: done | commit: self
+[T-134] [v1.0 phase 3] [ORCH] record the v1.0 phase 3 release gate and annotated tag | deps: T-133 | status: done | commit: self
+
+## v1.0 phase 3 scope notes
+
+- The team deployment mode is one `lattence-api` container per team,
+  authenticated by the same static bearer token from Phase 2, reading a
+  project mounted as a read-only volume. It performs no network access
+  beyond what `pyproject.toml` already declares as dependencies; the
+  container never reaches out to an external security engine unless one is
+  explicitly enabled, matching the existing `--offline` CLI contract.
+- The Dockerfile builds from the published wheel (or a local build in CI),
+  not from a fat, from-source image, keeping the image close to what a real
+  `pip install lattence[api]` user gets.
+- The controller/worker design document scopes a control plane that
+  schedules `scan`/`attack` runs across multiple workers with per-run
+  identity and audit trail. It explicitly depends on Phase 5 RBAC and audit
+  logging; Phase 3 does not implement scheduling, worker registration, or a
+  message queue. It records enough of the design that Phase 5 can build
+  against it without re-deciding the shape.
+
+## v1.0 phase 3 milestone gate
+
+After T-134, run the full suite, create and push annotated tag
+`v1.0-phase3` on `dev`, then show literal `docker compose` output for
+building the image, starting the team-mode service, and running a scan
+against `examples/vulnerable-agent` mounted into the container, confirming
+the result matches the CLI's own output and that no network call outside
+the container's declared dependencies occurred. Hold for review before
+scoping Phase 4.
+
+Gate closed 2026-09-20. `docker compose up -d --build` built the image and
+started `lattence-lattence-api-1`, publishing `0.0.0.0:8000->8000/tcp` with
+`examples/vulnerable-agent` bind-mounted read-only at `/data`. `GET /health`
+returned `200 {"status":"ok"}`. `GET /v1/scan?path=/data` with the bearer
+token returned `200` with `schema_version "1"`, 13 findings, and summary
+`{critical:1, high:11, medium:1, pqc_readiness:21.0}`, identical to running
+`lattence scan examples/vulnerable-agent` directly on the host. A traced
+`socket.socket.connect` inside the running container during that scan
+recorded zero outbound connection attempts, confirming the container makes
+no network call beyond serving the published port; `docker compose down`
+tore the stack down cleanly afterward with no leftover containers or
+networks. The full suite passed at 325 tests and 91.43 percent coverage,
+lint and formatting passed across the tree, all eight strict typing targets
+passed, and provenance and prose checks passed. The controller/worker
+enterprise mode is documented in `docs/enterprise-deployment-design.md` and
+deliberately unimplemented; Phase 5 builds it once RBAC and audit
+groundwork exist (D-027 in `BUILD/DECISIONS.md`).
+
+# v1.0 pre-phase-4 fixes
+
+[T-135] [v1.0 fixes] [UX] show the startup banner on bare invocation and lattence tui launch | deps: T-134 | status: done | commit: self
+[T-136] [v1.0 fixes] [SHIP] cut the README to a real quickstart and relocate deep content into docs | deps: T-135 | status: done | commit: self
+
+`render_banner()` previously only fired inside `--version`. `lattence` with
+no arguments now prints the banner followed by help text (replacing
+`no_args_is_help`, which bypassed the callback body); `lattence tui` prints
+the banner once before building the presentation, skipped when `--json` or
+`--quiet` keeps stdout machine-readable. No other command gained the
+banner.
+
+README cut from 359 lines and 14 sections to 147 lines and 9 sections. The
+full architecture, cross-layer analysis, and PQC/crypto sections already
+had dedicated docs; only the README's summary and links needed trimming.
+The "Deployment modes" and "Extending it" sections had no existing home, so
+they moved into new `docs/additional-info.md` alongside a full command
+reference, plugin SDK pointer, and install troubleshooting. `docs/
+architecture.md` is new, covering the three-stage pipeline and package
+layout that used to live inline in the README. `tests/cli/
+test_cross_layer_docs.py::test_readme_links_shared_presentation_guide_and_demo`
+no longer asserts the raw diagram path is in the README, since that image
+now lives only in `docs/cross-layer-analysis.md`; it still asserts the
+guide link, the demo gif, and the `graph chain` example remain.
+
+# v1.0 phase 4 task ledger
+
+Phase 4 adds SARIF 2.1.0 output, a GitHub Action, and CI integration.
+
+[T-137] [v1.0 phase 4] [EVID] implement SARIF 2.1.0 conversion validated against the real SARIF schema | deps: T-136 | status: done | commit: self
+
+`lattence.evidence.sarif` converts a `Report` into a SARIF 2.1.0 document:
+one `results` entry per finding (`ruleId`, severity-mapped `level`, message,
+and a `physicalLocation` resolved from the finding's target node when the
+node carries a `SourceRef`), and one deduplicated `rules` entry per finding
+id carrying its OWASP and CWE mappings. `sarif_json` validates the built
+document against `docs/schemas/sarif-2.1.0.json`, the real OASIS SARIF 2.1.0
+JSON schema (fetched from the `microsoft/sarif-sdk` mirror, since the OASIS
+repository's raw schema path returns 404), not a hand-written stand-in.
+The schema is force-included into the wheel the same way
+`report.v1.json` already is.
+
+[T-138] [v1.0 phase 4] [SHIP] wire the sarif command to load a report and write a validated SARIF document | deps: T-137 | status: done | commit: self
+
+`sarif [INPUT]` (D-028 in `BUILD/DECISIONS.md`) follows the same
+INPUT-loading pattern as `report`: `load_report` reads the saved JSON
+report, then `write_sarif` (new in `workflow.py`) writes
+`lattence.sarif.json`, an exact `--out` file path, or prints the document
+to stdout with `--json`. Every path runs the real schema validation inside
+`sarif_json` before output.
+
+[T-139] [v1.0 phase 4] [SHIP] add a GitHub Action and self-scan workflow that scan, convert to SARIF, and upload to code scanning | deps: T-138 | status: done | commit: self
+
+`action.yml` is a composite action: install Lattence from PyPI, run `scan`
+or `attack` (`run-attack` input, default false) with the caller's
+`fail-on` gate but never let a gate failure abort the run early, convert
+the resulting report to SARIF with the new `sarif` command, upload it with
+`github/codeql-action/upload-sarif`, then apply the requested gate as the
+action's own exit code as a final step. `.github/workflows/
+lattence-scan.yml` demonstrates it against Lattence's own repository root
+on push, pull request, and a weekly schedule, with `fail-on: none` since
+this is a demonstration workflow, not a merge gate.
+`tests/ci/test_action.py` parses both YAML files and asserts every
+third-party `uses:` reference is pinned to a full 40-character commit SHA,
+not a floating tag; the `github/codeql-action/upload-sarif` SHA
+(`c23de5a82f64bb08c6d9f28844551440ca298e76`, tag `v4.38.1`) was looked up
+live via `gh api repos/github/codeql-action/git/refs/tags`, not invented,
+after an earlier draft of this file had a placeholder SHA caught before
+commit. Manually confirmed end to end outside the test suite: `lattence
+scan .` against the full Lattence repository (which includes the
+`examples/vulnerable-agent` fixture) produces 13 findings, and `lattence
+sarif` on that report produces a 13-result SARIF document.
+
+[T-140] [v1.0 phase 4] [SHIP] satisfy the full-suite lint typing and prose gate for phase 4 changes | deps: T-139 | status: done | commit: self
+
+Full suite: 337 passed, 91.42 percent coverage. Lint and formatting: passed
+across the tree. Strict typing: passed for all eight package targets plus
+`tests/docker` and `tests/ci`. Provenance and prose: passed. Main package
+wheel and source archive still build and pass twine check.
+
+[T-141] [v1.0 phase 4] [ORCH] record the v1.0 phase 4 release gate and annotated tag | deps: T-140 | status: done | commit: self
+
+## v1.0 phase 4 milestone gate
+
+Gate closed 2026-09-20. `lattence sarif` converts a real report into a
+SARIF 2.1.0 document validated against the real OASIS schema. `action.yml`
+runs scan or attack, converts to SARIF, and uploads to GitHub code scanning
+through `github/codeql-action/upload-sarif`, pinned to a commit SHA looked
+up live via `gh api`, not invented. `.github/workflows/lattence-scan.yml`
+demonstrates the action against Lattence's own repository root. Manually
+confirmed end to end: `lattence scan .` against the full repository
+produces 13 findings (from the bundled `examples/vulnerable-agent`
+fixture) and `lattence sarif` on that report produces a matching
+13-result SARIF document. Full suite passed at 337 tests and 91.42 percent
+coverage, lint and formatting passed, all eight strict typing targets
+passed, and provenance and prose checks passed.
+
+# v1.0 phase 5 task ledger
+
+Phase 5 adds RBAC, an OIDC-compatible SSO extension point, durable audit
+logging, and a realistically scoped distributed worker queue. Nothing in
+`BUILD/CONTRACTS.md` defines an identity or authorization model, so this
+phase is additive rather than a conflict with a frozen contract; storage,
+role, and extension-point shapes below are engineering decisions recorded
+in `BUILD/DECISIONS.md` as they are made, the same way `serve` and `sarif`
+were.
+
+[T-142] [v1.0 phase 5] [SHIP] implement a shared RBAC role model and local API key store | deps: T-141 | status: done | commit: self
+[T-143] [v1.0 phase 5] [API] enforce RBAC on the v1 API routes without breaking the existing static team-mode token | deps: T-142 | status: done | commit: self
+[T-144] [v1.0 phase 5] [API] add an OIDC-compatible SSO extension point tested against a mock provider | deps: T-143 | status: done | commit: self
+[T-145] [v1.0 phase 5] [SHIP] add durable queryable audit logging and wire it into CLI scan/attack/policy-check and the API scan/attack routes | deps: T-144 | status: done | commit: self
+[T-146] [v1.0 phase 5] [API] implement a single-controller-multi-worker job queue per the enterprise deployment design, RBAC-gated and audited | deps: T-145 | status: done | commit: self
+[T-147] [v1.0 phase 5] [SHIP] satisfy the full-suite lint typing and prose gate for phase 5 changes | deps: T-146 | status: done | commit: self
+[T-148] [v1.0 phase 5] [ORCH] record the v1.0 phase 5 release gate and annotated tag | deps: T-147 | status: done | commit: self
+
+## v1.0 phase 5 milestone gate
+
+Gate closed 2026-09-20. Live demonstration against a real running
+`lattence serve` instance with `LATTENCE_RBAC_DB` and `LATTENCE_AUDIT_DB`
+configured: an RBAC key issued with only `run_scans` and `read_findings`
+got `403 {"detail":"caller alice lacks role run_attacks"}` from
+`POST /v1/attack` and `200` with a matching 13-finding report from
+`GET /v1/scan`. An unconfigured mock-SSO-shaped token was correctly
+rejected `401` since no `SSOProvider` was registered server-side,
+confirming the extension point does not silently accept unrecognized
+tokens. A job submitted through `POST /v1/jobs?operation=scan` returned
+immediately as `running`, and polling `GET /v1/jobs/{id}` a moment later
+showed `succeeded` with a summary identical to the direct scan.
+
+The first pass of this demonstration surfaced a real bug: the audit
+database showed two `job_submit:scan` rows for one submission, because
+both `JobController.submit` and the `POST /v1/jobs` route handler wrote a
+submission audit event. Fixed by removing the route handler's duplicate
+call, since the controller is the single source of truth for a job's own
+lifecycle events; `record_api_audit_event` stays imported and used only in
+the direct `/v1/scan` and `/v1/attack` routes, which have no controller of
+their own. Re-verified live after the fix: exactly one `job_submit:scan`
+and one matching `job_complete:scan` per submission. All 32 API tests
+still passed both before and after, since the existing assertions checked
+`any(...)` rather than an exact count; that gap is noted here rather than
+silently left for a future regression to rediscover.
+
+Full suite passed at 366 tests and 92.37 percent coverage, lint and
+formatting passed, all nine strict typing targets passed, and provenance
+and prose checks passed.
+
+# v1.0 phase 6 task ledger
+
+Phase 6 is the final documentation pass before the v1.0.0 gate: verify
+every doc example against the real bundled project, confirm every README
+claim is true of the shipped feature set, write the CHANGELOG entry
+covering every v1.0 phase, and confirm the community files (CONTRIBUTING,
+SECURITY) are accurate against the final command set.
+
+[T-149] [v1.0 phase 6] [SHIP] verify every docs/ example against the real bundled example project | deps: T-148 | status: done | commit: self
+[T-150] [v1.0 phase 6] [SHIP] confirm every README claim against the final v1.0 feature set | deps: T-149 | status: done | commit: self
+[T-151] [v1.0 phase 6] [ORCH] write the CHANGELOG entry covering every v1.0 phase | deps: T-150 | status: done | commit: self
+[T-152] [v1.0 phase 6] [SHIP] confirm CONTRIBUTING.md and SECURITY.md are accurate against the final command set and architecture | deps: T-151 | status: done | commit: self
+[T-153] [v1.0 phase 6] [SHIP] satisfy the full-suite lint typing and prose gate for phase 6 changes | deps: T-152 | status: done | commit: self
+[T-154] [v1.0 phase 6] [ORCH] record the v1.0 phase 6 release gate and annotated tag | deps: T-153 | status: done | commit: self
+
+## v1.0 phase 6 milestone gate
+
+Gate closed 2026-09-20. Every docs/ example verified live against
+`examples/vulnerable-agent`; two commands and one code snippet were
+already accurate, one doc table was missing the `sarif` and `rbac`
+commands and the job queue's real status, both fixed. Every README claim
+re-verified against a fresh run: quickstart scan and attack output
+matched the committed literal blocks exactly, the "15 attack rules" count
+matched the real rule pack file count, every linked doc and community
+file exists. CHANGELOG's `[Unreleased]` section now covers every v1.0
+phase for a reader, not a task tracker. CONTRIBUTING.md, SECURITY.md,
+SUPPORT.md, and ROADMAP.md each had at least one stale claim (a missing
+workspace package, a dead README anchor, a "pre-1.0" version line, a
+"not yet shipped" PyPI/Docker claim for features that shipped in phases 1
+and 3); all fixed. Full suite passed at 366 tests and 92.37 percent
+coverage, lint and formatting passed, all nine strict typing targets
+passed, and provenance and prose checks passed. Package version remains
+0.5.2; the 1.0.0 bump happens at the final gate, next.
+
+## v1.0 phase 5 scope notes
+
+- Roles: `read_findings`, `run_scans`, `run_attacks`, `manage_policy`,
+  matching the brief exactly. `manage_policy` is defined now even though
+  no API route enforces it yet, since `policy check` is still CLI-only;
+  it is enforced there through audit logging, not a route guard.
+- RBAC is additive, not a replacement for the Phase 2 static bearer token.
+  `docker compose` team mode keeps working unchanged: a request with the
+  legacy `LATTENCE_API_TOKEN` still gets full access, audited under actor
+  `team-token`. A request with a per-caller RBAC API key gets exactly the
+  roles that key was issued, audited under its caller id. Breaking the
+  static-token path would break the already-shipped and already-tested
+  Phase 3 Docker deployment for no benefit.
+- SSO is an extension point (a `SSOProvider` protocol resolving a bearer
+  token to a caller id and role set), not a real OIDC client. Adding a real
+  OIDC dependency (token introspection, JWKS fetch, signature verification)
+  is exactly the kind of external, network-dependent integration the brief
+  says is not required; a mock provider proves the seam works.
+- Distributed workers: an in-process, single-controller-multi-worker queue
+  (a thread pool pulling `Job` records and calling the same
+  `create_report`/`create_attack_report` functions the API already calls),
+  matching the `Job` model in `docs/enterprise-deployment-design.md`.
+  Explicitly deferred: multi-host workers, a real message broker, and
+  worker-side short-lived credential issuance. Those need infrastructure
+  choices this phase has no basis to make; the queue model here is real and
+  correct for one controller process coordinating multiple worker threads,
+  not a distributed system across machines.
+
+`lattence.governance` (new, `lattence-core/src/lattence/governance/`, force
+included into the main wheel like `discovery` and `graph`) holds `Role`
+(a `StrEnum`) and `ApiKeyStore`, a SQLite-backed store (stdlib `sqlite3`,
+no new dependency) mapping a hashed API key to a caller id and role set.
+`secrets.token_hex` produces each key; only its SHA-256 hash is stored,
+never the plaintext, which is returned once at creation time.
+
+`lattence.governance.AuditLog` (`lattence-core/src/lattence/governance/
+audit.py`) is a second SQLite table alongside the RBAC key store: one row
+per event, `actor`, `action`, `target`, `result`, and a JSON `details`
+blob, queryable by actor and/or action with newest-first ordering.
+`default_audit_db_path(out)` resolves `LATTENCE_AUDIT_DB` first, then
+`out` when it is a directory, then the current working directory, so the
+CLI writes next to its report artifacts by default and the API writes to
+its working directory by default, both overridable. CLI wiring
+(`workflow.record_cli_audit_event`) uses `getpass.getuser()` as the actor,
+since the CLI has no caller identity concept; it is called from `scan`,
+`attack`, and `policy check`. API wiring
+(`lattence_api.audit.record_api_audit_event`) uses the resolved
+`AuthenticatedCaller.caller_id` from T-143's RBAC dependency, so an
+audited event names the real RBAC caller or `team-token` for the legacy
+path. A root `tests/conftest.py` sets `LATTENCE_AUDIT_DB` to a per-test
+temp path for every test in the suite, since several existing CLI and API
+tests run real `scan`/`attack` invocations without their own `--out`
+isolation and would otherwise write a stray `lattence-audit.db` into the
+repository root during a test run; this was caught by `git status`
+showing an untracked file after a full suite run, not by a failing
+assertion.
+
+`lattence_api.jobs.JobController` (T-146) holds a `ThreadPoolExecutor`
+(default 2 workers) and an in-memory `dict[str, Job]`, guarded by one
+lock. `submit` records a `queued` audit event, dispatches to the pool, and
+returns immediately; the worker thread calls the exact same
+`create_report`/`create_attack_report`/`create_security_presentation`
+functions the direct routes call, then records `succeeded` or `failed`.
+`POST /v1/jobs`, `GET /v1/jobs/{id}`, and `GET /v1/jobs` reuse
+`require_access`, so job submission needs the operation's role
+(`run_scans`/`run_attacks`/`read_findings`) and accepts either an RBAC key
+or the legacy team token, same as the direct routes. `docs/
+enterprise-deployment-design.md` is updated in the same commit to
+distinguish what Phase 5 actually built (single-host, in-process,
+real) from what a genuine multi-host implementation still needs
+(a message broker, worker registration, state persistence across a
+controller restart, short-lived worker credentials); D-031 in
+`BUILD/DECISIONS.md` records the scoping call.
+
+Full suite: 366 passed, 92.37 percent coverage. Lint and formatting: passed
+across the tree. Strict typing: passed for all nine package targets (the
+original eight plus the new `lattence-core/src/lattence/governance`) plus
+`tests/docker` and `tests/ci`. Provenance and prose: passed. Main package
+wheel and source archive still build and pass twine check.
+
+Verified live against `examples/vulnerable-agent`: the `tui`
+command in `docs/cross-layer-analysis.md` writes `presentation.json` and
+exits 0; `graph chain` output already matched in earlier gates;
+`docs/plugin-sdk.md`'s `SecurityProvider` snippet diffed identical to
+`lattence-cli/src/lattence/providers/runtime.py`. `docs/additional-info.md`'s
+command reference table was missing `sarif` and the `rbac` subcommands,
+added; its deployment modes table still described the controller/worker
+row as a pure design, corrected to distinguish the now-real single-host
+job queue from the still-undone multi-host case, and noted RBAC and SSO
+alongside the static token for the REST API row.
+
+No changes needed: the quickstart scan output (attack paths 92, findings
+13, PQC readiness 21 percent) and attack output re-ran identical to the
+README's literal blocks; the "15 attack rules" claim matches the real file
+count in `lattence-packs/attacks/`; every linked doc and community file
+exists; `pip install lattence` and the Docker command were already
+confirmed live in earlier phase gates. The GitHub Actions CI badge URL
+returned 404 to a bare `curl`, but `gh api repos/Vishnu2707/lattence/
+actions/workflows` confirms the workflow exists and is active, so this
+reads as a badge-rendering quirk under a bare request, not a broken claim,
+and was not changed.
+
+CHANGELOG's `[Unreleased]` section now covers every v1.0 phase (0 through
+6) as Added/Changed/Fixed entries, written for a reader, not a task
+tracker: no task ids, phase numbers stay only where they describe when a
+user-visible capability shipped. Renamed to `[1.0.0]` with the release
+date at the final v1.0.0 gate, not here, since phase 6 has its own gate
+first and the version has not tagged yet.
+
+Found and fixed four stale claims: CONTRIBUTING.md's workspace package list
+was missing `lattence-api` and pointed the rule pack example at README's
+now-removed "Extending it" section instead of `docs/additional-info.md`.
+SECURITY.md said "pre-1.0" and "currently 0.1.x" while the real published
+version is 0.5.2 heading into 1.0.0, and its responsible-use section named
+only `attack`, not `crypto chaos` or the API/job-queue paths that also run
+active checks; both fixed, plus a note on rotating the API token and
+revoking RBAC keys. SUPPORT.md pointed at README for rule-pack authoring,
+which moved to docs/ under Fix 1. ROADMAP.md still listed "a published
+PyPI package" and "a Docker image" as planned after both shipped in
+phases 1 and 3; replaced with the real remaining gaps (a real OIDC
+client, multi-host distributed workers).
+
+Full suite: 366 passed, 92.37 percent coverage. Lint and formatting:
+passed across the tree. Strict typing: passed for all nine package
+targets plus tests/docker and tests/ci. Provenance and prose: passed.
+Main package wheel and source archive still build and pass twine check,
+still at version 0.5.2; the version bump to 1.0.0 happens at the final
+v1.0.0 gate, not here.
+
+# v1.0.0 final gate
+
+Gate closed 2026-09-20. Version bumped to `1.0.0` in `pyproject.toml`.
+Full clean-clone acceptance: cloned the pushed `dev` commit into an
+isolated directory, built both the `lattence` and `lattence-api` wheels
+with `uv build`, installed both into a fresh `venv` with no workspace
+present, and ran every command against the bundled fixtures: `scan`,
+`attack`, `graph chain`, `harden`, `policy check`, `verify`, `report`,
+`sarif`, `pqc assess`, `crypto chaos` (with byte-for-byte config
+restoration confirmed), `provider list`, `rbac create-key`/`list`, and a
+real `lattence serve` instance answering `GET /v1/scan` with an RBAC key
+over live HTTP. Docker: `docker compose up -d --build` against the real
+repo `docker-compose.yml`, `GET /health` and an RBAC-free legacy-token
+`GET /v1/scan?path=/data` both returned real results matching the CLI.
+Every command's output matched the values already confirmed in earlier
+phase gates (13 findings, 92 attack paths, 32 cross-layer correlations,
+21 percent PQC readiness). Full suite: 366 passed. Tagged `v1.0.0` on
+`dev` and pushed. No PR to `main` opened and no GitHub release created,
+per instruction; branch protection and tag protection `gh api` commands
+are printed for review, not run.
+
+# Post-v1.0.0 fix: self-scan workflow
+
+[T-155] [v1.0.0 fix] [SHIP] fix self-scan installing lattence from stale PyPI instead of the local checkout | deps: v1.0.0 | status: done | commit: self
+
+The self-scan workflow failed on every push after v1.0.0 shipped: `Error:
+No such command 'sarif'`. Root cause, confirmed from the real GitHub
+Actions run logs rather than assumed: `action.yml`'s "Install Lattence"
+step ran `pip install lattence`, resolving the last PyPI release
+(`0.5.2`), which predates `sarif`, `rbac`, and `serve`. It was not an
+argument-shape mismatch; `lattence sarif REPORT_PATH` already matched
+`load_report`'s expectation of an existing report file, exactly how the
+workflow called it. Fixed by adding a `source` input to `action.yml`
+(`pypi` default for third-party consumers, `local` to `pip install` from
+`${{ github.action_path }}`) and switching `lattence-scan.yml` to
+`source: local`. Added an `action-smoke` job to `ci.yml` that runs the
+composite action for real against `examples/vulnerable-agent` and asserts
+a valid 2.1.0 SARIF document with at least one result comes out, so a
+future workflow/CLI mismatch fails CI before merge. Verified green:
+self-scan run 35536221532 (SARIF uploaded, "Successfully uploaded
+results") and CI run 35536221564 (all 7 jobs, including the new
+`action-smoke` job, passed).

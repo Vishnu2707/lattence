@@ -1,4 +1,5 @@
 from datetime import datetime
+from enum import StrEnum
 
 from lattence.graph import JsonValue, NodeId, UtcDateTime
 from pydantic import BaseModel, ConfigDict, Field
@@ -33,3 +34,9 @@ class ObservationResult(AttackModel):
     matched: bool
     facts: dict[str, JsonValue] = Field(default_factory=dict)
     observed_at: datetime
+
+
+class VerificationOutcome(StrEnum):
+    VULNERABLE = "vulnerable"
+    RESOLVED = "resolved"
+    NOT_FOUND = "not_found"

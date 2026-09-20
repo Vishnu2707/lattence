@@ -1,0 +1,22 @@
+%%{init: {"theme": "base", "themeVariables": {"background": "#0B0D10", "primaryColor": "#12151A", "primaryTextColor": "#E6E9EE", "primaryBorderColor": "#262C35", "lineColor": "#4C8DFF", "secondaryColor": "#1A1F26", "tertiaryColor": "#12151A", "fontFamily": "Menlo, monospace"}}}%%
+flowchart LR
+  accTitle: Cross-layer AI to cryptography attack chain
+  accDescr: LT-AI-002 targets an untrusted retrieval dataset. Reverse traversal follows the stored tool-to-dataset access edge to the destructive tool. Forward traversal then follows the tool-to-X25519 key-exchange edge to a quantum-vulnerable cryptographic asset and its PQC finding.
+
+  AI["AI FINDING<br/>LT-AI-002"]
+  DATA["DATASET<br/>untrusted retrieval"]
+  TOOL["TOOL<br/>delete_customer_record"]
+  CRYPTO["CRYPTO ASSET<br/>X25519, VULNERABLE"]
+  PQC["PQC FINDING<br/>concrete endpoint"]
+
+  AI -. "targets" .-> DATA
+  DATA -->|"REVERSE traversal<br/>stored: tool to dataset"| TOOL
+  TOOL -->|"FORWARD key_exchange<br/>stored: tool to X25519"| CRYPTO
+  CRYPTO -. "targets" .-> PQC
+
+  classDef finding fill:#1A1F26,stroke:#E5484D,color:#E6E9EE,stroke-width:2px;
+  classDef resource fill:#12151A,stroke:#4C8DFF,color:#E6E9EE,stroke-width:2px;
+  classDef crypto fill:#12151A,stroke:#E2A336,color:#E6E9EE,stroke-width:2px;
+  class AI,PQC finding;
+  class DATA,TOOL resource;
+  class CRYPTO crypto;

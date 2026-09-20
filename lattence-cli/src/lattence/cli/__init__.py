@@ -3,6 +3,7 @@ from .targets import (
     OwnedTarget,
     TargetDeclaration,
     TargetDeclarationError,
+    load_scope_declaration,
     load_target_declaration,
 )
 
@@ -17,5 +18,6 @@ __all__ = [
     "TargetDeclarationError",
     "app",
     "load_target_declaration",
+    "load_scope_declaration",
     "main",
 ]

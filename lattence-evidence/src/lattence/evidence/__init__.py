@@ -1,3 +1,4 @@
+from .crypto_normalization import CryptoFindingTargets, normalize_crypto_findings
 from .models import (
     Confidence,
     Digest,
@@ -15,6 +16,17 @@ from .models import (
     TranscriptEntry,
 )
 from .normalization import normalize_rule_finding
+from .presentation import (
+    CrossLayerChain,
+    CrossLayerHop,
+    CrossLayerSummary,
+    SecurityPresentation,
+    build_cross_layer_chain,
+    build_security_presentation,
+    presentation_json,
+    summarize_cross_layer_chains,
+)
+from .remediation import RemediationError, RemediationPlan, remediation_plans
 from .reporting import (
     Report,
     ReportSummary,
@@ -23,6 +35,7 @@ from .reporting import (
     report_json,
     write_json_report,
 )
+from .sarif import build_sarif, sarif_json
 
 __all__ = [
     "Confidence",
@@ -31,19 +44,34 @@ __all__ = [
     "EvidenceBundle",
     "EvidenceInput",
     "Finding",
+    "CryptoFindingTargets",
+    "CrossLayerChain",
+    "CrossLayerHop",
+    "CrossLayerSummary",
     "FindingId",
     "FindingStatus",
     "PolicyDecision",
     "PolicyOutcome",
     "Report",
     "ReportSummary",
+    "RemediationError",
+    "RemediationPlan",
     "ReproductionRecipe",
     "Severity",
+    "SecurityPresentation",
     "TelemetrySpan",
     "ToolInfo",
     "TranscriptEntry",
     "build_report",
+    "build_cross_layer_chain",
+    "build_security_presentation",
+    "build_sarif",
+    "sarif_json",
     "normalize_rule_finding",
+    "normalize_crypto_findings",
+    "presentation_json",
+    "summarize_cross_layer_chains",
+    "remediation_plans",
     "render_html_report",
     "report_json",
     "write_json_report",

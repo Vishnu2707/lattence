@@ -1,7 +1,11 @@
 from datetime import UTC, datetime
 from pathlib import Path
 
-from lattence.cli.presentation import render_scan_summary
+from lattence.cli.presentation import (
+    render_attack_summary,
+    render_banner,
+    render_scan_summary,
+)
 from lattence.evidence import Report, ReportSummary, ToolInfo
 from lattence.graph import Agent, Project, SecurityGraph, Tool
 
@@ -56,3 +60,27 @@ def test_color_mode_uses_terminal_styles() -> None:
     )
 
     assert "\x1b[" in rendered
+
+
+def test_banner_is_a_plain_block_of_no_more_than_six_lines() -> None:
+    banner = render_banner()
+
+    lines = banner.rstrip("\n").splitlines()
+    assert 1 <= len(lines) <= 6
+    assert "\x1b[" not in banner
+
+
+def test_attack_summary_plain_mode_has_no_escapes() -> None:
+    plain = "LATTENCE  attack  .\n\nVULNERABLE  LT-AI-001  Direct  agent:x\n"
+
+    assert render_attack_summary(plain) == plain
+    assert "\x1b[" not in render_attack_summary(plain)
+
+
+def test_attack_summary_color_mode_styles_vulnerable_lines() -> None:
+    plain = "LATTENCE  attack  .\n\nVULNERABLE  LT-AI-001  Direct  agent:x\n"
+
+    rendered = render_attack_summary(plain, color=True)
+
+    assert "\x1b[" in rendered
+    assert "VULNERABLE  LT-AI-001  Direct  agent:x" in rendered
