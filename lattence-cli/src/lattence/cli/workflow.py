@@ -1,3 +1,4 @@
+import getpass
 import json
 from collections.abc import Iterable
 from dataclasses import dataclass
@@ -21,6 +22,7 @@ from lattence.evidence import (
 )
 from lattence.graph import (
     CryptoAlgorithm,
+    JsonValue,
     Node,
     build_security_graph,
     security_graph_json,
@@ -336,3 +338,27 @@ def readiness_json(report: Report) -> str:
 
 def machine_report(report: Report) -> str:
     return report_json(report, _schema_path())
+
+
+def record_cli_audit_event(
+    *,
+    action: str,
+    target: Path,
+    result: str,
+    out: Path,
+    details: dict[str, JsonValue],
+) -> None:
+    from lattence.governance import AuditLog, default_audit_db_path
+
+    log = AuditLog(default_audit_db_path(out))
+    try:
+        actor = getpass.getuser()
+    except OSError:
+        actor = "unknown"
+    log.record(
+        actor=actor,
+        action=action,
+        target=str(target),
+        result=result,
+        details=details,
+    )

@@ -588,7 +588,7 @@ were.
 [T-142] [v1.0 phase 5] [SHIP] implement a shared RBAC role model and local API key store | deps: T-141 | status: done | commit: self
 [T-143] [v1.0 phase 5] [API] enforce RBAC on the v1 API routes without breaking the existing static team-mode token | deps: T-142 | status: done | commit: self
 [T-144] [v1.0 phase 5] [API] add an OIDC-compatible SSO extension point tested against a mock provider | deps: T-143 | status: done | commit: self
-[T-145] [v1.0 phase 5] [SHIP] add durable queryable audit logging and wire it into CLI scan/attack/policy-check and the API scan/attack routes | deps: T-144 | status: todo | commit: self
+[T-145] [v1.0 phase 5] [SHIP] add durable queryable audit logging and wire it into CLI scan/attack/policy-check and the API scan/attack routes | deps: T-144 | status: done | commit: self
 [T-146] [v1.0 phase 5] [API] implement a single-controller-multi-worker job queue per the enterprise deployment design, RBAC-gated and audited | deps: T-145 | status: todo | commit: self
 [T-147] [v1.0 phase 5] [SHIP] satisfy the full-suite lint typing and prose gate for phase 5 changes | deps: T-146 | status: todo | commit: self
 [T-148] [v1.0 phase 5] [ORCH] record the v1.0 phase 5 release gate and annotated tag | deps: T-147 | status: todo | commit: self
@@ -627,3 +627,25 @@ included into the main wheel like `discovery` and `graph`) holds `Role`
 no new dependency) mapping a hashed API key to a caller id and role set.
 `secrets.token_hex` produces each key; only its SHA-256 hash is stored,
 never the plaintext, which is returned once at creation time.
+
+`lattence.governance.AuditLog` (`lattence-core/src/lattence/governance/
+audit.py`) is a second SQLite table alongside the RBAC key store: one row
+per event, `actor`, `action`, `target`, `result`, and a JSON `details`
+blob, queryable by actor and/or action with newest-first ordering.
+`default_audit_db_path(out)` resolves `LATTENCE_AUDIT_DB` first, then
+`out` when it is a directory, then the current working directory, so the
+CLI writes next to its report artifacts by default and the API writes to
+its working directory by default, both overridable. CLI wiring
+(`workflow.record_cli_audit_event`) uses `getpass.getuser()` as the actor,
+since the CLI has no caller identity concept; it is called from `scan`,
+`attack`, and `policy check`. API wiring
+(`lattence_api.audit.record_api_audit_event`) uses the resolved
+`AuthenticatedCaller.caller_id` from T-143's RBAC dependency, so an
+audited event names the real RBAC caller or `team-token` for the legacy
+path. A root `tests/conftest.py` sets `LATTENCE_AUDIT_DB` to a per-test
+temp path for every test in the suite, since several existing CLI and API
+tests run real `scan`/`attack` invocations without their own `--out`
+isolation and would otherwise write a stray `lattence-audit.db` into the
+repository root during a test run; this was caught by `git status`
+showing an untracked file after a full suite run, not by a failing
+assertion.

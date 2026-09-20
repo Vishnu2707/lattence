@@ -44,6 +44,7 @@ from .workflow import (
     exceeds_gate,
     load_report,
     machine_report,
+    record_cli_audit_event,
     severity_meets_gate,
     verify_json,
     verify_report,
@@ -96,6 +97,13 @@ def scan(
     del offline, planner
     result = create_report(path, out)
     artifacts = write_report_artifacts(result, out)
+    record_cli_audit_event(
+        action="scan",
+        target=path,
+        result="completed",
+        out=out,
+        details={"findings": result.summary.total},
+    )
     if json_output:
         typer.echo(machine_report(result), nl=False)
     elif not quiet:
@@ -132,6 +140,13 @@ def attack(
     provider_directory = out.parent if out.suffix else out
     result = create_attack_report(path, provider_directory, offline, out)
     write_report_artifacts(result, out)
+    record_cli_audit_event(
+        action="attack",
+        target=path,
+        result="completed",
+        out=out,
+        details={"findings": result.summary.total},
+    )
     if json_output:
         typer.echo(machine_report(result), nl=False)
     elif not quiet:
