@@ -624,6 +624,21 @@ Full suite passed at 366 tests and 92.37 percent coverage, lint and
 formatting passed, all nine strict typing targets passed, and provenance
 and prose checks passed.
 
+# v1.0 phase 6 task ledger
+
+Phase 6 is the final documentation pass before the v1.0.0 gate: verify
+every doc example against the real bundled project, confirm every README
+claim is true of the shipped feature set, write the CHANGELOG entry
+covering every v1.0 phase, and confirm the community files (CONTRIBUTING,
+SECURITY) are accurate against the final command set.
+
+[T-149] [v1.0 phase 6] [SHIP] verify every docs/ example against the real bundled example project | deps: T-148 | status: todo | commit: self
+[T-150] [v1.0 phase 6] [SHIP] confirm every README claim against the final v1.0 feature set | deps: T-149 | status: todo | commit: self
+[T-151] [v1.0 phase 6] [ORCH] write the CHANGELOG entry covering every v1.0 phase | deps: T-150 | status: todo | commit: self
+[T-152] [v1.0 phase 6] [SHIP] confirm CONTRIBUTING.md and SECURITY.md are accurate against the final command set and architecture | deps: T-151 | status: todo | commit: self
+[T-153] [v1.0 phase 6] [SHIP] satisfy the full-suite lint typing and prose gate for phase 6 changes | deps: T-152 | status: todo | commit: self
+[T-154] [v1.0 phase 6] [ORCH] record the v1.0 phase 6 release gate and annotated tag | deps: T-153 | status: todo | commit: self
+
 ## v1.0 phase 5 scope notes
 
 - Roles: `read_findings`, `run_scans`, `run_attacks`, `manage_policy`,
