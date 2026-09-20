@@ -519,3 +519,12 @@ JSON schema (fetched from the `microsoft/sarif-sdk` mirror, since the OASIS
 repository's raw schema path returns 404), not a hand-written stand-in.
 The schema is force-included into the wheel the same way
 `report.v1.json` already is.
+
+[T-138] [v1.0 phase 4] [SHIP] wire the sarif command to load a report and write a validated SARIF document | deps: T-137 | status: done | commit: self
+
+`sarif [INPUT]` (D-028 in `BUILD/DECISIONS.md`) follows the same
+INPUT-loading pattern as `report`: `load_report` reads the saved JSON
+report, then `write_sarif` (new in `workflow.py`) writes
+`lattence.sarif.json`, an exact `--out` file path, or prints the document
+to stdout with `--json`. Every path runs the real schema validation inside
+`sarif_json` before output.

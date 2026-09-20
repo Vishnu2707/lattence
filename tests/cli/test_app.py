@@ -11,6 +11,7 @@ COMMANDS = [
     ["harden"],
     ["verify"],
     ["report"],
+    ["sarif"],
     ["tui"],
     ["pqc", "assess"],
     ["crypto", "chaos"],

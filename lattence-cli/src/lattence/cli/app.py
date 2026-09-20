@@ -49,6 +49,7 @@ from .workflow import (
     verify_text,
     write_graph,
     write_report_artifacts,
+    write_sarif,
 )
 
 app = typer.Typer(
@@ -187,6 +188,29 @@ def report(
         typer.echo(machine_report(result), nl=False)
     elif not quiet:
         typer.echo(f"Report  {artifacts.html}")
+
+
+@app.command()
+def sarif(
+    input_path: PathArgument = Path("."),
+    json_output: JsonOption = False,
+    out: OutOption = Path("."),
+    offline: OfflineOption = False,
+    no_color: NoColorOption = False,
+    quiet: QuietOption = False,
+    planner: PlannerOption = Planner.RULES,
+    fail_on: FailOnOption = SeverityGate.HIGH,
+) -> None:
+    del offline, no_color, planner, fail_on
+    result = load_report(input_path)
+    if json_output:
+        from lattence.evidence import sarif_json
+
+        typer.echo(sarif_json(result), nl=False)
+    else:
+        destination = write_sarif(result, out)
+        if not quiet:
+            typer.echo(f"SARIF  {destination}")
 
 
 @app.command()

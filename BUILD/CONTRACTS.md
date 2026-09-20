@@ -176,9 +176,15 @@ are validated and passed to the policy engine.
 ## CLI contract
 
 Commands: `scan [PATH]`, `attack [PATH]`, `harden [PATH]`, `verify FINDING_ID`,
-`report [INPUT]`, `tui [INPUT]`, `pqc assess [PATH]`,
+`report [INPUT]`, `sarif [INPUT]`, `tui [INPUT]`, `pqc assess [PATH]`,
 `crypto chaos [PATH]`, `provider enable NAME`, `provider list`,
 `graph export [INPUT]`, `graph chain [INPUT]`, and `policy check [INPUT]`.
+
+`sarif [INPUT]` loads a saved JSON report the same way `report` does and
+writes a SARIF 2.1.0 document (`lattence.sarif.json` by default, or the
+exact `--out` path when it names a file), or prints it to stdout with
+`--json`. The document is always validated against the bundled SARIF 2.1.0
+schema before being written or printed.
 
 Every one of those commands accepts `--json`, `--out PATH`, `--offline`,
 `--no-color`, `--quiet`, `--planner [rules|llm]`, and

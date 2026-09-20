@@ -15,6 +15,7 @@ from lattence.evidence import (
     build_report,
     normalize_rule_finding,
     report_json,
+    sarif_json,
     write_html_report,
     write_json_report,
 )
@@ -247,6 +248,13 @@ def write_graph(report: Report, output: Path) -> Path:
     destination = output / "lattence-graph.json" if output.is_dir() else output
     destination.parent.mkdir(parents=True, exist_ok=True)
     destination.write_text(security_graph_json(report.graph), encoding="utf-8")
+    return destination
+
+
+def write_sarif(report: Report, output: Path) -> Path:
+    destination = output / "lattence.sarif.json" if output.is_dir() else output
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    destination.write_text(sarif_json(report), encoding="utf-8")
     return destination
 
 
