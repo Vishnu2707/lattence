@@ -1,12 +1,11 @@
 # Current state
 
-- Milestone: v1.0 phase 4, SARIF, GitHub Action, and CI integration, gate
-  closed
-- Last completed: T-141, record the v1.0 phase 4 release gate and
+- Milestone: v1.0 phase 5, RBAC, SSO, audit logging, distributed workers,
+  gate closed
+- Last completed: T-148, record the v1.0 phase 5 release gate and
   annotated tag
-- Next task: T-142 (Phase 5, RBAC/SSO/audit/distributed workers), running
-  straight through per standing instruction, no review pause between
-  phases.
+- Next task: Phase 6, final docs pass, running straight through per
+  standing instruction, no review pause between phases.
 - Blockers: none.
 - Note: local verification uses `uv sync --all-packages --dev`, matching CI.
   A plain `uv sync` does not install every workspace member editable and
@@ -35,6 +34,20 @@
 - v1.0 phase 3 tasks: 6 done, 0 todo
 - v1.0 fixes (banner, README): 2 done, 0 todo
 - v1.0 phase 4 tasks: 5 done, 0 todo
+- v1.0 phase 5 tasks: 7 done, 0 todo
+
+## v1.0 phase 5 progress
+
+- Full suite: 366 passed, 92.37 percent coverage.
+- Lint and formatting: passed across the tree.
+- Strict typing: passed for all nine package targets (governance is new)
+  plus tests/docker and tests/ci.
+- Provenance and prose: passed.
+- RBAC, SSO extension point, durable audit logging, and a real
+  single-controller-multi-worker job queue shipped. A duplicate
+  `job_submit` audit event was caught live during the gate demonstration
+  (not by an existing test) and fixed before the gate closed; the test
+  that should have caught it was also strengthened.
 
 ## v1.0 phase 4 progress
 
