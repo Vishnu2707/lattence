@@ -1,10 +1,12 @@
 # Current state
 
-- Milestone: v1.0 phase 3, Docker and deployment modes, gate closed
-- Last completed: T-134, record the v1.0 phase 3 release gate and
+- Milestone: v1.0 phase 4, SARIF, GitHub Action, and CI integration, gate
+  closed
+- Last completed: T-141, record the v1.0 phase 4 release gate and
   annotated tag
-- Next task: none selected. Phase 4 (SARIF and CI) is not scoped. Hold for
-  review before starting it.
+- Next task: T-142 (Phase 5, RBAC/SSO/audit/distributed workers), running
+  straight through per standing instruction, no review pause between
+  phases.
 - Blockers: none.
 - Note: local verification uses `uv sync --all-packages --dev`, matching CI.
   A plain `uv sync` does not install every workspace member editable and
@@ -31,6 +33,20 @@
 - v1.0 phase 1 tasks: 5 done, 0 todo
 - v1.0 phase 2 tasks: 13 done, 0 todo
 - v1.0 phase 3 tasks: 6 done, 0 todo
+- v1.0 fixes (banner, README): 2 done, 0 todo
+- v1.0 phase 4 tasks: 5 done, 0 todo
+
+## v1.0 phase 4 progress
+
+- Full suite: 337 passed, 91.42 percent coverage.
+- Lint and formatting: passed across the tree.
+- Strict typing: passed for all eight package targets plus tests/docker
+  and tests/ci.
+- Provenance and prose: passed.
+- SARIF conversion validated against the real OASIS SARIF 2.1.0 schema.
+  GitHub Action and self-scan workflow added, with every third-party
+  action reference pinned to a commit SHA verified live via `gh api`
+  rather than guessed.
 
 ## v1.0 phase 3 progress
 

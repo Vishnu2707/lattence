@@ -557,3 +557,20 @@ Full suite: 337 passed, 91.42 percent coverage. Lint and formatting: passed
 across the tree. Strict typing: passed for all eight package targets plus
 `tests/docker` and `tests/ci`. Provenance and prose: passed. Main package
 wheel and source archive still build and pass twine check.
+
+[T-141] [v1.0 phase 4] [ORCH] record the v1.0 phase 4 release gate and annotated tag | deps: T-140 | status: done | commit: self
+
+## v1.0 phase 4 milestone gate
+
+Gate closed 2026-09-20. `lattence sarif` converts a real report into a
+SARIF 2.1.0 document validated against the real OASIS schema. `action.yml`
+runs scan or attack, converts to SARIF, and uploads to GitHub code scanning
+through `github/codeql-action/upload-sarif`, pinned to a commit SHA looked
+up live via `gh api`, not invented. `.github/workflows/lattence-scan.yml`
+demonstrates the action against Lattence's own repository root. Manually
+confirmed end to end: `lattence scan .` against the full repository
+produces 13 findings (from the bundled `examples/vulnerable-agent`
+fixture) and `lattence sarif` on that report produces a matching
+13-result SARIF document. Full suite passed at 337 tests and 91.42 percent
+coverage, lint and formatting passed, all eight strict typing targets
+passed, and provenance and prose checks passed.
