@@ -1,9 +1,10 @@
 # Current state
 
-- Milestone: v1.0 phase 3, Docker and deployment modes
-- Last completed: T-133, satisfy the full-suite lint typing and prose gate
-  for phase 3 changes
-- Next task: T-134, record the v1.0 phase 3 release gate and annotated tag
+- Milestone: v1.0 phase 3, Docker and deployment modes, gate closed
+- Last completed: T-134, record the v1.0 phase 3 release gate and
+  annotated tag
+- Next task: none selected. Phase 4 (SARIF and CI) is not scoped. Hold for
+  review before starting it.
 - Blockers: none.
 - Note: local verification uses `uv sync --all-packages --dev`, matching CI.
   A plain `uv sync` does not install every workspace member editable and
@@ -29,7 +30,7 @@
 - v1.0 phase 0 tasks: 1 done, 0 todo
 - v1.0 phase 1 tasks: 5 done, 0 todo
 - v1.0 phase 2 tasks: 13 done, 0 todo
-- v1.0 phase 3 tasks: 5 done, 1 todo
+- v1.0 phase 3 tasks: 6 done, 0 todo
 
 ## v1.0 phase 3 progress
 

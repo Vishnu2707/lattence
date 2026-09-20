@@ -430,7 +430,7 @@ design.
 [T-131] [v1.0 phase 3] [SHIP] confirm container build, run, and an offline scan against a mounted project directory produce correct output | deps: T-130 | status: done | commit: self
 [T-132] [v1.0 phase 3] [ORCH] document the controller/worker enterprise deployment mode design | deps: T-131 | status: done | commit: self
 [T-133] [v1.0 phase 3] [SHIP] satisfy the full-suite lint typing and prose gate for phase 3 changes | deps: T-132 | status: done | commit: self
-[T-134] [v1.0 phase 3] [ORCH] record the v1.0 phase 3 release gate and annotated tag | deps: T-133 | status: todo | commit: self
+[T-134] [v1.0 phase 3] [ORCH] record the v1.0 phase 3 release gate and annotated tag | deps: T-133 | status: done | commit: self
 
 ## v1.0 phase 3 scope notes
 
@@ -459,3 +459,21 @@ against `examples/vulnerable-agent` mounted into the container, confirming
 the result matches the CLI's own output and that no network call outside
 the container's declared dependencies occurred. Hold for review before
 scoping Phase 4.
+
+Gate closed 2026-09-20. `docker compose up -d --build` built the image and
+started `lattence-lattence-api-1`, publishing `0.0.0.0:8000->8000/tcp` with
+`examples/vulnerable-agent` bind-mounted read-only at `/data`. `GET /health`
+returned `200 {"status":"ok"}`. `GET /v1/scan?path=/data` with the bearer
+token returned `200` with `schema_version "1"`, 13 findings, and summary
+`{critical:1, high:11, medium:1, pqc_readiness:21.0}`, identical to running
+`lattence scan examples/vulnerable-agent` directly on the host. A traced
+`socket.socket.connect` inside the running container during that scan
+recorded zero outbound connection attempts, confirming the container makes
+no network call beyond serving the published port; `docker compose down`
+tore the stack down cleanly afterward with no leftover containers or
+networks. The full suite passed at 325 tests and 91.43 percent coverage,
+lint and formatting passed across the tree, all eight strict typing targets
+passed, and provenance and prose checks passed. The controller/worker
+enterprise mode is documented in `docs/enterprise-deployment-design.md` and
+deliberately unimplemented; Phase 5 builds it once RBAC and audit
+groundwork exist (D-027 in `BUILD/DECISIONS.md`).
