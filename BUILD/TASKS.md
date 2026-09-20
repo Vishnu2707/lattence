@@ -786,3 +786,24 @@ targets plus tests/docker and tests/ci. Provenance and prose: passed.
 Main package wheel and source archive still build and pass twine check,
 still at version 0.5.2; the version bump to 1.0.0 happens at the final
 v1.0.0 gate, not here.
+
+# v1.0.0 final gate
+
+Gate closed 2026-09-20. Version bumped to `1.0.0` in `pyproject.toml`.
+Full clean-clone acceptance: cloned the pushed `dev` commit into an
+isolated directory, built both the `lattence` and `lattence-api` wheels
+with `uv build`, installed both into a fresh `venv` with no workspace
+present, and ran every command against the bundled fixtures: `scan`,
+`attack`, `graph chain`, `harden`, `policy check`, `verify`, `report`,
+`sarif`, `pqc assess`, `crypto chaos` (with byte-for-byte config
+restoration confirmed), `provider list`, `rbac create-key`/`list`, and a
+real `lattence serve` instance answering `GET /v1/scan` with an RBAC key
+over live HTTP. Docker: `docker compose up -d --build` against the real
+repo `docker-compose.yml`, `GET /health` and an RBAC-free legacy-token
+`GET /v1/scan?path=/data` both returned real results matching the CLI.
+Every command's output matched the values already confirmed in earlier
+phase gates (13 findings, 92 attack paths, 32 cross-layer correlations,
+21 percent PQC readiness). Full suite: 366 passed. Tagged `v1.0.0` on
+`dev` and pushed. No PR to `main` opened and no GitHub release created,
+per instruction; branch protection and tag protection `gh api` commands
+are printed for review, not run.
