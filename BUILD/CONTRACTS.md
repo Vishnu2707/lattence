@@ -178,13 +178,22 @@ are validated and passed to the policy engine.
 Commands: `scan [PATH]`, `attack [PATH]`, `harden [PATH]`, `verify FINDING_ID`,
 `report [INPUT]`, `tui [INPUT]`, `pqc assess [PATH]`,
 `crypto chaos [PATH]`, `provider enable NAME`, `provider list`,
-`graph export [INPUT]`, and `policy check [INPUT]`.
+`graph export [INPUT]`, `graph chain [INPUT]`, and `policy check [INPUT]`.
 
-Every command accepts `--json`, `--out PATH`, `--offline`, `--no-color`,
-`--quiet`, `--planner [rules|llm]`, and
+Every one of those commands accepts `--json`, `--out PATH`, `--offline`,
+`--no-color`, `--quiet`, `--planner [rules|llm]`, and
 `--fail-on [critical|high|medium|low|info|none]`. Defaults are plain terminal
 output, current directory output, online permitted, color when supported,
 normal logging, rules planner, and `high` failure threshold.
+
+`serve` starts the `lattence-api` HTTP server (see `docs/api-authentication.md`
+and `docs/plugin-sdk.md` for related v1.0 phase 2 surfaces) and takes only
+`--host` (default `127.0.0.1`) and `--port` (default `8000`). It does not
+accept the common options above: a long-running server process has no single
+output mode, project path, or severity gate to apply. `fastapi` and `uvicorn`
+are imported lazily inside the command; running `serve` without the `api`
+install extra fails with a clear message instead of failing at CLI import
+time for every other command.
 
 Machine output goes to stdout. Logs go to stderr. Exit codes are 0 for clean,
 1 for findings at or above the gate, 2 for usage errors, and 3 for internal

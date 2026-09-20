@@ -62,6 +62,19 @@ requests over that socket, not FastAPI's in-process `TestClient` ASGI
 transport. This is the literal live-instance check the phase gate needs
 before the manual `curl` walkthrough.
 
+`lattence serve` (`lattence-cli/src/lattence/cli/serve_command.py`) starts
+the API with uvicorn. It imports `fastapi`, `uvicorn`, and `lattence_api`
+lazily inside the function body, not at module import time, so a plain
+`pip install lattence` (no `api` extra) still gets every other command
+working; `serve` alone fails with a clear message pointing at
+`pip install lattence[api]`. `lattence-api` is deliberately not
+force-included in the main wheel (`[tool.hatch.build.targets.wheel]` in the
+root `pyproject.toml`): it stays an optional workspace member installed
+through the `lattence[api]` extra, matching the decision recorded as D-026
+in `BUILD/DECISIONS.md`. `serve` is documented in `BUILD/CONTRACTS.md`'s CLI
+contract section as an addition outside the universal `--json`/`--out`/...
+option set, since a long-running server process has no single output mode.
+
 Local verification must use `uv sync --all-packages --dev`, the same command
 CI runs. A plain `uv sync` only installs the direct dependency closure and
 leaves sibling workspace packages (`lattence-core`, `lattence-evidence`, and

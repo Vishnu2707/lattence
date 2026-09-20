@@ -34,6 +34,7 @@ from .presentation_workflow import (
     write_dashboard_data,
 )
 from .provider_commands import provider_app
+from .serve_command import serve
 from .targets import TargetDeclarationError, load_target_declaration
 from .workflow import (
     attack_text,
@@ -239,6 +240,7 @@ app.add_typer(provider_app, name="provider")
 app.add_typer(graph_app, name="graph")
 app.add_typer(policy_app, name="policy")
 app.command("harden")(harden)
+app.command("serve")(serve)
 pqc_app.command("assess")(pqc_assess)
 crypto_app.command("chaos")(crypto_chaos)
 graph_app.command("chain")(graph_chain)

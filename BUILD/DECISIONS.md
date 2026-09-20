@@ -105,3 +105,7 @@ Rationale: The bundled example yields 32 valid finding correlations over 9 disti
 2026-09-20 D-025
 Decision: Prepare version 0.5.2 for the first public package-index upload and reserve 1.0.0 for the final milestone.
 Rationale: Phase 1 must verify a public pipx install before API and enterprise phases are complete, so publishing 1.0.0 now would misstate completion.
+
+2026-09-20 D-026
+Decision: Add a CLI `serve` command that starts lattence-api and takes only --host and --port, outside the universal scan/attack option set, with fastapi and uvicorn imported lazily so the core CLI install stays dependency-light.
+Rationale: A long-running server process has no single JSON, out, offline, or fail-on gate semantics, and most CLI users never need the API surface installed.
