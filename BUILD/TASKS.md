@@ -637,7 +637,26 @@ SECURITY) are accurate against the final command set.
 [T-151] [v1.0 phase 6] [ORCH] write the CHANGELOG entry covering every v1.0 phase | deps: T-150 | status: done | commit: self
 [T-152] [v1.0 phase 6] [SHIP] confirm CONTRIBUTING.md and SECURITY.md are accurate against the final command set and architecture | deps: T-151 | status: done | commit: self
 [T-153] [v1.0 phase 6] [SHIP] satisfy the full-suite lint typing and prose gate for phase 6 changes | deps: T-152 | status: done | commit: self
-[T-154] [v1.0 phase 6] [ORCH] record the v1.0 phase 6 release gate and annotated tag | deps: T-153 | status: todo | commit: self
+[T-154] [v1.0 phase 6] [ORCH] record the v1.0 phase 6 release gate and annotated tag | deps: T-153 | status: done | commit: self
+
+## v1.0 phase 6 milestone gate
+
+Gate closed 2026-09-20. Every docs/ example verified live against
+`examples/vulnerable-agent`; two commands and one code snippet were
+already accurate, one doc table was missing the `sarif` and `rbac`
+commands and the job queue's real status, both fixed. Every README claim
+re-verified against a fresh run: quickstart scan and attack output
+matched the committed literal blocks exactly, the "15 attack rules" count
+matched the real rule pack file count, every linked doc and community
+file exists. CHANGELOG's `[Unreleased]` section now covers every v1.0
+phase for a reader, not a task tracker. CONTRIBUTING.md, SECURITY.md,
+SUPPORT.md, and ROADMAP.md each had at least one stale claim (a missing
+workspace package, a dead README anchor, a "pre-1.0" version line, a
+"not yet shipped" PyPI/Docker claim for features that shipped in phases 1
+and 3); all fixed. Full suite passed at 366 tests and 92.37 percent
+coverage, lint and formatting passed, all nine strict typing targets
+passed, and provenance and prose checks passed. Package version remains
+0.5.2; the 1.0.0 bump happens at the final gate, next.
 
 ## v1.0 phase 5 scope notes
 

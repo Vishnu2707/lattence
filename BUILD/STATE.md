@@ -1,11 +1,11 @@
 # Current state
 
-- Milestone: v1.0 phase 5, RBAC, SSO, audit logging, distributed workers,
-  gate closed
-- Last completed: T-148, record the v1.0 phase 5 release gate and
+- Milestone: v1.0 phase 6, final docs pass, gate closed
+- Last completed: T-154, record the v1.0 phase 6 release gate and
   annotated tag
-- Next task: Phase 6, final docs pass, running straight through per
-  standing instruction, no review pause between phases.
+- Next task: final v1.0.0 gate: bump the version, run full clean-clone
+  acceptance across the complete command set, tag v1.0.0. Running
+  straight through per standing instruction.
 - Blockers: none.
 - Note: local verification uses `uv sync --all-packages --dev`, matching CI.
   A plain `uv sync` does not install every workspace member editable and
@@ -35,6 +35,7 @@
 - v1.0 fixes (banner, README): 2 done, 0 todo
 - v1.0 phase 4 tasks: 5 done, 0 todo
 - v1.0 phase 5 tasks: 7 done, 0 todo
+- v1.0 phase 6 tasks: 6 done, 0 todo
 
 ## v1.0 phase 5 progress
 
