@@ -590,7 +590,7 @@ were.
 [T-144] [v1.0 phase 5] [API] add an OIDC-compatible SSO extension point tested against a mock provider | deps: T-143 | status: done | commit: self
 [T-145] [v1.0 phase 5] [SHIP] add durable queryable audit logging and wire it into CLI scan/attack/policy-check and the API scan/attack routes | deps: T-144 | status: done | commit: self
 [T-146] [v1.0 phase 5] [API] implement a single-controller-multi-worker job queue per the enterprise deployment design, RBAC-gated and audited | deps: T-145 | status: done | commit: self
-[T-147] [v1.0 phase 5] [SHIP] satisfy the full-suite lint typing and prose gate for phase 5 changes | deps: T-146 | status: todo | commit: self
+[T-147] [v1.0 phase 5] [SHIP] satisfy the full-suite lint typing and prose gate for phase 5 changes | deps: T-146 | status: done | commit: self
 [T-148] [v1.0 phase 5] [ORCH] record the v1.0 phase 5 release gate and annotated tag | deps: T-147 | status: todo | commit: self
 
 ## v1.0 phase 5 scope notes
@@ -666,3 +666,9 @@ real) from what a genuine multi-host implementation still needs
 (a message broker, worker registration, state persistence across a
 controller restart, short-lived worker credentials); D-031 in
 `BUILD/DECISIONS.md` records the scoping call.
+
+Full suite: 366 passed, 92.37 percent coverage. Lint and formatting: passed
+across the tree. Strict typing: passed for all nine package targets (the
+original eight plus the new `lattence-core/src/lattence/governance`) plus
+`tests/docker` and `tests/ci`. Provenance and prose: passed. Main package
+wheel and source archive still build and pass twine check.
