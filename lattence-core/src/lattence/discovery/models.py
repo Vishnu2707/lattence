@@ -8,12 +8,29 @@ class RuleModel(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
 
 
+class RequiresPathSpec(RuleModel):
+    """Requires a real graph path from a source node type to the matched node.
+
+    A rule with this predicate does not fire on node shape alone: it also
+    requires the existing security graph traversal to find at least one path
+    of `edge_types` from some node of `from_type` to the node under test,
+    within `max_depth` hops. This is how a rule expresses "untrusted data
+    genuinely reaches this sink" instead of "a node exists that looks like
+    a sink."
+    """
+
+    from_type: str
+    edge_types: list[str] = Field(min_length=1)
+    max_depth: int = Field(default=6, ge=1)
+
+
 class MatchSpec(RuleModel):
     paths: list[str] | None = None
     dependencies: list[str] | None = None
     syntax: list[str] | None = None
     config: dict[str, JsonValue] | None = None
     graph: dict[str, JsonValue] | None = None
+    requires_path: RequiresPathSpec | None = None
 
     @model_validator(mode="after")
     def contains_predicate(self) -> Self:

@@ -47,6 +47,14 @@ def _project(root: Path) -> None:
     (root / "app.py").write_text(
         """\
 from crewai import Agent
+from langchain.tools import tool
+
+
+@tool
+def retrieve(query: str) -> str:
+    return query
+
+
 agent = Agent()
 documents = retriever.retrieve()
 """,

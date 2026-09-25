@@ -129,3 +129,90 @@ Rationale: The brief explicitly says full provider integration is not required; 
 2026-09-20 D-031
 Decision: Implement the controller/worker job queue as one in-process controller with a ThreadPoolExecutor worker pool, not a multi-host system, and let /v1/jobs accept the same RBAC-or-legacy-token authentication the direct routes already use.
 Rationale: A correct single-host queue is real, testable, and immediately useful; a multi-host queue needs a message broker and worker registration this phase has no basis to choose, and restricting job submission to RBAC-only while the direct routes still accept the legacy token would make the queue strictly worse than calling /v1/scan directly for team-mode users.
+
+2026-09-25 D-032
+Decision: Native attack rules whose finding claims untrusted data reaches a
+sink (LT-AI-002, LT-AI-007, LT-AI-008) now require a real graph path from an
+agent to the target node via `match.requires_path`, checked by
+`AttackRunner` using the existing `lattence.graph.traversal.find_attack_paths`
+function. Rules that check an intrinsic property of the node itself, not a
+data-flow claim, are left as single-node field predicates.
+Rationale: A self-scan false positive at workflow.py:208 showed the bug
+class directly: a plain f-string was discovered as a `dataset` node with
+`sensitivity: unknown`, and LT-AI-002/LT-AI-008 fired on that field shape
+alone, with no check that any agent ever reached the node. Requiring a real
+path reuses the existing traversal rather than building a second mechanism,
+and only changes rules that make a reachability claim in their finding text.
+
+## Milestone A audit: native rule taint/data-flow soundness
+
+Full audit of every native rule pack (attacks: kind=attack, 15 rules; and
+the AI attack discovery catalog: kind=detection, 23 rules) for the bug class
+found at lattence-cli/src/lattence/cli/workflow.py:208: a rule that matches
+on a node's field shape without checking whether untrusted data genuinely
+reaches that node through the security graph.
+
+Method: for each attack rule, read its finding message for a reachability or
+data-flow claim ("enters the workflow", "reaches an agent", "can propagate
+... into agent context") versus a claim about an intrinsic node property
+("has delete permission", "has no bounded instruction source"). A rule that
+claims reachability but checks only a single node's field is the bug class.
+Detection rules (kind=detection) only ever assert "this dependency and this
+syntax pattern were found in this file"; they make no reachability claim, so
+they are out of scope for this class by construction and are listed for
+completeness only.
+
+Attack rules (kind=attack, native runner in lattence-ai/src/lattence_ai/attacks):
+
+- LT-AGENT-001 (excessive agency, `delegation_enabled: true` on agent):
+  SOUND. Claims a property of the agent itself, not a flow.
+- LT-AGENT-002 (unsafe tool use, `permissions` contains `delete` on tool):
+  SOUND. Intrinsic tool property.
+- LT-AGENT-003 (insecure delegation, `delegation_enabled: true` on agent):
+  SOUND. Same as LT-AGENT-001, different finding framing.
+- LT-AGENT-004 (memory poisoning, `memory_enabled: true` on agent):
+  SOUND. Intrinsic agent property; the finding names a risk class, not a
+  claim that poisoned content already reached this agent.
+- LT-AI-001 (direct prompt injection, `instructions_source` absent on agent):
+  SOUND. Intrinsic property: the agent has no bounded source at all.
+- LT-AI-002 (indirect prompt injection, `sensitivity: unknown` on dataset):
+  NEEDED A FIX. Finding text claims unclassified context "can carry hostile
+  instructions" into the workflow; this is exactly the bug found at
+  workflow.py:208, a discovery artifact with no agent ever wired to it.
+  Fixed: added `requires_path` (agent to dataset via calls/accesses,
+  max_depth 4).
+- LT-AI-003 (sourced system instructions, `instructions_source` exists on
+  agent): SOUND. Intrinsic property, informational framing.
+- LT-AI-004 (system instruction override, `delegation_enabled: true` on
+  agent): SOUND. Intrinsic property.
+- LT-AI-005 (unsafe output handling, `side_effects: true` on tool): SOUND.
+  Intrinsic tool property; no claim that a specific untrusted input reached
+  the tool, only that the tool itself is side-effecting.
+- LT-AI-006 (secret exposure, `exposed_value: true` on secret): SOUND.
+  Intrinsic secret property.
+- LT-AI-007 (retrieval corpus poisoning, `metadata.vector_store: true` on
+  database): NEEDED A FIX. Finding text claims the store "can propagate
+  poisoned content into agent context," a reachability claim with the same
+  shape-only match as LT-AI-002. Fixed: added the same `requires_path`.
+- LT-AI-008 (untrusted retrieved context, `sensitivity: unknown` on
+  dataset): NEEDED A FIX. Same rule shape and same finding text pattern
+  ("enters the workflow ... reaches an agent") as LT-AI-002, same fixture
+  collision observed live in the self-scan (both rules fired on the same
+  workflow.py:208 node). Fixed: added the same `requires_path`.
+- LT-AI-009 (resource exhaustion, `metadata.resource_limits` absent on
+  application): SOUND. Intrinsic property: the application has no
+  configured limit at all.
+- LT-MCP-001 (tool argument injection, `input_schema: {}` on tool): SOUND.
+  Intrinsic property: the tool has no schema to validate arguments against.
+- LT-MCP-002 (confused deputy, `auth_method: configured` on mcp_server):
+  SOUND. Intrinsic property of the server's own configuration.
+
+Detection rules (kind=detection, 20 rules across
+lattence-packs/discovery/{frameworks,providers,data,services}): all match on
+`dependencies` and `syntax` (import/call patterns) within a single file.
+None claims that data from one node reaches another; they report "this
+framework/library is present," which is discovery, not an attack finding.
+Listed for completeness, no fix needed: LT-AI-101 through LT-AI-106
+(frameworks, 6 rules), LT-AI-201 through LT-AI-206 (providers, 6 rules),
+LT-AI-301 through LT-AI-305 (data/retrieval, 5 rules), LT-AI-401 through
+LT-AI-406 (services, 6 rules).

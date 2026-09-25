@@ -1,9 +1,11 @@
 import hashlib
 from collections.abc import Iterable
+from typing import cast
 
 from lattence.discovery import RulePack
+from lattence.discovery.models import RequiresPathSpec
 from lattence.evidence import Report
-from lattence.graph import JsonValue, Node, SecurityGraph
+from lattence.graph import EdgeType, JsonValue, Node, SecurityGraph, find_attack_paths
 
 from .models import ObservationResult, RawResult, TestCase, VerificationOutcome
 
@@ -40,6 +42,31 @@ def _predicate(node: Node, predicate: dict[str, JsonValue] | None) -> bool:
         if isinstance(value, list):
             return expected in value
     return False
+
+
+def _has_real_path(
+    graph: SecurityGraph, target_id: str, spec: RequiresPathSpec
+) -> bool:
+    """True only if a genuine graph path reaches the target from spec.from_type.
+
+    This is the taint check: a node shaped like a sink is not enough, the
+    existing security graph traversal must find a real edge path from at
+    least one node of `spec.from_type` to the target node. Uses the shared
+    `find_attack_paths` traversal in `lattence.graph`, not a second
+    mechanism.
+    """
+    source_ids = [node.id for node in graph.nodes if node.type == spec.from_type]
+    if not source_ids:
+        return False
+    edge_types = cast(frozenset[EdgeType], frozenset(spec.edge_types))
+    paths = find_attack_paths(
+        graph,
+        source_ids,
+        [target_id],
+        max_depth=spec.max_depth,
+        edge_types=edge_types,
+    )
+    return len(paths) > 0
 
 
 class AttackRunner:
@@ -81,6 +108,8 @@ class AttackRunner:
             raise ValueError(f"unknown attack target: {test.target_node_id}")
         rule = self._rules[rule_id]
         matched = _predicate(node, rule.match.graph)
+        if matched and rule.match.requires_path is not None:
+            matched = _has_real_path(self.graph, node.id, rule.match.requires_path)
         return ObservationResult(
             rule_id=rule.id,
             test_id=test.id,

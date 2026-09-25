@@ -10,6 +10,10 @@ match:
   graph:
     field: metadata.vector_store
     equals: true
+  requires_path:
+    from_type: agent
+    edge_types: [calls, accesses]
+    max_depth: 4
 finding:
   message: A vector store can propagate poisoned content into agent context.
   remediation: Authenticate ingestion, record provenance, and validate retrieved text.

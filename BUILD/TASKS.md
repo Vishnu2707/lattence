@@ -829,3 +829,27 @@ future workflow/CLI mismatch fails CI before merge. Verified green:
 self-scan run 35536221532 (SARIF uploaded, "Successfully uploaded
 results") and CI run 35536221564 (all 7 jobs, including the new
 `action-smoke` job, passed).
+
+# Milestone A: detection precision hardening
+
+[T-156] [Milestone A] [AI-SEC] audit native rules for shape-without-flow false positives and require a real graph path on the affected rules | deps: v1.0.0 | status: done | commit: self
+
+Audited all 15 native attack rules and all 23 native detection rules against
+the bug class found live at workflow.py:208: a rule matching a node's field
+shape without checking whether untrusted data actually reaches it. Full
+audit table with sound/needs-fix reasoning per rule is in
+`BUILD/DECISIONS.md` (D-032). Three rules needed a fix: LT-AI-002, LT-AI-007,
+LT-AI-008, all of which make a reachability claim in their finding text.
+Added `MatchSpec.requires_path` and wired `AttackRunner` to call the
+existing `lattence.graph.traversal.find_attack_paths` traversal, no second
+mechanism. Added `tests/ai/attacks/test_dataflow_precision.py` as a distinct
+regression module with a genuine-path fixture and a workflow.py-style decoy
+fixture per fixed rule, and updated the existing per-rule test fixtures that
+this change affects. Self-scan against this repository: 13 findings before,
+13 after; the workflow.py:208 false positive is gone and LT-AI-002/LT-AI-008
+now correctly target the real `dataset:rag-pipeline` node in
+examples/vulnerable-agent instead. All examples/vulnerable-agent deliberate
+findings still fire. Full suite: 370 passed (excluding 2 pre-existing docker
+tests that fail in this environment because no Docker daemon is running,
+unrelated to this change), 92.18 percent coverage. Methodology documented in
+`docs/false-positive-methodology.md`.

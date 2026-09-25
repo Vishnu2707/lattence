@@ -10,6 +10,10 @@ match:
   graph:
     field: sensitivity
     equals: unknown
+  requires_path:
+    from_type: agent
+    edge_types: [calls, accesses]
+    max_depth: 4
 finding:
   message: Unclassified retrieved context can carry hostile instructions.
   remediation: Classify, filter, and delimit retrieved context before use.

@@ -56,3 +56,20 @@ from discovering `examples/vulnerable-agent`. It verifies the real two-hop
 `LT-AI-002` to `LT-PQC-203` route, both stored edges, both traversal
 directions, the evidence paths, and all seven crypto algorithm relationships
 owned by the connected tool.
+
+T-156 audited all 15 native attack rules and all 23 native detection rules
+for matching on node field shape without checking a real data-flow path
+(the bug class found live at workflow.py:208). Added
+`MatchSpec.requires_path` (`lattence-core/src/lattence/discovery/models.py`,
+schema in `rule-pack.v1.json`) and wired it into `AttackRunner.observe`
+(`lattence-ai/src/lattence_ai/attacks/runner.py`), which calls the existing
+`lattence.graph.traversal.find_attack_paths` only after the node's own
+field predicate already matched. Applied to LT-AI-002, LT-AI-007, and
+LT-AI-008, the three rules whose finding text makes a reachability claim.
+Added `tests/ai/attacks/test_dataflow_precision.py` as the distinct
+regression module, and updated the existing positive fixtures in
+`test_prompt_injection.py` and `test_retrieval.py` to include a real
+agent-to-sink path, since an isolated node is no longer a valid "should
+match" fixture for these three rules. Full audit table is in
+`BUILD/DECISIONS.md` (D-032). Methodology written up in
+`docs/false-positive-methodology.md`.

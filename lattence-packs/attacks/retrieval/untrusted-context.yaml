@@ -10,6 +10,10 @@ match:
   graph:
     field: sensitivity
     equals: unknown
+  requires_path:
+    from_type: agent
+    edge_types: [calls, accesses]
+    max_depth: 4
 finding:
   message: Retrieved context enters the workflow without a trust classification.
   remediation: Assign trust and sensitivity before context reaches an agent.
