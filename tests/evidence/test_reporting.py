@@ -4,14 +4,24 @@ from pathlib import Path
 from lattence.discovery import FindingTemplate, MatchSpec, RulePack
 from lattence.evidence import (
     Report,
+    build_cross_layer_chain,
     build_report,
+    build_security_presentation,
     normalize_rule_finding,
     render_html_report,
     report_json,
     write_html_report,
     write_json_report,
 )
-from lattence.graph import Agent, Project, SecurityGraph
+from lattence.graph import (
+    Agent,
+    CryptoAlgorithm,
+    Edge,
+    Project,
+    SecurityGraph,
+    TopologyHop,
+    TopologyPath,
+)
 
 SCHEMA = Path(__file__).parents[2] / "docs" / "schemas" / "report.v1.json"
 
@@ -88,6 +98,108 @@ def test_writes_valid_json_report(tmp_path: Path) -> None:
     assert destination.read_text(encoding="utf-8").endswith("\n")
 
 
+def _presentation_with_chain():
+    timestamp = datetime(2026, 1, 1, tzinfo=UTC)
+    agent = Agent(id="agent:one", name="one")
+    algorithm = CryptoAlgorithm(
+        id="crypto:rsa",
+        name="rsa",
+        algorithm="RSA-2048",
+        purpose="key_exchange",
+        quantum_status="vulnerable",
+    )
+    edge = Edge(
+        id="edge:1", source_id=agent.id, target_id=algorithm.id, type="key_exchange"
+    )
+    project = Project(
+        id="project:fixture",
+        name="fixture",
+        root=".",
+        scanned_at=timestamp,
+        nodes=[agent, algorithm],
+    )
+    graph = SecurityGraph(
+        project_id=project.id,
+        nodes=[agent, algorithm],
+        edges=[edge],
+        generated_at=timestamp,
+    )
+    ai_rule = RulePack(
+        version="1",
+        id="LT-AI-001",
+        kind="attack",
+        title="Fixture finding",
+        description="Fixture rule.",
+        severity="high",
+        confidence="high",
+        applies_to=["agent"],
+        match=MatchSpec(graph={"field": "name", "equals": "one"}),
+        finding=FindingTemplate(
+            message="Fixture matched.", remediation="Fix the fixture."
+        ),
+    )
+    pqc_rule = ai_rule.model_copy(
+        update={"id": "LT-PQC-203", "title": "Vulnerable algorithm"}
+    )
+    ai_finding = normalize_rule_finding(ai_rule, agent.id, timestamp, 1)
+    pqc_finding = normalize_rule_finding(pqc_rule, algorithm.id, timestamp, 2)
+    path = TopologyPath(
+        node_ids=(agent.id, algorithm.id),
+        hops=(
+            TopologyHop(
+                edge_id=edge.id,
+                source_id=edge.source_id,
+                target_id=edge.target_id,
+                edge_type=edge.type,
+                traversal="forward",
+                from_node_id=agent.id,
+                to_node_id=algorithm.id,
+                evidence_refs=("app.py",),
+            ),
+        ),
+    )
+    chain = build_cross_layer_chain(
+        ai_finding.id,
+        pqc_finding.id,
+        path,
+        "reaches a vulnerable algorithm",
+        ("app.py",),
+    )
+    return build_security_presentation(
+        project, graph, [ai_finding, pqc_finding], [chain]
+    )
+
+
+def test_html_report_renders_real_cross_layer_chain_data() -> None:
+    report = _report()
+    presentation = _presentation_with_chain()
+
+    rendered = render_html_report(report, presentation)
+
+    assert "1 finding correlations across 1 distinct structural paths" in rendered
+    assert "LT-AI-001 -&gt; LT-PQC-203" in rendered
+    assert "key_exchange" in rendered
+    assert '"cross_layer_chains"' in rendered
+    assert "https://" not in rendered
+    assert "http://" not in rendered
+    assert "fetch(" not in rendered
+
+
+def test_html_report_without_presentation_shows_empty_chain_state() -> None:
+    rendered = render_html_report(_report())
+
+    assert "No cross-layer chain data." in rendered
+    assert "lattence-presentation" not in rendered
+
+
+def test_html_report_sortable_severity_header_has_no_network_dependency() -> None:
+    rendered = render_html_report(_report())
+
+    assert "data-sortable" in rendered
+    assert "<link " not in rendered
+    assert "cdn." not in rendered
+
+
 def test_html_report_is_self_contained_and_escapes_content(tmp_path: Path) -> None:
     report = _report(assets=3, paths=2).model_copy(
         update={"project": _report().project.model_copy(update={"name": "<script>"})}
@@ -98,7 +210,7 @@ def test_html_report_is_self_contained_and_escapes_content(tmp_path: Path) -> No
     rendered = render_html_report(report)
 
     assert rendered.startswith("<!doctype html>")
-    assert "<script>" not in rendered
+    assert "<title><script>" not in rendered
     assert "&lt;script&gt;" in rendered
     assert "https://" not in rendered
     assert "<b>3</b>Isolated vulnerable assets" in rendered

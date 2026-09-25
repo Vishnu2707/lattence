@@ -216,3 +216,15 @@ Listed for completeness, no fix needed: LT-AI-101 through LT-AI-106
 (frameworks, 6 rules), LT-AI-201 through LT-AI-206 (providers, 6 rules),
 LT-AI-301 through LT-AI-305 (data/retrieval, 5 rules), LT-AI-401 through
 LT-AI-406 (services, 6 rules).
+
+2026-09-25 D-033
+Decision: The self-contained dashboard HTML embeds cross-layer chain data by
+having `write_report_artifacts` look for a `presentation.json` file already
+sitting next to its output directory, rather than adding a new CLI flag or
+having `report` run fresh discovery itself.
+Rationale: `report [INPUT]` is contractually a re-render of an already-saved
+report and does not run discovery; `tui`/`graph chain` already write
+`presentation.json` as a side effect (T-096, T-098). Reusing that file keeps
+`report`'s option surface exactly as documented in `BUILD/CONTRACTS.md`, adds
+no new data format, and degrades to an explicit empty chain state when no
+presentation file is present instead of failing.

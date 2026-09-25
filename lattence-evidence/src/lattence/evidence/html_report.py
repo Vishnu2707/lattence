@@ -1,7 +1,11 @@
 import html
+import json
 from pathlib import Path
 
+from .presentation import CrossLayerHop, SecurityPresentation
 from .reporting import Report, report_json
+
+_SEVERITY_RANK = {"critical": 0, "high": 1, "medium": 2, "low": 3, "info": 4}
 
 _STYLE = """
 :root{color-scheme:dark;--s0:#0B0D10;--s1:#12151A;--s2:#1A1F26;
@@ -22,7 +26,27 @@ border-bottom:1px solid var(--border)}.severity{font-weight:700}
 .critical{color:var(--critical)}
 .high{color:var(--high)}.medium{color:var(--medium)}.low{color:var(--low)}
 .info{color:var(--info)}code{font-family:ui-monospace,monospace;color:var(--accent)}
+th[data-sortable] button{all:unset;cursor:pointer;display:block;width:100%}
+.chain{border:1px solid var(--border);border-radius:2px;margin-bottom:8px;padding:8px}
+.chain h3{margin:0 0 4px;font-size:12px}.hop{padding:2px 0;color:var(--muted)}
 @media(max-width:720px){main{padding:12px}.grid{grid-template-columns:repeat(2,1fr)}}
+"""
+
+_SORT_SCRIPT = """
+document.querySelectorAll('th[data-sortable]').forEach(function(th){
+  var direction = 1;
+  th.querySelector('button').addEventListener('click', function(){
+    var table = th.closest('table');
+    var tbody = table.querySelector('tbody');
+    var rows = Array.prototype.slice.call(tbody.querySelectorAll('tr[data-sev]'));
+    direction = th.dataset.direction === 'asc' ? -1 : 1;
+    th.dataset.direction = direction === 1 ? 'asc' : 'desc';
+    rows.sort(function(a, b){
+      return direction * (Number(a.dataset.sev) - Number(b.dataset.sev));
+    });
+    rows.forEach(function(row){ tbody.appendChild(row); });
+  });
+});
 """
 
 
@@ -36,8 +60,9 @@ def _finding_rows(report: Report) -> str:
         mappings = ", ".join((*finding.owasp_llm, *finding.owasp_agentic, *finding.cwe))
         severity = _text(finding.severity)
         severity_name = _text(finding.severity.upper())
+        rank = _SEVERITY_RANK.get(finding.severity, len(_SEVERITY_RANK))
         rows.append(
-            "<tr>"
+            f'<tr data-sev="{rank}">'
             f"<td><code>{_text(finding.id)}</code></td>"
             f"<td>{_text(finding.title)}</td>"
             f'<td class="severity {severity}">{severity_name}</td>'
@@ -61,7 +86,51 @@ def _node_rows(report: Report) -> str:
     )
 
 
-def render_html_report(report: Report) -> str:
+def _hop_line(hop: CrossLayerHop) -> str:
+    return (
+        f'<div class="hop">{_text(hop.edge_type)} ({_text(hop.traversal)}) '
+        f"{_text(hop.from_node_id)} -&gt; {_text(hop.to_node_id)}</div>"
+    )
+
+
+def _chain_section(presentation: SecurityPresentation | None) -> str:
+    if presentation is None or not presentation.cross_layer_chains:
+        return (
+            '<section class="panel"><h2>Cross-layer chains</h2>'
+            '<p class="muted">No cross-layer chain data. Run '
+            "<code>lattence tui</code> or <code>lattence graph chain</code> "
+            "to correlate AI and cryptography findings.</p></section>"
+        )
+    summary = presentation.cross_layer_summary
+    chains = "".join(
+        '<div class="chain">'
+        f"<h3>{_text(chain.source_finding_id)} -&gt; {_text(chain.crypto_finding_id)}"
+        "</h3>"
+        f'<div class="muted">{_text(chain.explanation)}</div>'
+        f"{''.join(_hop_line(hop) for hop in chain.hops)}"
+        "</div>"
+        for chain in presentation.cross_layer_chains
+    )
+    chain_summary = (
+        f"{summary.finding_correlations} finding correlations across "
+        f"{summary.distinct_structural_paths} distinct structural paths"
+    )
+    return f"""<section class="panel"><h2>Cross-layer chains</h2>
+<div class="muted">{chain_summary}</div>
+{chains}</section>"""
+
+
+def _embedded_presentation(presentation: SecurityPresentation | None) -> str:
+    if presentation is None:
+        return ""
+    payload = json.dumps(presentation.model_dump(mode="json"), sort_keys=True)
+    safe = payload.replace("</", "<\\/")
+    return f'<script id="lattence-presentation" type="application/json">{safe}</script>'
+
+
+def render_html_report(
+    report: Report, presentation: SecurityPresentation | None = None
+) -> str:
     summary = report.summary
     embedded = html.escape(report_json(report), quote=False)
     asset_metric = (
@@ -86,16 +155,24 @@ def render_html_report(report: Report) -> str:
 {asset_metric}
 {path_metric}</section>
 <section class="panel"><h2>Findings</h2><table><thead><tr>
-<th>ID</th><th>Finding</th><th>Severity</th><th>Target</th>
+<th>ID</th><th>Finding</th><th data-sortable data-direction="desc">
+<button type="button">Severity ^</button></th><th>Target</th>
 <th>Mappings</th><th>Remediation</th></tr></thead>
 <tbody>{_finding_rows(report)}</tbody></table></section>
+{_chain_section(presentation)}
 <section class="panel"><h2>Security graph inventory</h2><table><thead><tr>
 <th>ID</th><th>Type</th><th>Name</th><th>Source</th></tr></thead>
 <tbody>{_node_rows(report)}</tbody></table></section>
 <details class="panel"><summary>Report JSON</summary><pre>{embedded}</pre></details>
+{_embedded_presentation(presentation)}
+<script>{_SORT_SCRIPT}</script>
 </main></body></html>\n"""
 
 
-def write_html_report(report: Report, destination: Path) -> None:
+def write_html_report(
+    report: Report,
+    destination: Path,
+    presentation: SecurityPresentation | None = None,
+) -> None:
     destination.parent.mkdir(parents=True, exist_ok=True)
-    destination.write_text(render_html_report(report), encoding="utf-8")
+    destination.write_text(render_html_report(report, presentation), encoding="utf-8")

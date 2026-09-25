@@ -110,6 +110,20 @@ without a real identity provider. A real integration implements
 `SSOProvider.resolve` to verify the token (JWKS, signature, issuer,
 audience) against an actual provider; none ships in v1.0.
 
+`GET /v1/dashboard` (`routes/dashboard.py`, T-157) returns the same
+self-contained dashboard HTML that `report --out` writes to
+`lattence-report.html`: it builds a fresh `Report` via
+`lattence.cli.workflow.create_report` and a fresh `SecurityPresentation` via
+`lattence.cli.presentation_workflow.create_security_presentation` for the
+given `path`, then renders both through
+`lattence.evidence.render_html_report` and returns it as `text/html`. It
+requires `Role.READ_FINDINGS`, the same as `/v1/chain`, through the existing
+RBAC-or-legacy-token `require_access` dependency; a missing project path
+returns 404. It runs discovery twice per request (once for the report, once
+for the presentation, which internally re-runs discovery for its own
+report), matching the level of per-request work `/v1/scan` and `/v1/chain`
+already do; no caching layer was added.
+
 Job queue (`jobs.py`, `routes/jobs.py`, T-146): `JobController` lives on
 `app.state.job_controller`, created fresh per `create_app()` call (so
 tests get an isolated controller and thread pool per app instance).

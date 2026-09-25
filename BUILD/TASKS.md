@@ -853,3 +853,62 @@ findings still fire. Full suite: 370 passed (excluding 2 pre-existing docker
 tests that fail in this environment because no Docker daemon is running,
 unrelated to this change), 92.18 percent coverage. Methodology documented in
 `docs/false-positive-methodology.md`.
+
+# Milestone B: web dashboard, minimum viable
+
+[T-157] [Milestone B] [UX] extend the report HTML into a self-contained dashboard with a sortable findings table and the real cross-layer chain view | deps: T-156 | status: done | commit: self
+
+Extended `lattence-evidence/src/lattence/evidence/html_report.py`'s
+`render_html_report`/`write_html_report` to take an optional
+`SecurityPresentation`. When one is available the generated
+`lattence-report.html` gains a "Cross-layer chains" section (finding
+correlation and distinct structural path counts, then every chain's hops
+with edge type, traversal direction, and node pair) and the findings table
+header gets a click-to-sort-by-severity control, all via a small inline
+`<script>` with no external dependency. The presentation itself is embedded
+as a `<script type="application/json">` block, not fetched, so the page has
+no network calls and works from `file://`. With no presentation available,
+the section renders an explicit empty state instead of failing. This is the
+same version 1 `presentation.json` data contract already written by
+`tui`/`graph chain` (T-096, T-097); no new data format was invented.
+`lattence-cli/src/lattence/cli/workflow.py` gained `_sibling_presentation`,
+which `write_report_artifacts` uses to look for a `presentation.json` next
+to the output directory and, if present and schema-valid, pass it through;
+`scan`, `attack`, and `report` all pick this up automatically since they
+share `write_report_artifacts`. Loading strips the computed
+`cross_layer_summary` field before validating, the same round-trip
+adjustment already documented in `BUILD/notes/api.md` for API tests.
+`lattence-api` gained `GET /v1/dashboard` (`routes/dashboard.py`), a small
+addition following the exact shape of the existing `/v1/chain` route: it
+builds a fresh `Report` and `SecurityPresentation` for `path` and returns
+`render_html_report`'s output as `text/html`, behind the same
+`READ_FINDINGS` RBAC-or-legacy-token authentication as `/v1/chain`. No new
+subsystem, caching layer, or data format was needed, so no stop-and-note
+decision was required; see `BUILD/DECISIONS.md` D-033 for the one decision
+made (reuse of the sibling `presentation.json` file rather than a new CLI
+flag).
+
+Verified against `examples/vulnerable-agent`: running `graph chain` then
+`scan` then `report` into the same `--out` directory produces
+`lattence-report.html` containing "32 finding correlations across 9
+distinct structural paths" and the real `LT-AI-002 -> LT-PQC-203` chain
+with its `key_exchange` hop, matching the accepted fixture numbers already
+pinned elsewhere in the suite (`tests/cli/test_graph_chain_command.py`).
+`GET /v1/dashboard?path=examples/vulnerable-agent` returns the same real
+chain data as HTML. Checked offline: no `http://`, `https://`, `fetch(`,
+`<link `, or `cdn.` anywhere in the rendered output, and the page parses
+with a real JS engine (Node, `new Function()` on the extracted script).
+New tests: `tests/evidence/test_reporting.py` (chain embedding, empty
+state, no-network assertions), `tests/cli/test_workflow.py`
+(`test_report_html_embeds_real_cross_layer_chain_from_vulnerable_agent`),
+`tests/api/test_dashboard.py` (200 with real chain data, 404 for a missing
+path, 401 unauthenticated). Full suite: 377 passed (2 pre-existing Docker
+tests excluded, no daemon in this environment, unrelated to this task),
+92.41 percent coverage. Lint, format, and `mypy --strict` pass for
+`lattence-cli/src`, `lattence-evidence`, and `lattence-api/src/lattence_api`.
+
+Known pre-existing issue, not caused by this task and out of scope to fix
+here: `lattence-cli/src/lattence/cli/workflow.py` was already at 364 lines
+before this task (over the 300-line module guideline) and is now 379 after
+the minimal `_sibling_presentation` addition. Splitting it is a separate
+task.

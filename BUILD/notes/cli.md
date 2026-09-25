@@ -274,6 +274,19 @@ README long description, packaged rules and assets, source archive README and
 license, version output, root help, and all 13 command help screens passed.
 The workspace lock now records the same root package version.
 
+T-157 adds `_sibling_presentation` to `workflow.py`. `write_report_artifacts`
+(shared by `scan`, `attack`, and `report`) now looks for a `presentation.json`
+file next to its `--out` destination and, if one exists and validates as a
+`SecurityPresentation` (after stripping the computed `cross_layer_summary`
+field, which `model_validate` otherwise rejects under `extra="forbid"`),
+passes it to `write_html_report` so the generated `lattence-report.html`
+embeds the real cross-layer chain view. `report`'s own option surface is
+unchanged: no new flag was added, since `report [INPUT]` is documented as a
+re-render of an already-saved report and does not run discovery itself. When
+no `presentation.json` is present, or scan/attack are run before `tui`/
+`graph chain` have written one, the HTML falls back to an explicit empty
+chain state.
+
 T-113 records the first-upload token requirement, isolated archive staging,
 exact upload command, and public-index pipx verification procedure. No PyPI
 token or configuration is available in this environment, so T-114 is blocked

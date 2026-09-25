@@ -105,3 +105,18 @@ chain, and the bracket keys select the chain's real hops and evidence.
 T-110 labels finding correlations and distinct structural paths together in
 the TUI Attack Graph heading and dashboard HTML toolbar. Neither view treats
 the 32 finding pairings in the vulnerable example as 32 independent routes.
+
+T-157 makes the single-file HTML report (`lattence-evidence/src/lattence/
+evidence/html_report.py`) a genuinely self-contained dashboard: a
+click-to-sort-by-severity findings table, the existing PQC readiness metric,
+and a new cross-layer chain section, all in one `.html` file with no fetch
+and no external script, style, or font reference. The chain section reuses
+the version 1 `presentation.json` data contract (T-094 through T-097)
+directly, embedding it as a `<script type="application/json">` block rather
+than fetching it, so the page renders offline from `file://` with no local
+server. This is distinct from the full interactive `lattence-ui/` shell
+(T-096, which fetches `./presentation.json` and needs to be served): that
+shell stays the richer local-serving view, while the new section in
+`html_report.py` is the one-file artifact a non-technical stakeholder can
+open directly. Empty state when no presentation data is available: an
+explicit message, not a blank or broken section.

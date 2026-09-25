@@ -137,6 +137,44 @@ def test_scan_attack_graph_and_report_work_offline(tmp_path: Path) -> None:
     assert (tmp_path / "lattence-graph.json").is_file()
 
 
+def test_report_html_embeds_real_cross_layer_chain_from_vulnerable_agent(
+    tmp_path: Path,
+) -> None:
+    example = Path(__file__).parents[2] / "examples" / "vulnerable-agent"
+
+    chain = runner.invoke(
+        app,
+        ["graph", "chain", str(example), "--offline", "--out", str(tmp_path)],
+    )
+    scan = runner.invoke(
+        app,
+        [
+            "scan",
+            str(example),
+            "--offline",
+            "--out",
+            str(tmp_path),
+            "--fail-on",
+            "none",
+        ],
+    )
+    report = runner.invoke(
+        app, ["report", str(tmp_path), "--offline", "--out", str(tmp_path)]
+    )
+
+    assert chain.exit_code == 0, chain.output
+    assert scan.exit_code == 0, scan.output
+    assert report.exit_code == 0, report.output
+    rendered = (tmp_path / "lattence-report.html").read_text(encoding="utf-8")
+    assert "32 finding correlations across 9 distinct structural paths" in rendered
+    assert "LT-AI-002 -&gt; LT-PQC-203" in rendered
+    assert "key_exchange" in rendered
+    assert "https://" not in rendered
+    assert "http://" not in rendered
+    assert "fetch(" not in rendered
+    assert "cdn." not in rendered
+
+
 def test_scan_exits_nonzero_when_findings_meet_the_gate(tmp_path: Path) -> None:
     _project(tmp_path)
 

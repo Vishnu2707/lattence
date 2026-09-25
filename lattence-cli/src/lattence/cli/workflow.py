@@ -13,6 +13,7 @@ from lattence.discovery import (
 from lattence.evidence import (
     Report,
     ReportSummary,
+    SecurityPresentation,
     build_report,
     normalize_rule_finding,
     report_json,
@@ -50,6 +51,7 @@ from lattence_crypto import (
     discover_crypto,
     discover_tls,
 )
+from pydantic import ValidationError
 
 from .options import SeverityGate
 
@@ -234,10 +236,23 @@ def artifact_paths(output: Path) -> ArtifactPaths:
     )
 
 
+def _sibling_presentation(output: Path) -> SecurityPresentation | None:
+    directory = output.parent if output.suffix else output
+    candidate = directory / "presentation.json"
+    if not candidate.is_file():
+        return None
+    try:
+        payload = json.loads(candidate.read_text(encoding="utf-8"))
+        payload.pop("cross_layer_summary", None)
+        return SecurityPresentation.model_validate(payload)
+    except (ValidationError, ValueError):
+        return None
+
+
 def write_report_artifacts(report: Report, output: Path) -> ArtifactPaths:
     paths = artifact_paths(output)
     write_json_report(report, paths.json, _schema_path())
-    write_html_report(report, paths.html)
+    write_html_report(report, paths.html, _sibling_presentation(output))
     return paths
 
 
