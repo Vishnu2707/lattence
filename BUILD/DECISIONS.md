@@ -310,3 +310,37 @@ code no matter how many times `uv sync --all-packages --dev --reinstall-package`
 was run. Removing that directory and re-running plain `uv sync --all-packages --dev`
 fixed it. Worth a note in `BUILD/STATE.md` for the next agent since it
 wastes time if not recognized.
+
+2026-09-26 D-036
+Decision: audited `lattence_ai/attacks/cross_layer.py` for the same
+combinatorial-artifact bug class v0.5.1 fixed ("32 correlations vs 9
+distinct paths").
+Findings: `correlate_cross_layer_findings` emits one `CrossLayerCorrelation`
+per `(ai_finding, crypto_finding, path)` triple returned by
+`find_topology_paths`, filtered to require at least one hop of type
+`key_exchange` or `protected_by`. Every emitted correlation is backed by a
+real, stored graph edge traversed in a real direction, with evidence
+references pulled from the actual finding and hop evidence, not from a
+synthetic combination. Two AI findings and two crypto findings sharing the
+same underlying graph route legitimately produce separate correlations
+(they are different vulnerabilities, not duplicates), and this is the
+"finding correlations" count. Separately,
+`lattence-evidence/src/lattence/evidence/presentation.py`'s
+`summarize_cross_layer_chains` deduplicates by structural signature
+(`(edge_id, traversal)` per hop) to produce "distinct structural paths",
+which is exactly the v0.5.1 fix and is still in place, unmodified and
+correct. All four consumers, `graph_chain_command.py` (terminal),
+`tui.py`, `html_report.py`, and the `/v1/chain`/`/v1/dashboard` API routes,
+render both numbers from the same single `CrossLayerSummary` computed once
+by `presentation.py`, so there is no way for the two counts to diverge
+between renderers. Conclusion: no combinatorial-artifact bug found. A live
+`lattence graph chain examples/vulnerable-agent --offline --no-color` run
+during this audit reproduced the same accepted "32 finding correlations
+across 9 distinct structural paths" header and the same real
+`LT-AI-002 -> LT-PQC-203` chain (`accesses` reverse hop into
+`delete_customer_record`, then `key_exchange` forward hop into
+`crypto_algorithm:crypto_config.py:7:tls-1-2`) already pinned by
+`tests/cli/test_graph_chain_command.py`, confirming the fixture numbers
+have not drifted. No code change was needed for this audit; the README
+worked example added in this task uses this exact, freshly re-verified
+output.

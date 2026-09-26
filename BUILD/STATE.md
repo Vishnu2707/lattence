@@ -1,5 +1,22 @@
 # Current state
 
+## 2026-09-26: Milestone 2 (overnight run) closed
+
+Audited `lattence_ai/attacks/cross_layer.py` for the combinatorial-artifact
+bug class v0.5.1 fixed ("32 correlations vs 9 distinct paths"). Found no
+bug: every correlation requires a real graph path with a real crypto edge,
+and the finding-correlations vs distinct-structural-paths dedup from
+v0.5.1 is still in place and shared by every renderer (terminal, TUI, HTML,
+API) through one `CrossLayerSummary` computed once in `presentation.py`.
+Full audit in `BUILD/DECISIONS.md` D-036. Added a real worked example to
+`README.md` ("The differentiator: a real cross-layer chain") showing the
+actual `LT-AI-002 -> LT-PQC-203` chain from `examples/vulnerable-agent`,
+re-verified live immediately before committing (caught and corrected one
+factual error in an earlier draft: `TLS 1.2` in this fixture has
+`quantum_status: unknown`, not `vulnerable`, and `LT-PQC-203` is limited
+cryptographic agility, not a TLS-specific finding). Task T-160. Full suite:
+382 passed, same 2 pre-existing Docker exclusions.
+
 ## 2026-09-26: Milestone 1 (overnight run) closed
 
 Root-caused the other half of the original bug report: the 14MB HTML file
@@ -58,12 +75,12 @@ are picked up.
 
 ## HANDOFF (if this run stops here)
 
-Milestones 0 and 1 are done and gated green. Next: Milestone 2 (cross-layer
-chain correlator audit, `lattence_ai/attacks/cross_layer.py`, checking for
-combinatorial-artifact chains the same way v0.5.1 fixed "32 correlations vs
-9 distinct paths"). Start by reading `BUILD/notes/ai-security.md` and the
-cross_layer module, then audit and record findings in `BUILD/DECISIONS.md`
-before changing anything.
+Milestones 0, 1, and 2 are done and gated green. Next: Milestone 3, review
+lattence-core's discovery architecture and choose between a second
+discovery/attack language (Go or Java) and GitLab CI integration
+(reusing the existing SARIF plumbing). Per the run instructions, default to
+the smaller GitLab CI option if genuinely unsure it fits in remaining
+scope. Write the proposal to `BUILD/DECISIONS.md` before starting.
 
 - Milestone: v1.0.0 shipped. Repository is public. Milestone A (detection
   precision hardening) done. Milestone B (web dashboard, minimum viable)

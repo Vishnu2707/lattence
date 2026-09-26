@@ -114,6 +114,50 @@ Lattence ships a native catalog of 15 attack rules. A sample:
 Every finding carries an OWASP LLM Top 10 mapping, and most carry an OWASP
 Agentic Security Initiative mapping and a CWE identifier where one applies.
 
+## The differentiator: a real cross-layer chain
+
+Generic prompt-injection scanners and generic SAST tools each see one layer.
+Lattence builds a single connected graph across the AI layer and the
+cryptography layer and reports genuine, evidence-backed paths between them,
+not two separate lists a human has to correlate by hand. This is a real,
+complete chain from `examples/vulnerable-agent`, produced by:
+
+```bash
+lattence graph chain examples/vulnerable-agent --offline --no-color
+```
+
+```
+VULNERABLE  21/32  LT-AI-002 -> LT-PQC-203
+  START       dataset:rag-pipeline:app.py:15
+  EDGE 1      accesses  reverse
+    STORED    tool:app.py:delete_customer_record -> dataset:rag-pipeline:app.py:15
+    TRAVERSE  dataset:rag-pipeline:app.py:15 -> tool:app.py:delete_customer_record
+    EVIDENCE  app.py
+  EDGE 2      key_exchange  forward
+    STORED    tool:app.py:delete_customer_record -> crypto_algorithm:crypto_config.py:7:tls-1-2
+    TRAVERSE  tool:app.py:delete_customer_record -> crypto_algorithm:crypto_config.py:7:tls-1-2
+    EVIDENCE  app.py, crypto_config.py
+  END         crypto_algorithm:crypto_config.py:7:tls-1-2
+  EVIDENCE    app.py, crypto_config.py, evidence:LT-AI-002:dataset:rag-pipeline:app.py:15,
+              evidence:LT-PQC-203:crypto_algorithm:crypto_config.py:7:tls-1-2
+```
+
+Read left to right: `LT-AI-002` is a real finding, unclassified content
+retrieved from the RAG dataset at `app.py:15` can reach an agent's context
+unfiltered. That dataset is accessed by `delete_customer_record`, a tool
+with delete permission, over a real stored `accesses` edge in the graph
+(traversed in reverse, from the dataset back to the tool that reads it).
+That same tool has a stored `key_exchange` edge to `TLS 1.2`, the algorithm
+declared in `crypto_config.py:7`, which the crypto layer separately flags
+as `LT-PQC-203`, limited cryptographic agility. Every hop cites the exact
+source file it came from, and both endpoint findings and every traversed
+edge are named in `EVIDENCE`, so the chain is reproducible, not asserted.
+This is one of 32 real correlations across 9 distinct structural paths that
+the same command reports for this fixture; the full run also shows the
+`LT-AI-002 -> LT-PQC-205` chain (incomplete downgrade validation on the
+same tool) and chains from `LT-AGENT-001`, `LT-AGENT-002`, `LT-AI-007`, and
+`LT-AI-008` into the same crypto layer.
+
 ## REST API, Docker, and CI
 
 ```bash
