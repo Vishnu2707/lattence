@@ -1,5 +1,49 @@
 # Current state
 
+## 2026-09-26: Milestone 0 (overnight run) closed
+
+A bug report described `lattence scan` against `examples/vulnerable-agent`
+producing 2,312 graph nodes, 20,684 edges, 20,684 attack paths, and a
+contradictory 100 percent PQC readiness. Bisected at a14d7ba (pre-Milestone
+A), b4224cb (Milestone A), and 34b891d (Milestone B): a fresh `scan` at
+every one of the three commits, including repeated runs into the same
+output directory, produced identical stable numbers (24 nodes, 92 edges,
+92 attack paths, 21 percent PQC readiness). No commit on `dev` reproduces
+the explosion. The bad numbers traced to a stale, gitignored
+`examples/vulnerable-agent/lattence-report.json`/`.html` pair left over
+from an earlier, unrelated broken run, now deleted. Full evidence in
+`BUILD/DECISIONS.md` D-034.
+
+A second, real bug was found and fixed: `create_report` never computed
+`quantum_vulnerable_assets`/`quantum_vulnerable_paths` for `scan`/`attack`,
+so the JSON summary always showed 0 for both regardless of the graph's
+real crypto topology, while the terminal's "Quantum vulnerable" row was
+always correct. Fixed by having `create_report` run the same
+`assess_quantum_exposure` computation the `pqc` command already runs.
+Verified against `examples/vulnerable-agent` (real, current numbers,
+independently confirmed by reading the generated JSON, not just the
+terminal output): 24 graph nodes, 92 edges, 92 attack paths, 13 findings,
+PQC readiness 21 percent, `quantum_vulnerable_paths` 140,
+`quantum_vulnerable_assets` 0 (correctly, since none of this fixture's
+vulnerable crypto nodes are isolated per the contract's definition).
+Regression test added:
+`tests/cli/test_workflow.py::test_scan_vulnerable_agent_graph_and_pqc_summary_stay_sane`.
+Full suite: 380 passed, 2 pre-existing Docker daemon tests excluded
+(unrelated, no daemon in this environment). Task T-158, commit follows
+this state update. Milestones 1 through 4 from the overnight run plan were
+not started in this pass; see HANDOFF below if this run stops before they
+are picked up.
+
+## HANDOFF (if this run stops here)
+
+Milestone 0 is done and gated green. Next: Milestone 1 (report/dashboard
+size ceiling test, real file sizes: current `lattence-report.json` for
+vulnerable-agent is about 100KB and `lattence-report.html` about 110-250KB
+depending on which command wrote it, both far under the old 14MB bug
+figure, but no automated ceiling test exists yet). Start by reading
+`BUILD/notes/evidence.md` and the html_report/reporting modules, then add
+the size-ceiling test named in the run plan.
+
 - Milestone: v1.0.0 shipped. Repository is public. Milestone A (detection
   precision hardening) done. Milestone B (web dashboard, minimum viable)
   done; holding per instruction before Milestone C.

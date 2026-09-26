@@ -228,3 +228,47 @@ report and does not run discovery; `tui`/`graph chain` already write
 `report`'s option surface exactly as documented in `BUILD/CONTRACTS.md`, adds
 no new data format, and degrades to an explicit empty chain state when no
 presentation file is present instead of failing.
+
+2026-09-26 D-034
+Decision: closed the overnight-run bug report of a 2,312-node, 20,684-edge
+graph explosion, 20,684 attack paths, and a 100 percent PQC readiness
+contradiction for `examples/vulnerable-agent`.
+Investigation: bisected at a14d7ba (pre-Milestone A baseline), b4224cb
+(Milestone A, `requires_path` in `find_attack_paths`), and 34b891d
+(Milestone B, report generation). A fresh `lattence scan` at every one of
+these three commits, run repeatedly and into the same output directory,
+produced identical, stable results: 24 graph nodes, 92 edges, 92 attack
+paths, PQC readiness 21 percent. None of the three commits reproduces the
+explosion. The `examples/vulnerable-agent/lattence-report.json` and
+`.html` files that showed the bad numbers are listed in
+`examples/vulnerable-agent/.gitignore` (not tracked by git) and were a
+stale local artifact left over from an earlier, unrelated broken run (its
+2,295 duplicate `crypto_algorithm` nodes trace to duplicate agent nodes
+tagged with framework-detection rule ids like LT-AI-103 and LT-AI-106
+across many frameworks at once, a shape the current discovery pipeline
+does not produce). Conclusion: no live regression exists in the graph
+construction or attack path counting on `dev`. The stale files were
+deleted; nothing in source needed a fix for the explosion itself.
+Real bug found and fixed: `create_report` (used by `scan` and `attack`)
+never populated the report summary's `quantum_vulnerable_assets` and
+`quantum_vulnerable_paths` fields, so they silently kept their Pydantic
+default of 0 regardless of the graph's real crypto topology, while
+`terminal.py`'s "Quantum vulnerable" row computed a real, correct count
+straight from the graph. Only the `pqc`/`crypto` commands ever called
+`create_crypto_assessment`, the one code path that actually computes these
+two fields via `assess_quantum_exposure`. Fixed in
+`lattence-cli/src/lattence/cli/workflow.py`: `create_report` now also
+builds the crypto dependency graph and runs `assess_quantum_exposure` on
+it (mirroring what `crypto_workflow.py` already does for the `pqc`
+command), and passes real `quantum_vulnerable_assets`/
+`quantum_vulnerable_paths` values into `build_report`. Verified against
+`examples/vulnerable-agent`: `quantum_vulnerable_paths` is now 140 (a real,
+non-zero, internally consistent count); `quantum_vulnerable_assets` is
+correctly 0 because none of this fixture's vulnerable crypto nodes are
+"isolated" per `BUILD/CONTRACTS.md`'s definition (no incoming relationship
+in the crypto dependency projection) since every one is reachable from an
+agent. Added
+`tests/cli/test_workflow.py::test_scan_vulnerable_agent_graph_and_pqc_summary_stay_sane`
+as a permanent regression test pinning the 17-24 node range, a sane edge
+count, and internal consistency between the terminal's vulnerable count
+and the JSON summary fields.

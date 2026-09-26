@@ -175,6 +175,57 @@ def test_report_html_embeds_real_cross_layer_chain_from_vulnerable_agent(
     assert "cdn." not in rendered
 
 
+def test_scan_vulnerable_agent_graph_and_pqc_summary_stay_sane(
+    tmp_path: Path,
+) -> None:
+    """Regression for a real bug: a stale local report artifact once showed
+    2,312 graph nodes and 20,684 edges for this fixture (versus 17-24 nodes
+    consistently produced by this fixture across v0.4.1 through v1.0), and a
+    JSON summary with quantum_vulnerable_assets/quantum_vulnerable_paths
+    hard-coded to 0 while the terminal renderer showed real vulnerable
+    algorithms. Bisection at a14d7ba, b4224cb, and 34b891d found the node and
+    edge counts were never actually wrong on any of those commits (a fresh
+    `scan` at each reproduced the same 24 nodes and 92 edges seen here); the
+    inflated artifact was a stale, gitignored leftover file, not a live
+    regression. The PQC summary contradiction was real: `create_report`
+    never populated the two quantum fields, so they kept their model
+    defaults of 0 regardless of the graph's actual crypto topology. This
+    test pins both: the node/edge counts stay in range, and the JSON summary
+    is internally consistent with the terminal output for the same run.
+    """
+    example = Path(__file__).parents[2] / "examples" / "vulnerable-agent"
+
+    scan = runner.invoke(
+        app,
+        ["scan", str(example), "--offline", "--out", str(tmp_path)],
+    )
+    assert scan.exit_code in (0, 1), scan.output
+
+    report_path = tmp_path / "lattence-report.json"
+    report = json.loads(report_path.read_text(encoding="utf-8"))
+    nodes = report["graph"]["nodes"]
+    edges = report["graph"]["edges"]
+
+    assert 17 <= len(nodes) <= 24, len(nodes)
+    assert len(edges) < 200, len(edges)
+
+    algorithms = [node for node in nodes if node["type"] == "crypto_algorithm"]
+    vulnerable_count = sum(
+        1 for node in algorithms if node.get("quantum_status") == "vulnerable"
+    )
+    assert f"Quantum vulnerable    {vulnerable_count}" in scan.stdout
+
+    summary = report["summary"]
+    # The summary must not silently default to zero when the graph actually
+    # contains a reachable, quantum-vulnerable crypto asset: at least one of
+    # the two fields must reflect that real exposure.
+    if vulnerable_count > 0:
+        assert (
+            summary["quantum_vulnerable_assets"] > 0
+            or summary["quantum_vulnerable_paths"] > 0
+        ), summary
+
+
 def test_scan_exits_nonzero_when_findings_meet_the_gate(tmp_path: Path) -> None:
     _project(tmp_path)
 

@@ -25,6 +25,7 @@ from lattence.graph import (
     CryptoAlgorithm,
     JsonValue,
     Node,
+    SecurityGraph,
     build_security_graph,
     security_graph_json,
 )
@@ -44,6 +45,7 @@ from lattence_ai.attacks import (
     verify_finding,
 )
 from lattence_crypto import (
+    CryptoDiscovery,
     annotate_crypto_references,
     assess_readiness,
     classify_graph,
@@ -51,6 +53,7 @@ from lattence_crypto import (
     discover_crypto,
     discover_tls,
 )
+from lattence_crypto.pqc import assess_quantum_exposure, build_crypto_graph
 from pydantic import ValidationError
 
 from .options import SeverityGate
@@ -122,7 +125,9 @@ def _crypto_output_exclusions(root: Path, output: Path | None) -> tuple[str, ...
     return (f"{relative.rstrip('/')}/",)
 
 
-def _extra_nodes(root: Path, output: Path | None = None) -> tuple[Node, ...]:
+def _extra_nodes(
+    root: Path, output: Path | None = None
+) -> tuple[tuple[Node, ...], CryptoDiscovery]:
     inventory = inventory_project(root)
     dependencies = discover_dependency_manifests(inventory.root, inventory.files)
     excluded_paths = _crypto_output_exclusions(root, output)
@@ -140,18 +145,31 @@ def _extra_nodes(root: Path, output: Path | None = None) -> tuple[Node, ...]:
         (*tls.certificates, *tls.algorithms, *crypto.algorithms),
     )
     return (
-        *crypto_assets,
-        *mcp.servers,
-        *mcp.tools,
+        (
+            *crypto_assets,
+            *mcp.servers,
+            *mcp.tools,
+        ),
+        crypto,
     )
+
+
+def _quantum_exposure_counts(
+    graph: SecurityGraph, crypto: CryptoDiscovery
+) -> tuple[int, int]:
+    """Count quantum-vulnerable assets and paths the same way `pqc`/`crypto`
+    commands do, over the crypto dependency projection of the same graph, so
+    the report summary never contradicts the terminal's algorithm counts."""
+    crypto_graph = build_crypto_graph(graph, crypto.libraries)
+    exposure = assess_quantum_exposure(crypto_graph)
+    return len(exposure.isolated_assets), len(exposure.paths)
 
 
 def create_report(root: Path, output: Path | None = None) -> Report:
     resolved = root.resolve(strict=True)
     data_root = _data_root()
-    discovery = discover_project(
-        resolved, data_root / "discovery", _extra_nodes(resolved, output)
-    )
+    extra_nodes, crypto = _extra_nodes(resolved, output)
+    discovery = discover_project(resolved, data_root / "discovery", extra_nodes)
     graph = classify_graph(build_security_graph(discovery.project))
     project = discovery.project.model_copy(update={"nodes": graph.nodes})
     readiness = assess_readiness(graph)
@@ -173,8 +191,17 @@ def create_report(root: Path, output: Path | None = None) -> Report:
         )
         for rule_id, observation in sorted(matched.items())
     ]
+    quantum_vulnerable_assets, quantum_vulnerable_paths = _quantum_exposure_counts(
+        graph, crypto
+    )
     return build_report(
-        project, graph, findings, version("lattence"), readiness.score_percent
+        project,
+        graph,
+        findings,
+        version("lattence"),
+        readiness.score_percent,
+        quantum_vulnerable_assets=quantum_vulnerable_assets,
+        quantum_vulnerable_paths=quantum_vulnerable_paths,
     )
 
 

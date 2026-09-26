@@ -912,3 +912,43 @@ here: `lattence-cli/src/lattence/cli/workflow.py` was already at 364 lines
 before this task (over the 300-line module guideline) and is now 379 after
 the minimal `_sibling_presentation` addition. Splitting it is a separate
 task.
+
+# Milestone 0: fix the reported graph explosion and PQC summary regression
+
+[T-158] [Milestone 0] [AI security/crypto] investigate a reported graph
+explosion and fix a real PQC summary contradiction | deps: T-157 | status:
+done | commit: self
+
+Investigated a report of 2,312 graph nodes, 20,684 edges, 20,684 attack
+paths, and 100 percent PQC readiness against `examples/vulnerable-agent`.
+Bisected at a14d7ba, b4224cb, and 34b891d: a fresh `lattence scan` at each
+commit, run repeatedly and into the same output directory, produced
+identical, stable results (24 nodes, 92 edges, 92 attack paths, 21 percent
+PQC readiness). No commit reproduces the explosion; the bad numbers came
+from a stale, gitignored `examples/vulnerable-agent/lattence-report.json`
+and `.html` left over from an earlier, unrelated broken run, not from a
+live regression in the graph or attack path counting. Deleted the stale
+files. Full mechanism and evidence in `BUILD/DECISIONS.md` D-034.
+
+The PQC contradiction was real: `create_report` (used by `scan` and
+`attack`) never populated `quantum_vulnerable_assets`/
+`quantum_vulnerable_paths` on the report summary, so both silently kept
+their Pydantic default of 0 regardless of the graph's actual crypto
+topology, while the terminal renderer computed a real, correct "Quantum
+vulnerable" count straight from the same graph. Fixed in
+`lattence-cli/src/lattence/cli/workflow.py`: `create_report` now also
+builds the crypto dependency graph and calls `assess_quantum_exposure` on
+it (the same computation `crypto_workflow.py` already runs for the `pqc`
+command) and passes the real counts into `build_report`. Verified against
+`examples/vulnerable-agent`: `quantum_vulnerable_paths` is now 140;
+`quantum_vulnerable_assets` is correctly 0 because none of this fixture's
+vulnerable crypto nodes are isolated per `BUILD/CONTRACTS.md`'s definition.
+
+Added `tests/cli/test_workflow.py::test_scan_vulnerable_agent_graph_and_pqc_summary_stay_sane`
+as a permanent regression test: pins the node count to the historical
+17-24 range, the edge count under 200, and asserts the JSON summary is
+never silently zero when the terminal shows a real vulnerable count.
+
+Full suite: 380 passed (2 pre-existing Docker daemon tests excluded,
+unrelated, no daemon in this environment). Lint, format, and
+`mypy --strict` pass for `lattence-cli/src`.
