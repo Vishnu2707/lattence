@@ -7,6 +7,16 @@ from .reporting import Report, report_json
 
 _SEVERITY_RANK = {"critical": 0, "high": 1, "medium": 2, "low": 3, "info": 4}
 
+# A single bad discovery run once produced a report with thousands of graph
+# nodes and a 14MB HTML dashboard, largely because the whole report JSON was
+# duplicated verbatim into an inline <pre> block on top of the findings and
+# node tables. These caps keep the rendered page usable in a browser for any
+# graph size: the tables show only the most severe rows, and the inline JSON
+# dump is skipped past a size threshold in favor of a pointer to the JSON
+# file that is always written alongside the HTML.
+_MAX_TABLE_ROWS = 200
+_MAX_INLINE_JSON_BYTES = 500_000
+
 _STYLE = """
 :root{color-scheme:dark;--s0:#0B0D10;--s1:#12151A;--s2:#1A1F26;
 --border:#262C35;--text:#E6E9EE;--muted:#8A94A6;--accent:#4C8DFF;
@@ -54,9 +64,26 @@ def _text(value: object) -> str:
     return html.escape(str(value), quote=True)
 
 
+def _truncation_note(shown: int, total: int, label: str) -> str:
+    return (
+        f'<tr><td colspan="6" class="muted">Showing the {shown} most severe '
+        f"{label} of {total}. See the full <code>lattence-report.json</code> "
+        "for the rest.</td></tr>"
+    )
+
+
 def _finding_rows(report: Report) -> str:
+    ordered = sorted(
+        report.findings,
+        key=lambda finding: (
+            _SEVERITY_RANK.get(finding.severity, len(_SEVERITY_RANK)),
+            finding.id,
+        ),
+    )
+    total = len(ordered)
+    shown = ordered[:_MAX_TABLE_ROWS]
     rows = []
-    for finding in report.findings:
+    for finding in shown:
         mappings = ", ".join((*finding.owasp_llm, *finding.owasp_agentic, *finding.cwe))
         severity = _text(finding.severity)
         severity_name = _text(finding.severity.upper())
@@ -71,19 +98,28 @@ def _finding_rows(report: Report) -> str:
             f"<td>{_text(finding.remediation)}</td>"
             "</tr>"
         )
-    return "".join(rows) or '<tr><td colspan="6" class="muted">No findings.</td></tr>'
+    if not rows:
+        return '<tr><td colspan="6" class="muted">No findings.</td></tr>'
+    if total > len(shown):
+        rows.append(_truncation_note(len(shown), total, "findings"))
+    return "".join(rows)
 
 
 def _node_rows(report: Report) -> str:
-    return "".join(
+    nodes = report.graph.nodes
+    shown = nodes[:_MAX_TABLE_ROWS]
+    rows = [
         "<tr>"
         f"<td><code>{_text(node.id)}</code></td>"
         f"<td>{_text(node.type)}</td>"
         f"<td>{_text(node.name)}</td>"
         f"<td>{_text(node.source.path if node.source else '')}</td>"
         "</tr>"
-        for node in report.graph.nodes
-    )
+        for node in shown
+    ]
+    if len(nodes) > len(shown):
+        rows.append(_truncation_note(len(shown), len(nodes), "graph nodes"))
+    return "".join(rows)
 
 
 def _hop_line(hop: CrossLayerHop) -> str:
@@ -132,7 +168,19 @@ def render_html_report(
     report: Report, presentation: SecurityPresentation | None = None
 ) -> str:
     summary = report.summary
-    embedded = html.escape(report_json(report), quote=False)
+    raw_json = report_json(report)
+    if len(raw_json.encode("utf-8")) > _MAX_INLINE_JSON_BYTES:
+        json_section = (
+            '<details class="panel"><summary>Report JSON</summary>'
+            '<p class="muted">Too large to inline in the dashboard. Read '
+            "<code>lattence-report.json</code> next to this file for the "
+            "full report.</p></details>"
+        )
+    else:
+        json_section = (
+            '<details class="panel"><summary>Report JSON</summary>'
+            f"<pre>{html.escape(raw_json, quote=False)}</pre></details>"
+        )
     asset_metric = (
         f'<div class="metric"><b>{summary.quantum_vulnerable_assets}</b>'
         "Isolated vulnerable assets</div>"
@@ -163,7 +211,7 @@ def render_html_report(
 <section class="panel"><h2>Security graph inventory</h2><table><thead><tr>
 <th>ID</th><th>Type</th><th>Name</th><th>Source</th></tr></thead>
 <tbody>{_node_rows(report)}</tbody></table></section>
-<details class="panel"><summary>Report JSON</summary><pre>{embedded}</pre></details>
+{json_section}
 {_embedded_presentation(presentation)}
 <script>{_SORT_SCRIPT}</script>
 </main></body></html>\n"""

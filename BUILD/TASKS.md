@@ -952,3 +952,40 @@ never silently zero when the terminal shows a real vulnerable count.
 Full suite: 380 passed (2 pre-existing Docker daemon tests excluded,
 unrelated, no daemon in this environment). Lint, format, and
 `mypy --strict` pass for `lattence-cli/src`.
+
+# Milestone 1: report and dashboard size sanity
+
+[T-159] [Milestone 1] [UX/evidence] cap the HTML dashboard tables and add a
+real size ceiling test | deps: T-158 | status: done | commit: self
+
+Found the actual mechanism behind the bug report's 14MB HTML figure:
+`render_html_report` embedded the full report JSON a second time, verbatim,
+in a `<details><pre>` block, on top of uncapped findings and node tables.
+For a large graph this duplicates the whole payload. Fixed in
+`lattence-evidence/src/lattence/evidence/html_report.py`: findings and
+graph node tables now cap at 200 rows (most severe first for findings, with
+a trailing note pointing at the full `lattence-report.json` for the rest),
+and the inline raw-JSON dump is skipped above 500,000 bytes in favor of the
+same pointer note. Full reasoning and the size-ceiling justification in
+`BUILD/DECISIONS.md` D-035.
+
+New tests: `tests/evidence/test_reporting.py::test_html_report_truncates_findings_and_nodes_past_the_table_cap`
+(synthetic 250-node/250-finding report exercises both truncation paths and
+the JSON-too-large fallback) and
+`tests/cli/test_workflow.py::test_report_artifacts_for_vulnerable_agent_stay_under_size_ceiling`
+(real `examples/vulnerable-agent` scan, both `lattence-report.json` and
+`.html` asserted under a 1MB ceiling). Real measured sizes today: about
+100KB JSON, about 112KB HTML, both far under the ceiling and far under the
+original 14MB bug figure.
+
+Full suite: 382 passed (2 pre-existing Docker daemon tests excluded).
+Lint, format, and `mypy --strict` pass for `lattence-evidence`.
+
+Note for future agents: hit a stale, non-editable copy of the `lattence`
+namespace package under `.venv/lib/python3.12/site-packages/lattence`
+during this task, which silently shadowed the editable
+`lattence-evidence` source no matter how many times
+`uv sync --all-packages --dev --reinstall-package lattence-evidence` ran.
+Deleting that directory and re-running plain `uv sync --all-packages --dev`
+fixed it. If a code change does not seem to take effect after the
+documented reinstall command, check for this first.

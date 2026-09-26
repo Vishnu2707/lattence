@@ -272,3 +272,41 @@ agent. Added
 as a permanent regression test pinning the 17-24 node range, a sane edge
 count, and internal consistency between the terminal's vulnerable count
 and the JSON summary fields.
+
+2026-09-26 D-035
+Decision: added a real size ceiling to the HTML dashboard, root-causing why
+the original bug report's HTML file was also 14MB.
+Finding: `render_html_report` embedded the entire report JSON a second time,
+verbatim, inside a `<details><pre>` block on top of the findings and node
+tables, with no cap on either table's row count. For a report with 2,312
+nodes and 20,684 edges this alone explains the 14MB HTML figure (a large
+JSON payload duplicated once as table rows and once as raw text). This is
+a real defect independent of whether the underlying graph explosion was
+ever live in the codebase (D-034 found it was not, for the current fixture),
+because nothing prevented it from recurring for any genuinely large project.
+Fix: `lattence-evidence/src/lattence/evidence/html_report.py` now caps the
+findings and node tables at 200 rows (most severe/first, with a trailing
+note and a pointer to the full JSON file for the rest), and skips the
+inline raw-JSON dump above 500,000 bytes in favor of the same pointer.
+`lattence-report.json` is unaffected: it is not the thing that grows
+unboundedly, and this fix does not touch it. Added
+`tests/evidence/test_reporting.py::test_html_report_truncates_findings_and_nodes_past_the_table_cap`
+(250 synthetic findings and nodes, confirms both truncation notes and the
+JSON-too-large fallback) and
+`tests/cli/test_workflow.py::test_report_artifacts_for_vulnerable_agent_stay_under_size_ceiling`
+(real `examples/vulnerable-agent` run, both artifacts under a 1MB ceiling;
+today's real sizes are about 100KB JSON and 112KB HTML). The ceiling is
+1MB, not the requested 100KB target, because each finding legitimately
+carries full evidence and reproduction data per `BUILD/CONTRACTS.md`, and
+100KB is already close to today's real size for a 13-finding report; 1MB
+leaves headroom for legitimate evidence growth while still catching a
+runaway graph or an unbounded embed, which is the actual failure mode this
+guards against.
+Aside (unrelated tooling issue found and worked around during this task,
+not a code change): a stale, non-editable copy of the `lattence` namespace
+package had accumulated directly under `.venv/lib/python3.12/site-packages/lattence`,
+shadowing the editable `lattence-evidence` source and silently serving old
+code no matter how many times `uv sync --all-packages --dev --reinstall-package`
+was run. Removing that directory and re-running plain `uv sync --all-packages --dev`
+fixed it. Worth a note in `BUILD/STATE.md` for the next agent since it
+wastes time if not recognized.

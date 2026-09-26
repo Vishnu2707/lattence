@@ -1,5 +1,27 @@
 # Current state
 
+## 2026-09-26: Milestone 1 (overnight run) closed
+
+Root-caused the other half of the original bug report: the 14MB HTML file
+was largely caused by `render_html_report` embedding the entire report
+JSON a second time, verbatim, in an inline `<pre>` block, with no cap on
+the findings or graph node tables. Fixed: both tables now cap at 200 rows
+(most severe first, with a note pointing at the full JSON for the rest),
+and the inline JSON dump is skipped above 500,000 bytes with the same
+pointer. Added a synthetic 250-row regression test and a real-fixture size
+ceiling test (1MB, justified in `BUILD/DECISIONS.md` D-035 since each
+finding legitimately carries full evidence data). Real current sizes for
+`examples/vulnerable-agent`: about 100KB JSON, about 112KB HTML. Task
+T-159. Full suite: 382 passed, same 2 pre-existing Docker exclusions.
+
+Tooling note for future agents: hit a stale, non-editable copy of the
+`lattence` namespace package physically present under
+`.venv/lib/python3.12/site-packages/lattence`, which shadowed the editable
+`lattence-evidence` source and served old code even after
+`uv sync --all-packages --dev --reinstall-package <pkg>`. Fix: delete that
+directory, then run plain `uv sync --all-packages --dev` again. Check for
+this first if a source change does not seem to take effect.
+
 ## 2026-09-26: Milestone 0 (overnight run) closed
 
 A bug report described `lattence scan` against `examples/vulnerable-agent`
@@ -36,13 +58,12 @@ are picked up.
 
 ## HANDOFF (if this run stops here)
 
-Milestone 0 is done and gated green. Next: Milestone 1 (report/dashboard
-size ceiling test, real file sizes: current `lattence-report.json` for
-vulnerable-agent is about 100KB and `lattence-report.html` about 110-250KB
-depending on which command wrote it, both far under the old 14MB bug
-figure, but no automated ceiling test exists yet). Start by reading
-`BUILD/notes/evidence.md` and the html_report/reporting modules, then add
-the size-ceiling test named in the run plan.
+Milestones 0 and 1 are done and gated green. Next: Milestone 2 (cross-layer
+chain correlator audit, `lattence_ai/attacks/cross_layer.py`, checking for
+combinatorial-artifact chains the same way v0.5.1 fixed "32 correlations vs
+9 distinct paths"). Start by reading `BUILD/notes/ai-security.md` and the
+cross_layer module, then audit and record findings in `BUILD/DECISIONS.md`
+before changing anything.
 
 - Milestone: v1.0.0 shipped. Repository is public. Milestone A (detection
   precision hardening) done. Milestone B (web dashboard, minimum viable)
