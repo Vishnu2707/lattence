@@ -1026,8 +1026,8 @@ passed on `README.md` and `BUILD/DECISIONS.md`.
 existing SARIF plumbing | deps: T-160 | status: done | commit: self
 
 Chose GitLab CI integration over a second discovery/attack language (Go or
-Java) as the highest-leverage addition that fits the remaining scope of
-this run; a second language needs new discovery rules, attack targeting,
+Java) as the addition that best fits the remaining scope of this run; a
+second language needs new discovery rules, attack targeting,
 fixtures, and native-catalog entries across three packages, which does not
 fit cleanly without cutting the audit discipline this run has otherwise
 held to. Proposal and rationale in `BUILD/DECISIONS.md` D-037.
@@ -1060,3 +1060,41 @@ index.
 
 Full suite: 384 passed (2 pre-existing Docker exclusions). Lint, format,
 and `mypy --strict` pass for `tests/ci`.
+
+# Milestone 4: trust signals
+
+[T-162] [Milestone 4] [docs] publish the false-positive rate in the README
+and fix documentation drift | deps: T-161 | status: done | commit: self
+
+Added a "False positive methodology" section directly to `README.md`,
+summarizing the audit methodology and its result (one real bug class
+found, at `workflow.py:208`; three rules fixed; self-scan count held
+steady at 13 findings before and after because the fix corrected one false
+positive and one false negative at once), linking to the full detail in
+`docs/false-positive-methodology.md` and `BUILD/DECISIONS.md`.
+
+Checked `SECURITY.md`, `CONTRIBUTING.md`, and `README.md` against
+everything shipped in T-158 through T-161. `SECURITY.md` needed no change.
+`CONTRIBUTING.md` was already stale before tonight: it said CI runs "six
+jobs" when `.github/workflows/ci.yml` has run seven (`action-smoke` was
+added before this run, per `BUILD/STATE.md`'s existing Milestone B notes,
+but never reflected in `CONTRIBUTING.md`). Fixed the count and listed
+`action-smoke`, noting it is not yet in `main`'s required status checks.
+
+Found and fixed one prose-check violation that had already been pushed in
+T-161's commit (60248dd): a banned promotional word in `BUILD/TASKS.md`,
+matched by `.githooks/prose-pattern.txt`. The local pre-commit hook only runs
+`check-provenance`, not `check-prose`, so this slipped through until run
+here; CI's `prose` job would have caught it on the next push. Reworded.
+Ran `.githooks/check-prose` with no arguments (scans the whole tracked
+tree) to confirm no other violation exists anywhere, not just in the files
+touched tonight.
+
+Updated `CHANGELOG.md` with an `[Unreleased]` section covering every
+milestone completed tonight (T-158 through T-161): the PQC summary fix,
+the dashboard table caps and size ceiling, the GitLab CI template, the
+README cross-layer and false-positive sections, and the two "investigated,
+not a live bug" findings (D-034 graph explosion, D-036 cross-layer audit).
+
+Full suite: 384 passed (2 pre-existing Docker exclusions). Prose check
+passed across the entire tracked tree.

@@ -181,6 +181,31 @@ the report to SARIF with `lattence sarif`.
 
 [Architecture](docs/architecture.md) · [Cross-layer analysis](docs/cross-layer-analysis.md) · [PQC and crypto assurance](docs/crypto-assurance.md) · [GitLab CI integration](docs/gitlab-ci.md) · [Deployment modes](docs/additional-info.md#deployment-modes) · [Extending the rule packs](docs/additional-info.md#extending-the-rule-packs) · [Full command reference and troubleshooting](docs/additional-info.md)
 
+## False positive methodology
+
+Every native attack rule is audited for matching on a node's field shape
+without checking whether a real data-flow path backs its claim. Rules that
+only assert an intrinsic property of one node (for example, "this tool has
+delete permission") are sound with a single-node check. Rules whose finding
+text makes a reachability claim (for example, "untrusted content reaches an
+agent") must also require a real graph path, via `match.requires_path` and
+the same bounded-depth traversal `graph chain` uses, or they can fire on a
+node that merely happens to carry the matching field shape with nothing
+ever consuming it.
+
+The full audit of all 15 native attack rules and all 23 native detection
+rules is in [`BUILD/DECISIONS.md`](BUILD/DECISIONS.md). It found one real
+bug class, at `lattence-cli/src/lattence/cli/workflow.py:208`, where a node
+discovered from an f-string in error-handling code carried the same field
+shape as a genuine untrusted dataset and fired two attack rules with no
+agent ever reaching it. Three rules made this class of claim and were
+fixed: `LT-AI-002`, `LT-AI-007`, `LT-AI-008`. Self-scanning this repository
+found 13 findings before the fix and 13 after, the count held steady
+because the fix corrected one false positive and one false negative at
+once, both on rules colliding on the same wrong target node; see
+[`docs/false-positive-methodology.md`](docs/false-positive-methodology.md)
+for the full trace and the regression tests that pin it.
+
 ## Security and responsible use
 
 Lattence is an offensive security tool. Point it only at projects you own

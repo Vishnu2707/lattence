@@ -1,5 +1,30 @@
 # Current state
 
+## 2026-09-26: Milestone 4 (overnight run) closed, overnight run complete
+
+Published the false-positive audit methodology and rate directly in
+`README.md` (new "False positive methodology" section), not only in
+`docs/false-positive-methodology.md`. Checked `SECURITY.md`,
+`CONTRIBUTING.md`, and `README.md` against everything shipped tonight
+(T-158 through T-161): `SECURITY.md` needed no change; `CONTRIBUTING.md`
+was already stale before tonight (said CI runs "six jobs," actually seven
+since `action-smoke` was added earlier and never reflected there), fixed.
+Also found and fixed one real prose-check violation already pushed in
+T-161's commit (60248dd): a banned promotional word in `BUILD/TASKS.md`,
+matched by `.githooks/prose-pattern.txt`. The local pre-commit hook only runs
+`check-provenance`, not `check-prose`, so it slipped past every commit
+tonight until caught here by running `check-prose` with no arguments
+(whole tracked tree) as part of this task's own verification; CI's
+`prose` job would have caught it on the next push regardless. Updated
+`CHANGELOG.md` with an `[Unreleased]` section listing every milestone
+completed tonight. Task T-162. Full suite: 384 passed, same 2 pre-existing
+Docker exclusions. Prose check clean across the whole tracked tree.
+
+This closes the overnight run: Milestones 0 through 4 all completed and
+gated green, tasks T-158 through T-162, commits 750c5bd, 9506b50, bff4954,
+60248dd, and this task's commit, all on `dev`, all pushed. No release
+tagged, no PR opened to main, per instruction.
+
 ## 2026-09-26: Milestone 3 (overnight run) closed
 
 Chose GitLab CI integration over a second discovery language (Go/Java) for
@@ -91,15 +116,6 @@ Full suite: 380 passed, 2 pre-existing Docker daemon tests excluded
 this state update. Milestones 1 through 4 from the overnight run plan were
 not started in this pass; see HANDOFF below if this run stops before they
 are picked up.
-
-## HANDOFF (if this run stops here)
-
-Milestones 0 through 3 are done and gated green. Next: Milestone 4 (trust
-signals): publish the false-positive audit methodology and rate directly
-in the README (not just `docs/false-positive-methodology.md`), confirm
-`SECURITY.md`, `CONTRIBUTING.md`, and the README are accurate against
-everything shipped tonight (T-158 through T-161), and update
-`CHANGELOG.md` with every milestone completed tonight.
 
 - Milestone: v1.0.0 shipped. Repository is public. Milestone A (detection
   precision hardening) done. Milestone B (web dashboard, minimum viable)

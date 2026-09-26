@@ -3,6 +3,50 @@
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 Versions before 1.0 may include breaking changes in a minor release.
 
+## [Unreleased]
+
+### Fixed
+
+- `create_report` (used by `scan` and `attack`) never populated
+  `quantum_vulnerable_assets`/`quantum_vulnerable_paths` in the report
+  summary, so both silently read 0 regardless of the graph's real crypto
+  topology even when the terminal correctly listed vulnerable algorithms.
+  It now runs the same quantum exposure assessment the `pqc` command
+  already runs.
+- The self-contained HTML dashboard embedded the entire report JSON a
+  second time, verbatim, in an inline block with no cap on the findings or
+  graph node tables, which could make the page unusably large for a big
+  project. Both tables now cap at 200 rows (most severe first, with a
+  pointer to the full JSON for the rest), and the inline JSON dump is
+  skipped above 500,000 bytes in favor of the same pointer.
+
+### Added
+
+- A GitLab CI job template (`templates/gitlab-ci.yml`,
+  `docs/gitlab-ci.md`) that installs Lattence, runs `scan` or `attack`,
+  converts the report to SARIF with the existing `lattence sarif` command,
+  and fails the pipeline on the configured severity gate, mirroring the
+  existing GitHub Action.
+- A "The differentiator: a real cross-layer chain" section in the README,
+  showing the real `LT-AI-002` to `LT-PQC-203` chain from
+  `examples/vulnerable-agent` end to end.
+- A "False positive methodology" section in the README summarizing the
+  detection precision audit and its result, previously documented only in
+  `docs/false-positive-methodology.md`.
+
+### Investigated, not a live bug
+
+- A report of a 2,312-node, 20,684-edge graph explosion and a contradictory
+  100 percent PQC readiness for `examples/vulnerable-agent` was bisected
+  across three commits; none reproduces it. The bad numbers traced to a
+  stale, gitignored local report file left over from an earlier, unrelated
+  broken run, now deleted. Full investigation in `BUILD/DECISIONS.md`
+  D-034.
+- Audited the cross-layer correlator for the combinatorial-artifact bug
+  class v0.5.1 fixed. Found the fix (deduplicating by structural path) is
+  still correctly in place everywhere chains are rendered. Full audit in
+  `BUILD/DECISIONS.md` D-036.
+
 ## [1.0.0] - 2026-09-20
 
 ### Added

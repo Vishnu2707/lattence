@@ -21,7 +21,7 @@ skips installing sibling workspace packages as editable, which makes
 
 ## What CI checks
 
-Every push and pull request runs six jobs, defined in
+Every push and pull request runs seven jobs, defined in
 `.github/workflows/ci.yml`:
 
 - `lint`: `ruff check` and `ruff format --check` across the repository.
@@ -34,6 +34,11 @@ Every push and pull request runs six jobs, defined in
 - `provenance`: `.githooks/check-provenance --all`, scanning tracked
   content and the full commit history.
 - `prose`: `.githooks/check-prose`, scanning Markdown files.
+- `action-smoke`: exercises `action.yml`, the GitHub Action, end to end
+  against this checkout and asserts it produces a real SARIF file.
+
+`action-smoke` is not yet in `main`'s required status checks list; the
+other six are.
 
 Run the relevant ones locally before pushing. For a change scoped to one
 package, the per-package commands in `BUILD/agents/*.md` are faster than the
