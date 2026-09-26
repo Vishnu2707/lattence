@@ -1,0 +1,48 @@
+# Include this file from a project's own .gitlab-ci.yml to run a Lattence
+# security scan and publish the result as a downloadable SARIF artifact:
+#
+#   include:
+#     - remote: https://raw.githubusercontent.com/Vishnu2707/lattence/dev/templates/gitlab-ci.yml
+#
+# Or copy the `lattence-scan` job below directly into your own pipeline.
+#
+# This mirrors action.yml, the GitHub Action: install lattence, run scan
+# (or attack), convert the report to SARIF with the existing `lattence
+# sarif` command, and fail the pipeline when findings meet the severity
+# gate. GitLab's Security Dashboard expects its own gl-sast-report.json
+# schema, which is not produced here; this template publishes a standard
+# SARIF file as a normal job artifact, not a Security Dashboard report.
+variables:
+  LATTENCE_PATH: "."
+  LATTENCE_FAIL_ON: "high"
+  LATTENCE_RUN_ATTACK: "false"
+  LATTENCE_SOURCE: "pypi"
+
+lattence-scan:
+  image: python:3.12-slim
+  stage: test
+  script:
+    - |
+      if [ "$LATTENCE_SOURCE" = "local" ]; then
+        pip install .
+      else
+        pip install lattence
+      fi
+    - |
+      set +e
+      if [ "$LATTENCE_RUN_ATTACK" = "true" ]; then
+        lattence attack "$LATTENCE_PATH" --out lattence-scan --fail-on "$LATTENCE_FAIL_ON"
+      else
+        lattence scan "$LATTENCE_PATH" --out lattence-scan --fail-on "$LATTENCE_FAIL_ON"
+      fi
+      EXIT_CODE=$?
+      set -e
+      lattence sarif lattence-scan/lattence-report.json --out lattence-scan/lattence.sarif.json
+      exit $EXIT_CODE
+  artifacts:
+    when: always
+    paths:
+      - lattence-scan/lattence-report.json
+      - lattence-scan/lattence-report.html
+      - lattence-scan/lattence.sarif.json
+    expire_in: 30 days

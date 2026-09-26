@@ -1019,3 +1019,44 @@ quantum-vulnerable, corrected after checking the fixture's actual
 
 Full suite: 382 passed (2 pre-existing Docker exclusions). Prose check
 passed on `README.md` and `BUILD/DECISIONS.md`.
+
+# Milestone 3: GitLab CI integration
+
+[T-161] [Milestone 3] [CI] add a GitLab CI job template reusing the
+existing SARIF plumbing | deps: T-160 | status: done | commit: self
+
+Chose GitLab CI integration over a second discovery/attack language (Go or
+Java) as the highest-leverage addition that fits the remaining scope of
+this run; a second language needs new discovery rules, attack targeting,
+fixtures, and native-catalog entries across three packages, which does not
+fit cleanly without cutting the audit discipline this run has otherwise
+held to. Proposal and rationale in `BUILD/DECISIONS.md` D-037.
+
+Added `templates/gitlab-ci.yml`, an includable job definition mirroring
+`action.yml`: installs lattence (`pypi` or `local` via `LATTENCE_SOURCE`),
+runs `lattence scan` or `lattence attack` (`LATTENCE_RUN_ATTACK`), converts
+the report with the existing `lattence sarif` command, and exits with the
+scan's own severity-gate exit code, captured across the SARIF conversion
+step with `set +e`/`set -e` since GitLab's script execution aborts on a
+nonzero exit otherwise, which would skip SARIF generation entirely on any
+gated finding. Publishes the JSON report, HTML dashboard, and SARIF file as
+job artifacts. Does not claim GitLab Security Dashboard integration, which
+needs GitLab's own `gl-sast-report.json` schema, not SARIF; documented
+honestly in `docs/gitlab-ci.md`.
+
+Verified end to end: ran the template's exact shell commands locally
+(no GitLab runner available in this environment) against
+`examples/vulnerable-agent`, confirming `lattence scan` produces the
+report, `lattence sarif` converts it to a valid SARIF 2.1.0 file (13
+results, matching the 13 findings), and the captured exit code (1, since
+the default `high` gate is met) survives past the SARIF conversion step
+to the final `exit $EXIT_CODE`.
+
+New tests: `tests/ci/test_gitlab_template.py` (YAML structure, real
+command presence, and the exit-code-capture ordering that fixes the
+abort-before-SARIF bug). README links `docs/gitlab-ci.md` and
+`templates/gitlab-ci.yml` from both the CI section and the documentation
+index.
+
+Full suite: 384 passed (2 pre-existing Docker exclusions). Lint, format,
+and `mypy --strict` pass for `tests/ci`.

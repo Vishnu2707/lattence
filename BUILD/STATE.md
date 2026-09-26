@@ -1,5 +1,24 @@
 # Current state
 
+## 2026-09-26: Milestone 3 (overnight run) closed
+
+Chose GitLab CI integration over a second discovery language (Go/Java) for
+this run's coverage-broadening milestone: it reuses the existing `lattence
+scan`/`attack`/`sarif` commands with no new discovery or detection logic,
+while a second language needs new rules, fixtures, and catalog entries
+across three packages. Proposal in `BUILD/DECISIONS.md` D-037. Added
+`templates/gitlab-ci.yml` (mirrors `action.yml`: install, scan or attack,
+convert to SARIF, publish artifacts, exit on the severity gate) and
+`docs/gitlab-ci.md`. Verified the template's exact shell commands locally
+against `examples/vulnerable-agent`: real scan output, a valid SARIF file
+with 13 results matching the 13 findings, and the severity-gate exit code
+(1, `high` gate met) correctly surviving past the SARIF conversion step.
+Honest scope note: this does not integrate with GitLab's Security
+Dashboard, which needs GitLab's own report schema, not SARIF; it publishes
+a downloadable SARIF artifact and fails the pipeline on the gate, matching
+what the GitHub Action already does. Task T-161. Full suite: 384 passed,
+same 2 pre-existing Docker exclusions.
+
 ## 2026-09-26: Milestone 2 (overnight run) closed
 
 Audited `lattence_ai/attacks/cross_layer.py` for the combinatorial-artifact
@@ -75,12 +94,12 @@ are picked up.
 
 ## HANDOFF (if this run stops here)
 
-Milestones 0, 1, and 2 are done and gated green. Next: Milestone 3, review
-lattence-core's discovery architecture and choose between a second
-discovery/attack language (Go or Java) and GitLab CI integration
-(reusing the existing SARIF plumbing). Per the run instructions, default to
-the smaller GitLab CI option if genuinely unsure it fits in remaining
-scope. Write the proposal to `BUILD/DECISIONS.md` before starting.
+Milestones 0 through 3 are done and gated green. Next: Milestone 4 (trust
+signals): publish the false-positive audit methodology and rate directly
+in the README (not just `docs/false-positive-methodology.md`), confirm
+`SECURITY.md`, `CONTRIBUTING.md`, and the README are accurate against
+everything shipped tonight (T-158 through T-161), and update
+`CHANGELOG.md` with every milestone completed tonight.
 
 - Milestone: v1.0.0 shipped. Repository is public. Milestone A (detection
   precision hardening) done. Milestone B (web dashboard, minimum viable)

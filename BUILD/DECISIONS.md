@@ -344,3 +344,29 @@ across 9 distinct structural paths" header and the same real
 have not drifted. No code change was needed for this audit; the README
 worked example added in this task uses this exact, freshly re-verified
 output.
+
+2026-09-26 D-037
+Decision: for Milestone 3 (broaden coverage), chose GitLab CI integration
+over a second discovery/attack language (Go or Java).
+Rationale: a second language means new discovery rules, new attack rule
+targeting, new fixtures, and new native-catalog entries across
+`lattence-core`, `lattence-ai`, and `lattence-packs`, the kind of surface
+that took multiple whole milestones (v0.3, v0.4) for Python. That does not
+fit cleanly in the time remaining in this overnight run without cutting
+corners on the audit discipline this run has otherwise held to. GitLab CI
+integration reuses everything already built in Phase 4: the `lattence
+scan`/`attack` commands, the existing `lattence sarif` converter, and the
+severity-gate exit code the GitHub Action already relies on. No new
+discovery or detection logic is needed, only a CI template.
+Scope: add `templates/gitlab-ci.yml`, an includable GitLab CI job
+definition mirroring `action.yml`'s composite action (install lattence,
+run scan or attack, convert to SARIF, publish it as a job artifact, exit
+nonzero on the severity gate). GitLab's native Security Dashboard expects
+its own `gl-sast-report.json` schema, not SARIF; this integration does not
+claim Security Dashboard support, only a downloadable SARIF artifact and a
+pipeline that fails the build on the configured severity gate, which is an
+honest, accurate scope matching what Phase 4 already ships for GitHub.
+Document the real command sequence in `docs/gitlab-ci.md` and verify it end
+to end locally against `examples/vulnerable-agent` (the template's exact
+shell commands, run outside GitLab's runner since none is available in
+this environment, are the acceptance evidence).

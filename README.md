@@ -172,9 +172,14 @@ LATTENCE_API_TOKEN=... docker compose up   # same, in a container
 lattence scan . --json --fail-on high   # fail a CI build on findings
 ```
 
+A GitHub Action ([action.yml](action.yml)) and a GitLab CI job template
+([templates/gitlab-ci.yml](templates/gitlab-ci.yml), see
+[docs/gitlab-ci.md](docs/gitlab-ci.md)) both run the same scan and convert
+the report to SARIF with `lattence sarif`.
+
 ## Documentation
 
-[Architecture](docs/architecture.md) · [Cross-layer analysis](docs/cross-layer-analysis.md) · [PQC and crypto assurance](docs/crypto-assurance.md) · [Deployment modes](docs/additional-info.md#deployment-modes) · [Extending the rule packs](docs/additional-info.md#extending-the-rule-packs) · [Full command reference and troubleshooting](docs/additional-info.md)
+[Architecture](docs/architecture.md) · [Cross-layer analysis](docs/cross-layer-analysis.md) · [PQC and crypto assurance](docs/crypto-assurance.md) · [GitLab CI integration](docs/gitlab-ci.md) · [Deployment modes](docs/additional-info.md#deployment-modes) · [Extending the rule packs](docs/additional-info.md#extending-the-rule-packs) · [Full command reference and troubleshooting](docs/additional-info.md)
 
 ## Security and responsible use
 
