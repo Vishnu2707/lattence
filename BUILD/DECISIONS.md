@@ -384,3 +384,9 @@ Decision: split the CLI workflow by report construction, artifact I/O, and
 result handling while retaining `workflow.py` as the stable import facade.
 Rationale: these seams follow existing responsibilities and avoid changing
 callers or public command behavior during a maintainability-only task.
+
+2026-11-08 D-040
+Decision: make one fresh-clone release script assert every published fixture
+count, the report size ceiling, the final test count, and measured coverage.
+Rationale: a single failing command gives outside reviewers reproducible
+evidence without relying on historical ledger claims.

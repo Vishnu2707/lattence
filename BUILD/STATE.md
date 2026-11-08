@@ -13,9 +13,15 @@ The real T-164 commit is
 replaced when T-165 was added and has now been restored in `BUILD/TASKS.md`.
 
 - Milestone: Milestone 1, trust and release verification.
-- Last completed: T-167, aligned the local pre-commit prose gate with CI.
-- Next task: T-168, add the release verification script and README section.
+- Last completed: T-168, added and ran the public release verification script.
+- Next task: none selected. Hold for review before any Milestone C scope.
 - Blockers: none.
+
+The final T-168 run reproduced 13 findings, 92 attack paths, 32 cross-layer
+correlations across 9 structural paths, and 21 percent PQC readiness. It
+measured 101,851-byte JSON and 111,834-byte HTML reports. The complete suite
+passed 390 tests at 92 percent displayed coverage and 92.47 percent exact
+coverage.
 
 ## 2026-09-30: Investigation handoff and baseline established
 

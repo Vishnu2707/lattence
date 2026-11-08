@@ -22,6 +22,9 @@ Versions before 1.0 may include breaking changes in a minor release.
 
 ### Added
 
+- A runnable release verification script that reproduces the documented
+  vulnerable-agent counts, report size ceiling, full test count, and coverage
+  from a fresh clone.
 - A GitLab CI job template (`templates/gitlab-ci.yml`,
   `docs/gitlab-ci.md`) that installs Lattence, runs `scan` or `attack`,
   converts the report to SARIF with the existing `lattence sarif` command,

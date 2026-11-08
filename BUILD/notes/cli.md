@@ -300,3 +300,11 @@ text output, and CLI audit recording live in `result_workflow.py`. The original
 module remains a compatibility facade for every existing import. Each source
 file is below 300 lines. Strict typing, focused CLI tests, and all 387 tests
 pass with no command or data-contract change.
+
+T-168 adds `scripts/verify-release.sh` as the single public reproduction path
+for release claims. It syncs the workspace, scans the bundled fixture, checks
+the report and cross-layer counts, measures both report artifacts against the
+size ceiling, and runs the complete suite with coverage. Its accepted run
+reproduced 13 findings, 92 attack paths, 32 correlations across 9 structural
+paths, 21 percent PQC readiness, 101,851-byte JSON, 111,834-byte HTML, 390
+passing tests, and 92.47 percent exact coverage.

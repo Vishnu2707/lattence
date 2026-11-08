@@ -1136,4 +1136,11 @@ The local pre-commit hook now runs provenance first and the prose checker
 against the staged snapshot second. A staged Markdown probe containing a term
 from the prohibited pattern file was rejected with exit code 1 before commit.
 The probe was removed, the clean hook passed, and all 9 CI tests passed.
-[T-168] [Milestone 1] [SHIP] add the release verification script and README verification section | deps: T-167 | status: todo | commit: self
+[T-168] [Milestone 1] [SHIP] add the release verification script and README verification section | deps: T-167 | status: done | commit: self
+
+Added `scripts/verify-release.sh` and documented it in the README. The script
+reproduced 13 findings, 92 attack paths, 32 cross-layer correlations across 9
+structural paths, and 21 percent PQC readiness. It measured the JSON report at
+101,851 bytes and HTML at 111,834 bytes, both below 1,000,000 bytes. The final
+coverage run passed all 390 tests at 92 percent displayed coverage and 92.47
+percent exact coverage.
