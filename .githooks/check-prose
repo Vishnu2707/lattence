@@ -4,7 +4,13 @@ set -eu
 root=$(git rev-parse --show-toplevel)
 pattern=$(cat "$root/.githooks/prose-pattern.txt")
 
-if git grep -nI -i -E "$pattern" -- '*.md'; then
+if [ "${1:-}" = "--cached" ]; then
+  set -- git grep --cached -nI -i -E "$pattern"
+else
+  set -- git grep -nI -i -E "$pattern"
+fi
+
+if "$@" -- '*.md'; then
   echo "prose check failed" >&2
   exit 1
 fi

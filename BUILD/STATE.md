@@ -13,8 +13,8 @@ The real T-164 commit is
 replaced when T-165 was added and has now been restored in `BUILD/TASKS.md`.
 
 - Milestone: Milestone 1, trust and release verification.
-- Last completed: T-166, split the CLI workflow module into focused modules.
-- Next task: T-167, add the prose check to the local pre-commit hook.
+- Last completed: T-167, aligned the local pre-commit prose gate with CI.
+- Next task: T-168, add the release verification script and README section.
 - Blockers: none.
 
 ## 2026-09-30: Investigation handoff and baseline established

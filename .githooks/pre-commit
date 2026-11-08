@@ -1,4 +1,6 @@
 #!/bin/sh
 set -eu
 
-exec "$(git rev-parse --show-toplevel)/.githooks/check-provenance"
+root=$(git rev-parse --show-toplevel)
+"$root/.githooks/check-provenance"
+"$root/.githooks/check-prose" --cached

@@ -1130,5 +1130,10 @@ execution, artifact I/O, and result rendering and verification modules.
 `workflow.py` remains a 32-line compatibility facade. All four files are below
 300 lines. Strict CLI typing, 23 focused tests, and the full 387-test suite
 passed with behavior unchanged.
-[T-167] [Milestone 1] [CI] run the prose check from the local pre-commit hook | deps: T-166 | status: todo | commit: self
+[T-167] [Milestone 1] [CI] run the prose check from the local pre-commit hook | deps: T-166 | status: done | commit: self
+
+The local pre-commit hook now runs provenance first and the prose checker
+against the staged snapshot second. A staged Markdown probe containing a term
+from the prohibited pattern file was rejected with exit code 1 before commit.
+The probe was removed, the clean hook passed, and all 9 CI tests passed.
 [T-168] [Milestone 1] [SHIP] add the release verification script and README verification section | deps: T-167 | status: todo | commit: self
