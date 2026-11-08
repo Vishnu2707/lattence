@@ -378,3 +378,9 @@ counts; graph chain produces 32 finding correlations across 9 distinct structura
 paths. No graph explosion regression; stale artifact root cause confirmed and
 documented. Test `test_graph_chain_cross_layer_correlation_counts` added to
 prevent future regression.
+
+2026-11-08 D-039
+Decision: split the CLI workflow by report construction, artifact I/O, and
+result handling while retaining `workflow.py` as the stable import facade.
+Rationale: these seams follow existing responsibilities and avoid changing
+callers or public command behavior during a maintainability-only task.

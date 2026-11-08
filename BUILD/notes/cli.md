@@ -292,3 +292,11 @@ exact upload command, and public-index pipx verification procedure. No PyPI
 token or configuration is available in this environment, so T-114 is blocked
 before upload. The public package name currently returns 404, and there is
 no local pipx executable. No published-package acceptance has been claimed.
+
+T-166 splits the 406-line `workflow.py` into three focused modules. Report
+construction and provider execution live in `report_workflow.py`, artifact
+paths and serialization live in `artifact_workflow.py`, and gates, verification,
+text output, and CLI audit recording live in `result_workflow.py`. The original
+module remains a compatibility facade for every existing import. Each source
+file is below 300 lines. Strict typing, focused CLI tests, and all 387 tests
+pass with no command or data-contract change.

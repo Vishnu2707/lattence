@@ -13,8 +13,8 @@ The real T-164 commit is
 replaced when T-165 was added and has now been restored in `BUILD/TASKS.md`.
 
 - Milestone: Milestone 1, trust and release verification.
-- Last completed: T-165, independent clean-clone verification.
-- Next task: T-166, split `lattence-cli/src/lattence/cli/workflow.py`.
+- Last completed: T-166, split the CLI workflow module into focused modules.
+- Next task: T-167, add the prose check to the local pre-commit hook.
 - Blockers: none.
 
 ## 2026-09-30: Investigation handoff and baseline established

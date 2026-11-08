@@ -1123,6 +1123,12 @@ readiness. The permanent regression at
 `tests/cli/test_workflow.py:178` passed, followed by the full suite at 387
 passed tests, including Docker tests.
 
-[T-166] [Milestone 1] [CLI] split workflow.py along functional seams without changing behavior | deps: T-165 | status: todo | commit: self
+[T-166] [Milestone 1] [CLI] split workflow.py along functional seams without changing behavior | deps: T-165 | status: done | commit: self
+
+Split the 406-line workflow module into report construction and provider
+execution, artifact I/O, and result rendering and verification modules.
+`workflow.py` remains a 32-line compatibility facade. All four files are below
+300 lines. Strict CLI typing, 23 focused tests, and the full 387-test suite
+passed with behavior unchanged.
 [T-167] [Milestone 1] [CI] run the prose check from the local pre-commit hook | deps: T-166 | status: todo | commit: self
 [T-168] [Milestone 1] [SHIP] add the release verification script and README verification section | deps: T-167 | status: todo | commit: self
