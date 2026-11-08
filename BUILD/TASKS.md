@@ -1108,4 +1108,21 @@ directory. Established checkout status on dev tracking origin/dev, confirmed
 remote Vishnu2707/lattence, and initialized task ledger for the graph
 explosion investigation.
 
-[T-165] [Investigation] [TEST] verify build discipline and test stability across repeated runs | deps: T-164 | status: todo | commit: self
+[T-164] [Investigation] [GRAPH] reproduce and trace graph explosion in vulnerable-agent fixture | deps: T-163 | status: done | commit: 39a1b2e
+
+Commit `39a1b2eee21efe79adeb53c401d452d99d4154ba` added the graph-chain
+correlation regression and recorded the stable vulnerable-agent scan counts.
+The next ledger edit accidentally replaced this task line instead of appending
+T-165, so this entry restores the task already present in the real history.
+
+[T-165] [Milestone 0] [TEST] independently verify the vulnerable-agent stable reference from a fresh clone | deps: T-164 | status: done | commit: d9c01cc
+
+Fresh clone verification at commit `d9c01cc9071ac39b8626035d016066e85c482b1a`
+produced 24 nodes, 92 edges, 92 attack paths, 13 findings, and 21 percent PQC
+readiness. The permanent regression at
+`tests/cli/test_workflow.py:178` passed, followed by the full suite at 387
+passed tests, including Docker tests.
+
+[T-166] [Milestone 1] [CLI] split workflow.py along functional seams without changing behavior | deps: T-165 | status: todo | commit: self
+[T-167] [Milestone 1] [CI] run the prose check from the local pre-commit hook | deps: T-166 | status: todo | commit: self
+[T-168] [Milestone 1] [SHIP] add the release verification script and README verification section | deps: T-167 | status: todo | commit: self

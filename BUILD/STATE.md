@@ -1,5 +1,22 @@
 # Current state
 
+## 2026-11-08: Milestone 0 independently verified
+
+A fresh clone at commit `d9c01cc9071ac39b8626035d016066e85c482b1a`
+produced 24 nodes, 92 edges, 92 attack paths, 13 findings, and 21 percent PQC
+readiness for `examples/vulnerable-agent`. The permanent regression test at
+`tests/cli/test_workflow.py:178` passed. The full suite passed all 387 tests,
+including Docker tests. This resolves the prior clean-environment discrepancy.
+
+The real T-164 commit is
+`39a1b2eee21efe79adeb53c401d452d99d4154ba`. Its task line was accidentally
+replaced when T-165 was added and has now been restored in `BUILD/TASKS.md`.
+
+- Milestone: Milestone 1, trust and release verification.
+- Last completed: T-165, independent clean-clone verification.
+- Next task: T-166, split `lattence-cli/src/lattence/cli/workflow.py`.
+- Blockers: none.
+
 ## 2026-09-30: Investigation handoff and baseline established
 
 Recorded `agent.md` in repository root and `BUILD/HANDOFF.md` in the ledger
@@ -15,7 +32,7 @@ Treating all prior milestone claims (node/edge counts, PQC readiness,
 dashboard sizes, cross-layer chains, and CI integration) as unverified
 until executed and verified live.
 
-Task T-165. Next task: T-166.
+Tasks T-163 and T-164 established and reproduced the investigation baseline.
 
 ## 2026-09-26: Milestone 4 (overnight run) closed, overnight run complete
 
@@ -134,9 +151,9 @@ this state update. Milestones 1 through 4 from the overnight run plan were
 not started in this pass; see HANDOFF below if this run stops before they
 are picked up.
 
-- Milestone: Investigation into reported graph explosion.
-- Last completed: T-163, recorded handoff documentation and ledger baseline.
-- Next task: T-164, reproduce and trace graph explosion in vulnerable-agent fixture.
+- Historical milestone: Investigation into reported graph explosion.
+- Historical last completed at this point: T-163, handoff and ledger baseline.
+- Historical next task at this point: T-164, graph explosion reproduction.
 - Blockers: none. Noted but not fixed: `lattence-cli/src/lattence/cli/workflow.py`
   is 407 lines (over the 300-line guideline). The provenance hook
   (`.githooks/check-provenance --all`) fails against full commit history due
