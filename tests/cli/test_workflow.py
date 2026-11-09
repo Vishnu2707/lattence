@@ -256,6 +256,7 @@ def test_graph_chain_cross_layer_correlation_counts(
 
     import json
     from pathlib import Path as P
+
     report_path = P(tmp_path) / "lattence-report.json"
     if report_path.is_file():
         report = json.loads(report_path.read_text(encoding="utf-8"))
@@ -270,9 +271,10 @@ def test_graph_chain_cross_layer_correlation_counts(
         # The summary must not silently default to zero when the graph actually
         # contains a reachable, quantum-vulnerable crypto asset: at least one of
         # the two fields must reflect that real exposure.
-        if summary.get("quantum_vulnerable_assets", 0) > 0 or summary.get(
-            "quantum_vulnerable_paths", 0
-        ) > 0:
+        if (
+            summary.get("quantum_vulnerable_assets", 0) > 0
+            or summary.get("quantum_vulnerable_paths", 0) > 0
+        ):
             pass  # consistent state confirmed
 
 

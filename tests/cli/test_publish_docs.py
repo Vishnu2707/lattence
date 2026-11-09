@@ -21,9 +21,7 @@ def test_publish_guide_uses_isolated_artifacts_and_public_pipx() -> None:
 
 def test_v110_changelog_records_only_verified_release_claims() -> None:
     changelog = (ROOT / "CHANGELOG.md").read_text(encoding="utf-8")
-    release = changelog.split("## [1.1.0] - 2026-11-09", 1)[1].split(
-        "## [1.0.0]", 1
-    )[0]
+    release = changelog.split("## [1.1.0] - 2026-11-09", 1)[1].split("## [1.0.0]", 1)[0]
     normalized = " ".join(release.split())
 
     for verified in (
