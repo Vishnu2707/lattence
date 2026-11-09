@@ -1169,5 +1169,11 @@ Built the root wheel and installed it into a fresh Python 3.12 venv under
 reported 1.1.0. Scan and attack returned 13 findings, chain returned 32
 correlations across 9 paths, SARIF validated as version 2.1.0 with 13 results,
 and report regenerated JSON plus a 111,789-byte HTML file.
-[T-172] [v1.1.0] [DOCS] audit the README publication claim and PyPI long description | deps: T-171 | status: todo | commit: self
+[T-172] [v1.1.0] [DOCS] audit the README publication claim and PyPI long description | deps: T-171 | status: done | commit: self
+
+The repository README already omits the stale unpublished-package sentence and
+documents `pip install lattence`, so no README edit was needed. The built 1.1.0
+wheel long description matches the repository README byte-for-byte. Live PyPI
+still serves 0.5.2 and its historical long description contains the stale
+sentence, so it does not match until 1.1.0 is published. No upload was run.
 [T-173] [v1.1.0] [ORCH] record exact release commands without executing them | deps: T-172 | status: todo | commit: self

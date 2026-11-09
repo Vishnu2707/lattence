@@ -33,3 +33,10 @@ def test_every_workspace_project_uses_the_release_version() -> None:
         for member in members
     }
     assert declared == dict.fromkeys(members, RELEASE_VERSION)
+
+
+def test_readme_does_not_claim_the_package_is_unpublished() -> None:
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+
+    assert "not yet published to PyPI" not in readme
+    assert "pip install lattence" in readme

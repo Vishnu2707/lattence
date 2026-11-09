@@ -328,3 +328,9 @@ T-171 installs the built root wheel into a fresh Python 3.12 venv under
 The installed command reports 1.1.0. Scan and attack return 13 findings,
 chain returns 32 correlations across 9 paths, SARIF contains 13 version 2.1.0
 results, and report regenerates JSON plus a 111,789-byte HTML artifact.
+
+T-172 confirms the repository README already documents the published package
+and contains no stale unpublished-package sentence. The built 1.1.0 wheel long
+description matches that README byte-for-byte. Live PyPI still serves 0.5.2
+with its historical stale description, which cannot change until the new
+distribution is uploaded. No upload occurred in this task.
