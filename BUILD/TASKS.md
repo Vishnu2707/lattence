@@ -1176,4 +1176,9 @@ documents `pip install lattence`, so no README edit was needed. The built 1.1.0
 wheel long description matches the repository README byte-for-byte. Live PyPI
 still serves 0.5.2 and its historical long description contains the stale
 sentence, so it does not match until 1.1.0 is published. No upload was run.
-[T-173] [v1.1.0] [ORCH] record exact release commands without executing them | deps: T-172 | status: todo | commit: self
+[T-173] [v1.1.0] [ORCH] record exact release commands without executing them | deps: T-172 | status: done | commit: self
+
+Added `BUILD/RELEASE-1.1.0.md` with exact commands for the annotated tag, pull
+request and merge, root and API distribution builds, PyPI upload, and GitHub
+release. None were run. The final release script reproduced the documented
+counts and sizes, then passed all 394 tests at 92.47 percent exact coverage.

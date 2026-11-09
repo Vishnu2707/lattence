@@ -33,9 +33,24 @@ def test_v110_changelog_records_only_verified_release_claims() -> None:
         "21 percent PQC readiness",
         "101,851 bytes",
         "111,834 bytes",
-        "390 tests at 92.47 percent coverage",
+        "394 tests at 92.47 percent coverage",
     ):
         assert verified in normalized
 
     assert "2,312-node" not in release
     assert "20,684-edge" not in release
+
+
+def test_v110_release_commands_cover_each_manual_release_action() -> None:
+    commands = (ROOT / "BUILD" / "RELEASE-1.1.0.md").read_text(encoding="utf-8")
+
+    for required in (
+        "git tag -a v1.1.0",
+        "gh pr create --base main --head dev",
+        "gh pr merge --merge",
+        "uv build --package lattence",
+        "uv build --package lattence-api",
+        "twine upload --non-interactive",
+        "gh release create v1.1.0",
+    ):
+        assert required in commands

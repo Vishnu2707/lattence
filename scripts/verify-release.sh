@@ -12,7 +12,7 @@ command -v uv >/dev/null 2>&1 || {
 work=$(mktemp -d "${TMPDIR:-/tmp}/lattence-verify.XXXXXX")
 trap 'rm -rf "$work"' EXIT HUP INT TERM
 
-expected_tests=390
+expected_tests=394
 expected_coverage=92
 
 echo "==> Synchronizing the workspace"

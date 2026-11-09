@@ -43,7 +43,7 @@ Versions before 1.0 may include breaking changes in a minor release.
 - `scripts/verify-release.sh` reproduced 13 findings, 92 attack paths, 32
   cross-layer correlations across 9 structural paths, and 21 percent PQC
   readiness. It measured the JSON report at 101,851 bytes and HTML report at
-  111,834 bytes, then passed 390 tests at 92.47 percent coverage.
+  111,834 bytes, then passed 394 tests at 92.47 percent coverage.
 
 ## [1.0.0] - 2026-09-20
 

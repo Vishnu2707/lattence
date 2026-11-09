@@ -390,3 +390,9 @@ Decision: make one fresh-clone release script assert every published fixture
 count, the report size ceiling, the final test count, and measured coverage.
 Rationale: a single failing command gives outside reviewers reproducible
 evidence without relying on historical ledger claims.
+
+2026-11-09 D-041
+Decision: stage the root and API distributions together for the v1.1.0 PyPI
+upload while keeping the internal workspace modules bundled in the root wheel.
+Rationale: `lattence[api]` depends on the separately named `lattence-api`
+distribution, while the other runtime modules already ship inside `lattence`.

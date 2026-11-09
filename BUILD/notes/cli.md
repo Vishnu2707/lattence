@@ -334,3 +334,9 @@ and contains no stale unpublished-package sentence. The built 1.1.0 wheel long
 description matches that README byte-for-byte. Live PyPI still serves 0.5.2
 with its historical stale description, which cannot change until the new
 distribution is uploaded. No upload occurred in this task.
+
+T-173 records the manual release commands in `BUILD/RELEASE-1.1.0.md`. The
+commands build and upload both the root and API distributions because the API
+extra depends on the separately named `lattence-api` package. The final gate
+reproduced the release claims and passed 394 tests at 92.47 percent exact
+coverage. No release command was executed.

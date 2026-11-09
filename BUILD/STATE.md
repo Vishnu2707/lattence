@@ -13,14 +13,19 @@ The real T-164 commit is
 replaced when T-165 was added and has now been restored in `BUILD/TASKS.md`.
 
 - Milestone: v1.1.0 release preparation. Do not tag, publish, or open the PR.
-- Last completed: T-172, audited the README and package long descriptions.
-- Next task: T-173, record exact release commands without executing them.
+- Last completed: T-173, recorded exact v1.1.0 release commands.
+- Next task: none. Hold for approval before tag, PR, upload, or GitHub release.
 - Blockers: none.
 
 The repository README and built 1.1.0 wheel description match exactly and do
 not contain the stale unpublished-package sentence. Live PyPI still serves
 0.5.2 with its historical stale description. Publishing 1.1.0 will replace
 that page content; no upload was performed during preparation.
+
+The final release verification passed 394 tests at 92 percent displayed and
+92.47 percent exact coverage. The JSON report measured 101,851 bytes and the
+HTML report 111,834 bytes. No tag, pull request, package upload, or GitHub
+release was created.
 
 The final T-168 run reproduced 13 findings, 92 attack paths, 32 cross-layer
 correlations across 9 structural paths, and 21 percent PQC readiness. It

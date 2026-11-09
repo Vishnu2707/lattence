@@ -112,7 +112,7 @@ The script synchronizes the complete workspace, scans the bundled vulnerable
 agent, checks the documented 13 findings, 92 attack paths, 32 cross-layer
 correlations across 9 structural paths, and 21 percent PQC readiness, then
 prints the measured JSON and HTML report sizes and enforces the 1,000,000-byte
-ceiling. It finishes by running the full 390-test suite with coverage and
+ceiling. It finishes by running the full 394-test suite with coverage and
 requires the current measured 92 percent coverage. Any mismatch exits nonzero.
 
 ## What it finds
