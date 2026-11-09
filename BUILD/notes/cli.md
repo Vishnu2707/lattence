@@ -322,3 +322,9 @@ run: 13 findings, 92 attack paths, 32 correlations across 9 paths, 21 percent
 PQC readiness, 101,851-byte JSON, 111,834-byte HTML, and 390 tests at 92.47
 percent coverage. Unreproduced investigation narrative is not part of the
 release entry.
+
+T-171 installs the built root wheel into a fresh Python 3.12 venv under
+`/tmp`, with no workspace import path and a copied vulnerable-agent fixture.
+The installed command reports 1.1.0. Scan and attack return 13 findings,
+chain returns 32 correlations across 9 paths, SARIF contains 13 version 2.1.0
+results, and report regenerates JSON plus a 111,789-byte HTML artifact.

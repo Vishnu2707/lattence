@@ -13,8 +13,8 @@ The real T-164 commit is
 replaced when T-165 was added and has now been restored in `BUILD/TASKS.md`.
 
 - Milestone: v1.1.0 release preparation. Do not tag, publish, or open the PR.
-- Last completed: T-170, wrote the evidence-backed v1.1.0 changelog entry.
-- Next task: T-171, run isolated-wheel release command acceptance.
+- Last completed: T-171, passed isolated 1.1.0 wheel command acceptance.
+- Next task: T-172, audit the README publication claim and PyPI description.
 - Blockers: none.
 
 The final T-168 run reproduced 13 findings, 92 attack paths, 32 cross-layer

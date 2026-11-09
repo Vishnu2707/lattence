@@ -1162,6 +1162,12 @@ into `dev`. Runtime numbers are limited to the accepted release script output:
 readiness, 101,851-byte JSON, 111,834-byte HTML, and 390 tests at 92.47 percent
 coverage. Historical investigation claims not reproduced by the script were
 left out of the release entry.
-[T-171] [v1.1.0] [SHIP] install the wheel outside the repository and run release command acceptance | deps: T-170 | status: todo | commit: self
+[T-171] [v1.1.0] [SHIP] install the wheel outside the repository and run release command acceptance | deps: T-170 | status: done | commit: self
+
+Built the root wheel and installed it into a fresh Python 3.12 venv under
+`/tmp`, with the fixture copied outside the repository. The installed command
+reported 1.1.0. Scan and attack returned 13 findings, chain returned 32
+correlations across 9 paths, SARIF validated as version 2.1.0 with 13 results,
+and report regenerated JSON plus a 111,789-byte HTML file.
 [T-172] [v1.1.0] [DOCS] audit the README publication claim and PyPI long description | deps: T-171 | status: todo | commit: self
 [T-173] [v1.1.0] [ORCH] record exact release commands without executing them | deps: T-172 | status: todo | commit: self
