@@ -1154,7 +1154,14 @@ the lock. Built seven wheels at 1.1.0; `lattence-packs` remains a non-package
 workspace member whose rule data is embedded in the root wheel. The root wheel
 contains CLI, discovery, graph, governance, evidence, MCP, AI, crypto, and both
 rule-pack trees. Its metadata reports 1.1.0 and passes `twine check`.
-[T-170] [v1.1.0] [DOCS] write the evidence-backed changelog since v1.0.1 | deps: T-169 | status: todo | commit: self
+[T-170] [v1.1.0] [DOCS] write the evidence-backed changelog since v1.0.1 | deps: T-169 | status: done | commit: self
+
+Added the dated v1.1.0 changelog entry from commits after the v1.0.1 merge
+into `dev`. Runtime numbers are limited to the accepted release script output:
+13 findings, 92 attack paths, 32 correlations across 9 paths, 21 percent PQC
+readiness, 101,851-byte JSON, 111,834-byte HTML, and 390 tests at 92.47 percent
+coverage. Historical investigation claims not reproduced by the script were
+left out of the release entry.
 [T-171] [v1.1.0] [SHIP] install the wheel outside the repository and run release command acceptance | deps: T-170 | status: todo | commit: self
 [T-172] [v1.1.0] [DOCS] audit the README publication claim and PyPI long description | deps: T-171 | status: todo | commit: self
 [T-173] [v1.1.0] [ORCH] record exact release commands without executing them | deps: T-172 | status: todo | commit: self

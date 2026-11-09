@@ -13,8 +13,8 @@ The real T-164 commit is
 replaced when T-165 was added and has now been restored in `BUILD/TASKS.md`.
 
 - Milestone: v1.1.0 release preparation. Do not tag, publish, or open the PR.
-- Last completed: T-169, set every workspace project to 1.1.0 and verified the wheels.
-- Next task: T-170, write the evidence-backed changelog since v1.0.1.
+- Last completed: T-170, wrote the evidence-backed v1.1.0 changelog entry.
+- Next task: T-171, run isolated-wheel release command acceptance.
 - Blockers: none.
 
 The final T-168 run reproduced 13 findings, 92 attack paths, 32 cross-layer

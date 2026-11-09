@@ -315,3 +315,10 @@ evidence, and MCP projects. `lattence-packs` remains a non-package workspace
 member and its attack and discovery data ships inside the root wheel. Direct
 archive inspection confirmed that the root wheel contains the CLI, discovery,
 graph, governance, evidence, MCP, AI, crypto, and both rule-pack trees.
+
+T-170 creates the dated v1.1.0 changelog entry from the commits after the
+v1.0.1 release merge. Numeric claims match the accepted release verification
+run: 13 findings, 92 attack paths, 32 correlations across 9 paths, 21 percent
+PQC readiness, 101,851-byte JSON, 111,834-byte HTML, and 390 tests at 92.47
+percent coverage. Unreproduced investigation narrative is not part of the
+release entry.

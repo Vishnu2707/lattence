@@ -5,50 +5,45 @@ Versions before 1.0 may include breaking changes in a minor release.
 
 ## [Unreleased]
 
-### Fixed
-
-- `create_report` (used by `scan` and `attack`) never populated
-  `quantum_vulnerable_assets`/`quantum_vulnerable_paths` in the report
-  summary, so both silently read 0 regardless of the graph's real crypto
-  topology even when the terminal correctly listed vulnerable algorithms.
-  It now runs the same quantum exposure assessment the `pqc` command
-  already runs.
-- The self-contained HTML dashboard embedded the entire report JSON a
-  second time, verbatim, in an inline block with no cap on the findings or
-  graph node tables, which could make the page unusably large for a big
-  project. Both tables now cap at 200 rows (most severe first, with a
-  pointer to the full JSON for the rest), and the inline JSON dump is
-  skipped above 500,000 bytes in favor of the same pointer.
+## [1.1.0] - 2026-11-09
 
 ### Added
 
-- A runnable release verification script that reproduces the documented
-  vulnerable-agent counts, report size ceiling, full test count, and coverage
-  from a fresh clone.
+- A self-contained HTML dashboard with severity sorting, PQC readiness, and
+  real cross-layer chains, plus the authenticated `GET /v1/dashboard` route.
 - A GitLab CI job template (`templates/gitlab-ci.yml`,
   `docs/gitlab-ci.md`) that installs Lattence, runs `scan` or `attack`,
   converts the report to SARIF with the existing `lattence sarif` command,
-  and fails the pipeline on the configured severity gate, mirroring the
-  existing GitHub Action.
-- A "The differentiator: a real cross-layer chain" section in the README,
-  showing the real `LT-AI-002` to `LT-PQC-203` chain from
-  `examples/vulnerable-agent` end to end.
-- A "False positive methodology" section in the README summarizing the
-  detection precision audit and its result, previously documented only in
-  `docs/false-positive-methodology.md`.
+  and preserves the scan severity-gate result.
+- `scripts/verify-release.sh`, which reproduces the documented fixture counts,
+  measures report sizes, and runs the complete test and coverage suite.
+- README sections covering the real `LT-AI-002` to `LT-PQC-203` chain and the
+  native-rule false-positive audit methodology.
 
-### Investigated, not a live bug
+### Changed
 
-- A report of a 2,312-node, 20,684-edge graph explosion and a contradictory
-  100 percent PQC readiness for `examples/vulnerable-agent` was bisected
-  across three commits; none reproduces it. The bad numbers traced to a
-  stale, gitignored local report file left over from an earlier, unrelated
-  broken run, now deleted. Full investigation in `BUILD/DECISIONS.md`
-  D-034.
-- Audited the cross-layer correlator for the combinatorial-artifact bug
-  class v0.5.1 fixed. Found the fix (deduplicating by structural path) is
-  still correctly in place everywhere chains are rendered. Full audit in
-  `BUILD/DECISIONS.md` D-036.
+- Reachability-claiming attack rules now require a real graph path after the
+  node predicate matches. The change covers `LT-AI-002`, `LT-AI-007`, and
+  `LT-AI-008` and retains the existing deterministic traversal.
+- The 406-line CLI workflow module is split into report construction, artifact
+  I/O, and result handling modules behind the existing import facade.
+- The local pre-commit hook now applies both provenance and prose checks to the
+  staged snapshot, matching the corresponding CI gates.
+- The root and every declared workspace project now report version 1.1.0.
+
+### Fixed
+
+- Scan and attack reports now populate quantum-vulnerable asset and path counts
+  from the same assessment used by the PQC command.
+- HTML report findings and node tables stop at 200 rows, and raw inline JSON is
+  omitted above 500,000 bytes. The full JSON artifact remains available.
+
+### Verified
+
+- `scripts/verify-release.sh` reproduced 13 findings, 92 attack paths, 32
+  cross-layer correlations across 9 structural paths, and 21 percent PQC
+  readiness. It measured the JSON report at 101,851 bytes and HTML report at
+  111,834 bytes, then passed 390 tests at 92.47 percent coverage.
 
 ## [1.0.0] - 2026-09-20
 
