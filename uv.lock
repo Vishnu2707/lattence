@@ -630,7 +630,7 @@ wheels = [
 
 [[package]]
 name = "lattence"
-version = "1.0.0"
+version = "1.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "cryptography" },
@@ -690,7 +690,7 @@ dev = [
 
 [[package]]
 name = "lattence-ai"
-version = "0.0.0"
+version = "1.1.0"
 source = { editable = "lattence-ai" }
 dependencies = [
     { name = "lattence-core" },
@@ -707,7 +707,7 @@ requires-dist = [
 
 [[package]]
 name = "lattence-api"
-version = "0.0.0"
+version = "1.1.0"
 source = { editable = "lattence-api" }
 dependencies = [
     { name = "fastapi" },
@@ -726,7 +726,7 @@ requires-dist = [
 
 [[package]]
 name = "lattence-core"
-version = "0.0.0"
+version = "1.1.0"
 source = { editable = "lattence-core" }
 dependencies = [
     { name = "jsonschema" },
@@ -747,7 +747,7 @@ requires-dist = [
 
 [[package]]
 name = "lattence-crypto"
-version = "0.0.0"
+version = "1.1.0"
 source = { editable = "lattence-crypto" }
 dependencies = [
     { name = "cryptography" },
@@ -762,7 +762,7 @@ requires-dist = [
 
 [[package]]
 name = "lattence-evidence"
-version = "0.0.0"
+version = "1.1.0"
 source = { editable = "lattence-evidence" }
 dependencies = [
     { name = "jsonschema" },
@@ -781,7 +781,7 @@ requires-dist = [
 
 [[package]]
 name = "lattence-mcp"
-version = "0.0.0"
+version = "1.1.0"
 source = { editable = "lattence-mcp" }
 dependencies = [
     { name = "lattence-core" },
@@ -796,7 +796,7 @@ requires-dist = [
 
 [[package]]
 name = "lattence-packs"
-version = "0.0.0"
+version = "1.1.0"
 source = { virtual = "lattence-packs" }
 
 [[package]]

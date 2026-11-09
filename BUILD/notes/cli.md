@@ -308,3 +308,10 @@ size ceiling, and runs the complete suite with coverage. Its accepted run
 reproduced 13 findings, 92 attack paths, 32 correlations across 9 structural
 paths, 21 percent PQC readiness, 101,851-byte JSON, 111,834-byte HTML, 390
 passing tests, and 92.47 percent exact coverage.
+
+T-169 sets the root distribution and all seven declared workspace projects to
+1.1.0. The build produces 1.1.0 wheels for the root, API, AI, core, crypto,
+evidence, and MCP projects. `lattence-packs` remains a non-package workspace
+member and its attack and discovery data ships inside the root wheel. Direct
+archive inspection confirmed that the root wheel contains the CLI, discovery,
+graph, governance, evidence, MCP, AI, crypto, and both rule-pack trees.

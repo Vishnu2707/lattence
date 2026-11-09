@@ -12,9 +12,9 @@ The real T-164 commit is
 `39a1b2eee21efe79adeb53c401d452d99d4154ba`. Its task line was accidentally
 replaced when T-165 was added and has now been restored in `BUILD/TASKS.md`.
 
-- Milestone: Milestone 1, trust and release verification.
-- Last completed: T-168, added and ran the public release verification script.
-- Next task: none selected. Hold for review before any Milestone C scope.
+- Milestone: v1.1.0 release preparation. Do not tag, publish, or open the PR.
+- Last completed: T-169, set every workspace project to 1.1.0 and verified the wheels.
+- Next task: T-170, write the evidence-backed changelog since v1.0.1.
 - Blockers: none.
 
 The final T-168 run reproduced 13 findings, 92 attack paths, 32 cross-layer

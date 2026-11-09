@@ -1144,3 +1144,17 @@ structural paths, and 21 percent PQC readiness. It measured the JSON report at
 101,851 bytes and HTML at 111,834 bytes, both below 1,000,000 bytes. The final
 coverage run passed all 390 tests at 92 percent displayed coverage and 92.47
 percent exact coverage.
+
+# v1.1.0 release preparation
+
+[T-169] [v1.1.0] [SHIP] bump every workspace package to 1.1.0 and verify the combined wheel contents | deps: T-168 | status: done | commit: self
+
+Set the root and all seven declared workspace projects to 1.1.0 and regenerated
+the lock. Built seven wheels at 1.1.0; `lattence-packs` remains a non-package
+workspace member whose rule data is embedded in the root wheel. The root wheel
+contains CLI, discovery, graph, governance, evidence, MCP, AI, crypto, and both
+rule-pack trees. Its metadata reports 1.1.0 and passes `twine check`.
+[T-170] [v1.1.0] [DOCS] write the evidence-backed changelog since v1.0.1 | deps: T-169 | status: todo | commit: self
+[T-171] [v1.1.0] [SHIP] install the wheel outside the repository and run release command acceptance | deps: T-170 | status: todo | commit: self
+[T-172] [v1.1.0] [DOCS] audit the README publication claim and PyPI long description | deps: T-171 | status: todo | commit: self
+[T-173] [v1.1.0] [ORCH] record exact release commands without executing them | deps: T-172 | status: todo | commit: self

@@ -1,6 +1,6 @@
 [project]
 name = "lattence-ai"
-version = "0.0.0"
+version = "1.1.0"
 requires-python = ">=3.12"
 dependencies = ["lattence-core", "lattence-evidence", "pydantic>=2.11,<3"]
 
