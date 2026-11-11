@@ -396,3 +396,11 @@ Decision: stage the root and API distributions together for the v1.1.0 PyPI
 upload while keeping the internal workspace modules bundled in the root wheel.
 Rationale: `lattence[api]` depends on the separately named `lattence-api`
 distribution, while the other runtime modules already ship inside `lattence`.
+
+2026-11-11 D-038
+Decision: .githooks/check-provenance skips committer trailer lines for one
+historical commit only, the bot squash merge of the pytest bump (a14d7ba).
+Rationale: The hosting platform added those trailers, they are not authored
+content, and rewriting history would break tags and releases. The exemption
+is an exact commit hash, applies only in the full history scan, and every
+other commit is scanned in full. A new commit with any trailer still fails.

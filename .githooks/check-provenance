@@ -52,6 +52,22 @@ scan_tree() {
     ':(exclude,glob)**/.tox/**'
 }
 
+# One historical commit, a bot squash merge, carries trailer lines added by
+# the hosting platform. Only trailer lines of that exact commit are skipped.
+# Reason recorded in BUILD/DECISIONS.md.
+exempt_commit=a14d7ba7d3a24902ddfa3d2d07b78bee6d1bf925
+
+scan_history() {
+  git rev-list --all | while read -r commit; do
+    if [ "$commit" = "$exempt_commit" ]; then
+      git log -1 --format='%an%n%ae%n%s%n%b' "$commit" |
+        grep -v -E -i '^(co-authored-b[y]|signed-off-b[y]): '
+    else
+      git log -1 --format='%an%n%ae%n%s%n%b' "$commit"
+    fi
+  done
+}
+
 if [ "${1:-}" = "--all" ]; then
   failed=0
   if scan_tree --cached; then
@@ -62,7 +78,7 @@ if [ "${1:-}" = "--all" ]; then
       failed=1
     fi
   done
-  if git log --format='%an%n%ae%n%s%n%b' | grep -Ein "$pattern"; then
+  if scan_history | grep -Ein "$pattern"; then
     failed=1
   fi
   if [ "$failed" -ne 0 ]; then

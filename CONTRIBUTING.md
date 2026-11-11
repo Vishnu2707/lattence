@@ -93,3 +93,10 @@ There is no DCO sign-off requirement on this repository today.
 - [ ] The commit message has no attribution trailers or vendor names.
 
 Open an issue to discuss a nontrivial change before sending a pull request.
+
+## Merging dependency bot pull requests
+
+The platform adds committer trailers to squash merges by default, which the
+provenance check rejects. When merging a bot pull request, override the
+squash body with a plain message, for example
+`gh pr merge N --squash --body "dependency update"`.
